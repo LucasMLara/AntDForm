@@ -12,7 +12,6 @@ export default function Header() {
         style={{
           display: "flex",
           width: "100vw",
-          height: "3em",
           justifyContent: "center",
           alignItems: "center",
           background: "rgba(102, 104, 106, 0.15)",
@@ -24,13 +23,16 @@ export default function Header() {
         style={{
           display: "flex",
           width: "100vw",
-          height: "5em",
           textAlign: "center",
           alignItems: "center",
           background: "rgba(0, 94, 184, 0.15)",
         }}
       >
-        <Title type="danger" level={5}>
+        <Title
+          type="danger"
+          level={5}
+          style={{ margin: "1em", padding: "1em" }}
+        >
           IMPORTANTE: para submissão e análise da proposta, a empresa
           organizadora deve estar regular junto ao SEBRAE/ES. Caso já tenha
           cadastro, acesse o{" "}
