@@ -41,9 +41,9 @@ export default function Header() {
           </a>{" "}
           a sua situação. Caso contrário envie e-mail para{" "}
           <a href="mailto:srs@es.sebrae.com.br">srs@es.sebrae.com.br</a> e
-          solicite seu cadastro no tipo de negócio: CONTRATO E OF - PJ
-          [DISPENSA(exceto valor), INEXIGIBILIDADE] - acima de R$ 395.000,00{" "}
-          <ModalInfos />
+          solicite seu cadastro no tipo de negócio: &quot;CONTRATO E OF - PJ
+          [DISPENSA(exceto valor), INEXIGIBILIDADE] - acima de R$
+          395.000,00&quot; <ModalInfos />
         </Title>
       </header>
     </>

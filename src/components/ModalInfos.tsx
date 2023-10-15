@@ -21,7 +21,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Text style={{ fontSize: "1.5em" }} mark>
+      <Text style={{ fontSize: "1.2em" }} mark>
         <QuestionOutlined
           onClick={showModal}
           title="Cheque aqui as informações pertinentes"
@@ -35,7 +35,7 @@ const App: React.FC = () => {
             <CheckOutlined />
           </Button>,
         ]}
-        title="IMPEDIMENTO DE CONTRATAÇÃO - VEDAÇÃÇÕES PREVISTAS NO ART. 42 DA RLCSS"
+        title="IMPEDIMENTO DE CONTRATAÇÃO - VEDAÇÕES PREVISTAS NO ART. 42 DA RLCSS"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
