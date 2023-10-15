@@ -17,7 +17,9 @@ export default function Header() {
           background: "rgba(102, 104, 106, 0.15)",
         }}
       >
-        <Title level={4}>PROPOSTA PARA APOIO EM FEIRAS E EXPOSIÇÕES</Title>
+        <Title style={{ margin: "1em", textAlign: "center" }} level={4}>
+          PROPOSTA PARA APOIO EM FEIRAS E EXPOSIÇÕES
+        </Title>
       </div>
       <header
         style={{
