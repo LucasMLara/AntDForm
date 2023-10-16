@@ -33,10 +33,12 @@ export const FeirasSchema = Yup.object().shape({
   cpfRepresentanteRealizadora: Yup.string().required("Campo obrigatório"),
   cpfRepresentanteOrganizadora: Yup.string().required("Campo obrigatório"),
   emailRepresentanteRealizadora: Yup.string()
-    .email("Invalid email")
+    .email("Formato de email inválido")
     .required("Campo obrigatório!"),
+  contatoRepresentanteRealizadora: Yup.string().required("Campo obrigatório"),
+  contatoRepresentanteOrganizadora: Yup.string().required("Campo obrigatório"),
   emailRepresentanteOrganizadora: Yup.string()
-    .email("Invalid email")
+    .email("Formato de email inválido")
     .required("Campo obrigatório!"),
   empresasApoiadoras: Yup.string().required("Campo obrigatório"),
   descritivoEvento: Yup.string().min(1500, "Requer no mínimo 1500 caracteres"),
@@ -95,4 +97,6 @@ export const INITIAL_VALUES = {
   plantaBaixa: null,
   comprovanteExclusividadeRegistroINPI: null,
   aceiteTermos: false,
+  contatoRepresentanteRealizadora: "",
+  contatoRepresentanteOrganizadora: "",
 };
