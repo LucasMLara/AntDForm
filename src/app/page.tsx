@@ -10,9 +10,16 @@ import Header from "@/components/Header";
 import { FeirasSchema, INITIAL_VALUES } from "@/utils/validations/FormValidation";
 const { Title } = Typography;
 const{TextArea} = Input;
-//TODO criar css modules para os erros do errormsg do formik e para para aplicar o padding das colunas do grid do formulário e aplicar a validação do joy, fazer context para o termo de aceite no modal
+
+import LogoTipo from "@/components/Image"
+
+import LogoSebrae from "../../public/SebraeLogo.svg"
 
 
+/**
+ * TODO criar css modules para os erros do errormsg do formik
+ * e aplicar a validação do joy, fazer context para o termo de aceite no modal
+ */
 
 
 const props: UploadProps = {
@@ -42,6 +49,9 @@ const Cabecalho = ({title, size} : {title: string, size?: Sizes }) => <Title lev
   return (
     <div>
       <Header />
+      <div className={styles.wrapper}>
+        <LogoTipo src={LogoSebrae} alt="Logo Sebrae" width={250} height={250}/>
+      </div>
       <Formik
         initialValues={INITIAL_VALUES}
         validationSchema={FeirasSchema}
@@ -336,14 +346,13 @@ const Cabecalho = ({title, size} : {title: string, size?: Sizes }) => <Title lev
                 <Button icon={<UploadOutlined />} />
               </Upload>
               <Row style={{margin: '1em', padding: "1em"}}>
-                <Col xs={20} md={5}>
+           
                   <ModalTermos />
-                </Col> 
+              
               </Row>
-              <Row style={{margin: '1em', padding: "1em", justifyContent:'center'}}>
-                <Col xs={20} md={5}>
-                  <Button type="primary" htmlType="submit">Enviar</Button>
-                </Col></Row>
+              <Row style={{justifyContent:'center'}}>
+                  <Button type="primary" htmlType="submit" style={{width:"40%"}}>Enviar</Button>
+              </Row>
           </Form>
         )}
       </Formik>

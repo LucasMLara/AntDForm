@@ -23,3 +23,11 @@
   margin: 0.7em;
   color: rgb(55, 100, 100);
 }
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 1em;
+  padding: 1em;
+}
