@@ -3,13 +3,35 @@
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import ModalTermos from "../components/ModalTermos";
-
-import {Input, Col, Row, Button, DatePicker, Typography } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
+import {Input, Col, Row, Button, DatePicker, Typography, Upload, message, UploadProps } from "antd";
 import styles from "./styles.module.css"
 import Header from "@/components/Header";
 import { FeirasSchema, INITIAL_VALUES } from "@/utils/validations/FormValidation";
-const { Title, Text } = Typography;
+const { Title } = Typography;
+const{TextArea} = Input;
 //TODO criar css modules para os erros do errormsg do formik e para para aplicar o padding das colunas do grid do formulário e aplicar a validação do joy, fazer context para o termo de aceite no modal
+
+
+
+
+const props: UploadProps = {
+  name: 'file',
+  action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
+  headers: {
+    authorization: 'authorization-text',
+  },
+  onChange(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} - Arquivo carregado com Sucesso`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} - Carregamento de arquivo inválido!.`);
+    }
+  },
+};
 
 const ErrComponent = () => <span className={styles.error}></span>
 const FormFeira = () => {
@@ -222,9 +244,106 @@ const Cabecalho = ({title, size} : {title: string, size?: Sizes }) => <Title lev
                 />
               </Col>
             </Row>
-            
+            <Cabecalho title="3. Empresas Apoiadoras:" size={4}/>
+                <Field id="empresasApoiadoras" as={TextArea}size="large" name="empresasApoiadoras" type="text" />
+                <ErrorMessage
+                  name="empresasApoiadoras"
+                  component={ErrComponent}
+                />
+            <Cabecalho title="4. Descritivo do Evento / Objetivo:" size={4}/>
+              <Field id="descritivoEvento" as={TextArea}size="large" name="descritivoEvento" placeholder="Acima de 1500 caracteres" type="text" />
+              <ErrorMessage
+                name="descritivoEvento"
+                component={ErrComponent}
+              />
+              <label className={styles.label} htmlFor="expectativaPubExpositor">Expectativa de Público Expositor: </label>
+                <Field id="expectativaPubExpositor" as={Input}size="large" name="expectativaPubExpositor" type="text" />
+                <ErrorMessage
+                  name="expectativaPubExpositor"
+                  component={ErrComponent}
+                />
+              <label className={styles.label} htmlFor="expectativaPubVisitante">Expectativa de Público Visitante: </label>
+                <Field id="expectativaPubVisitante" as={Input}size="large" name="expectativaPubVisitante"  type="text" />
+                <ErrorMessage
+                  name="expectativaPubVisitante"
+                  component={ErrComponent}
+                />
+            <Cabecalho title="5. Dados das Últimas 03 edições:" size={4}/>
+              <Field id="dadosUltimasEdicoes" as={TextArea}size="large" name="dadosUltimasEdicoes" type="text" />
+              <ErrorMessage
+                name="dadosUltimasEdicoes"
+                component={ErrComponent}
+              />
+            <Cabecalho title="6. Plano de Comunicação do Evento:" size={4}/>
+                  <Field id="planoComunicacaoEvento" as={TextArea}size="large" name="planoComunicacaoEvento" type="text" />
+                  <ErrorMessage
+                    name="planoComunicacaoEvento"
+                    component={ErrComponent}
+                  />
+            <Cabecalho title="7. Objeto da Proposta e Valores:" size={4}/>
+            <label className={styles.label} htmlFor="valorLocacaoLivre">Valor de Locação da Área Livre  (R$/m²): </label>
+                <Field id="valorLocacaoLivre" as={Input}size="large" name="valorLocacaoLivre"  placeholder="R$ 100.000,00" type="text" />
+                <ErrorMessage
+                  name="valorLocacaoLivre"
+                  component={ErrComponent}
+                />
+            <label className={styles.label} htmlFor="valorLocacaoMontada">Valor de Locação da Área Montada (Área com estande montado) (R$/m²): </label>
+                <Field id="valorLocacaoMontada" as={Input}size="large" name="valorLocacaoMontada"  type="text" placeholder="R$ 100.000,00"/>
+                <ErrorMessage
+                  name="valorLocacaoMontada"
+                  component={ErrComponent}
+                />
+            <label className={styles.label} htmlFor="descritivoEstruturaMontagem">Descritivo da Estrutura de montagem e insumos de locação da área montada: </label>
+                <Field id="descritivoEstruturaMontagem" as={TextArea} size="large" name="descritivoEstruturaMontagem"  type="text" />
+                <ErrorMessage
+                  name="descritivoEstruturaMontagem"
+                  component={ErrComponent}
+                />
+            <label className={styles.label} htmlFor="txsAdicionais">Taxas Adicionais: </label>
+                <Field id="txsAdicionais" as={Input} size="large" name="txsAdicionais"  type="text" />
+                <ErrorMessage
+                  name="txsAdicionais"
+                  component={ErrComponent}
+                />
+            <label className={styles.label} htmlFor="outrosBeneficios">Outros benefícios: </label>
+                <Field id="outrosBeneficios" as={Input} size="large" name="outrosBeneficios"  type="text" />
+                <ErrorMessage
+                  name="outrosBeneficios"
+                  component={ErrComponent}
+                />
 
-            {/* <Button type="primary" htmlType="submit">Submit</Button> */}
+            <Cabecalho title="8. Informações Adicionais:" size={4}/>
+                  <Field id="infoAdicional" as={TextArea}size="large" name="infoAdicional" type="text" />
+                  <ErrorMessage
+                    name="infoAdicional"
+                    component={ErrComponent}
+                  />
+            <Cabecalho title="9. Anexos:" size={4}/>
+            <label className={styles.label}>Planta Baixa: </label>
+              <Upload {...props}>
+                <Button icon={<UploadOutlined />} />
+              </Upload>
+            <label className={styles.label}>Comprovante de Exclusividade / Registro INPI: </label>
+              <Upload {...props}>
+                <Button icon={<UploadOutlined />} />
+              </Upload>
+            <label className={styles.label}>Contrato de Locação de espaço: </label>
+              <Upload {...props}>
+                <Button icon={<UploadOutlined />} />
+              </Upload>
+            <label className={styles.label}>Manual do Exposito ou Regras para Exposição: </label>
+              <Upload {...props}>
+                <Button icon={<UploadOutlined />} />
+              </Upload>
+              <Row style={{margin: '1em', padding: "1em"}}>
+                <Col xs={20} md={5}>
+                  <ModalTermos />
+                </Col> 
+              </Row>
+              <Row style={{margin: '1em', padding: "1em", justifyContent:'center'}}>
+                <Col xs={20} md={5}>
+                  <Button type="primary" htmlType="submit">Enviar</Button>
+                </Col></Row>
           </Form>
         )}
       </Formik>
