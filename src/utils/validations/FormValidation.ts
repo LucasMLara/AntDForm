@@ -11,6 +11,7 @@ export const FeirasSchema = Yup.object().shape({
     .min(2, "Entre com um nome válido")
     .max(50, "Nome muito comprido!")
     .required("Campo obrigatório!"),
+  periodoEvento: Yup.object().required(),
   horarioFuncionamento: Yup.string()
     .min(2, "Entre com um nome válido")
     .max(50, "Nome muito comprido!")
@@ -69,6 +70,7 @@ export const INITIAL_VALUES = {
   empresaRealizadora: "",
   empresaOrganizadora: "",
   docRealizadora: "",
+  periodoEvento: {},
   docOrganizadora: "",
   enderecoRealizadora: "",
   enderecoOrganizadora: "",
