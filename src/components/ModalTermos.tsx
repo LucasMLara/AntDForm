@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+"use client"
+
+import React, { useState, useContext, useEffect } from "react";
 import { Button, Modal, Typography } from "antd";
+import { FormContext } from "@/utils/validations/FormContext";
 
 const { Paragraph, Title } = Typography;
 
-const App: React.FC = () => {
+const ModalInfos: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { termo, setTermo } = useContext(FormContext);
+
+  useEffect(() => {
+    // console.log(termo); // This will log the updated termo value
+  }, [termo]);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
+    setTermo(true);
     setIsModalOpen(false);
   };
 
   const handleCancel = () => {
+    setTermo(false);
     setIsModalOpen(false);
   };
 
@@ -85,4 +95,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default ModalInfos;
