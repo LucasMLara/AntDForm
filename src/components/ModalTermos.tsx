@@ -30,8 +30,8 @@ const ModalInfos: React.FC = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        Termos contratuais
+      <Button type={!termo ? "primary" : "default"} onClick={showModal}>
+        { !termo ? 'Termos contratuais' : "Termos Aceitos!"}
       </Button>
       <Modal
         footer={[
