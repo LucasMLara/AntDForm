@@ -14,8 +14,10 @@ export const metadata = {
 
 const RootLayout = ({ children }: React.PropsWithChildren) => (
   <html lang="pt-BR">
+    <head>
+      <link rel="shortcut icon" href="/SebraeLogo.svg" type="image/x-icon" />
+    </head>
     <body className={inter.className}>
-
       <StyledComponentsRegistry>
         <FormContextProvider>
           {children}

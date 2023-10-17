@@ -54,9 +54,10 @@ import type { RangePickerProps } from 'antd/es/date-picker';
 
 const FormFeira = () => {
   const {termo} = useContext(FormContext)
-
+  const defaultStartDate = dayjs();
+  const defaultEndDate = dayjs().add(90, 'day');
   const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-    return current && current < dayjs().add(90,'day');
+    return current && current < defaultEndDate;
   };
 
   return (
@@ -93,7 +94,13 @@ const FormFeira = () => {
                 <Cabecalho title="Período de Realização" size={5}/>
                 <Row gutter={15}>
                   <Col md={12} xs={24}>
-                  <Field id="FALTA POR NOME" locale={locale} disabledDate={disabledDate} as={RangePicker} size="large" name="FALTA POR NOME" type="date" />
+                  <Field 
+                  id="FALTA POR NOME" 
+                  locale={locale}
+                  defaultValue={[defaultEndDate, null]}
+                  format="DD-MM-YYYY"
+                  disabledDate={disabledDate}  
+                  as={RangePicker} size="large" name="FALTA POR NOME" type="date" />
                   <ErrorMessage
                   name="FALTA POR NOME"
                   component={ErrComponent}
