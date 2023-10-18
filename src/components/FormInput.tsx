@@ -12,6 +12,8 @@ interface FeiraInputProps {
   type: string;
   antdComponent?: React.ComponentType<any>;
   required?: boolean;
+  maxLength?: number;
+  showCount?: boolean;
 }
 
 const FormInput: React.FC<FeiraInputProps> = ({
@@ -21,6 +23,8 @@ const FormInput: React.FC<FeiraInputProps> = ({
   type,
   antdComponent,
   required,
+  maxLength,
+  showCount,
 }) => {
   return (
     <div>
@@ -34,6 +38,8 @@ const FormInput: React.FC<FeiraInputProps> = ({
         )}
       </label>
       <Field
+        showCount={showCount}
+        maxLength={maxLength}
         id={name}
         as={antdComponent || Input}
         size="large"
