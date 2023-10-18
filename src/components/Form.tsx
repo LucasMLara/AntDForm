@@ -18,20 +18,20 @@ import {
 } from "antd";
 import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
+import FormInput from "./FormInput";
 import {
   FeirasSchema,
   INITIAL_VALUES,
 } from "@/utils/validations/FormValidation";
+import LogoTipo from "@/components/Image";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import LogoSebrae from "../../public/SebraeLogo.svg";
+import { useContext } from "react";
+import { FormContext } from "@/utils/validations/FormContext";
+
 const { Title } = Typography;
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
-import LogoTipo from "@/components/Image";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-// import type { RangePickerProps } from 'antd/es/date-picker';
-import LogoSebrae from "../../public/SebraeLogo.svg";
-import { useContext } from "react";
-
-import { FormContext } from "@/utils/validations/FormContext";
 
 dayjs.extend(customParseFormat);
 
@@ -54,6 +54,7 @@ const props: UploadProps = {
 };
 
 const ErrComponent = () => <span className={styles.error}></span>;
+
 type Sizes = 1 | 2 | 3 | 4 | 5;
 const Cabecalho = ({ title, size }: { title: string; size?: Sizes }) => (
   <Title level={size} style={{ marginTop: "0.5em" }} type="secondary">
@@ -89,33 +90,25 @@ const FormFeira = () => {
         {() => (
           <Form className={styles.formWrapper}>
             <Cabecalho title="1. DADOS GERAIS" size={4} />
-            <label className={styles.label} htmlFor="nomeDaFeira">
-              Nome da Feira:{" "}
-            </label>
-            <Field
-              id="nomeDaFeira"
-              as={Input}
-              size="large"
-              name="nomeDaFeira"
+            <FormInput
+              label="Nome da Feira"
               placeholder="Insira o nome do seu evento"
+              name="nomeDaFeira"
               type="text"
+              antdComponent={Input}
+              required
             />
-            <ErrorMessage name="nomeDaFeira" component={ErrComponent} />
-            <label className={styles.label} htmlFor="localDaFeira">
-              Local:{" "}
-            </label>
-            <Field
-              id="localDaFeira"
-              as={Input}
-              size="large"
-              name="localDaFeira"
+            <FormInput
+              label="Local"
               placeholder="Insira o local do seu evento"
+              name="localDaFeira"
               type="text"
+              antdComponent={Input}
+              required
             />
-            <ErrorMessage name="localDaFeira" component={ErrComponent} />
             <Cabecalho title="Período de Realização" size={5} />
-            <Row gutter={15}>
-              <Col md={12} xs={24}>
+            <Row>
+              <Col>
                 <Field
                   id="FALTA POR NOME"
                   locale={locale}
@@ -123,6 +116,7 @@ const FormFeira = () => {
                   format="DD-MM-YYYY"
                   disabledDate={disabledDate}
                   as={RangePicker}
+                  onChange={(e: any) => console.log(e)}
                   size="large"
                   name="FALTA POR NOME"
                   type="date"
@@ -130,540 +124,334 @@ const FormFeira = () => {
                 <ErrorMessage name="FALTA POR NOME" component={ErrComponent} />
               </Col>
             </Row>
-            <label className={styles.label} htmlFor="horarioFuncionamento">
-              Horário de Funcionamento:{" "}
-            </label>
-            <Field
-              id="horarioFuncionamento"
-              as={Input}
-              size="large"
-              name="horarioFuncionamento"
+            <FormInput
+              label="Horário de Funcionamento"
               placeholder="Qual o horário do funcionamento?"
-              type="text"
-            />
-            <ErrorMessage
               name="horarioFuncionamento"
-              component={ErrComponent}
-            />
-            <label className={styles.label} htmlFor="valorEntradaVisitantes">
-              Valor da entrada dos visitantes:{" "}
-            </label>
-            <Field
-              id="valorEntradaVisitantes"
-              as={Input}
-              size="large"
-              name="valorEntradaVisitantes"
-              placeholder="Quanto vai custar o ingresso?"
               type="text"
+              antdComponent={Input}
+              required
             />
-            <ErrorMessage
+            <FormInput
+              label="Valor da entrada dos visitantes"
+              placeholder="Quanto vai custar o ingresso?"
               name="valorEntradaVisitantes"
-              component={ErrComponent}
+              type="text"
+              antdComponent={Input}
+              required
             />
             <Cabecalho title="2. PRINCIPAIS INSTITUIÇÕES ENVOLVIDAS" size={5} />
             <Cabecalho title="Empresa Realizadora" size={5} />
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="empresaRealizadora">
-                  Nome:{" "}
-                </label>
-                <Field
-                  id="empresaRealizadora"
-                  as={Input}
-                  size="large"
-                  name="empresaRealizadora"
+                <FormInput
+                  label="Nome"
                   placeholder="Quanto vai custar o ingresso?"
-                  type="text"
-                />
-                <ErrorMessage
                   name="empresaRealizadora"
-                  component={ErrComponent}
+                  type="text"
+                  antdComponent={Input}
+                  required
                 />
               </Col>
               <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="docRealizadora">
-                  CNPJ:{" "}
-                </label>
-                <Field
-                  id="docRealizadora"
-                  as={Input}
-                  size="large"
+                <FormInput
+                  label="CNPJ"
+                  placeholder="Insira somente números"
                   name="docRealizadora"
+                  showCount
                   maxLength={14}
-                  placeholder="00000000000000"
                   type="text"
+                  antdComponent={Input}
+                  required
                 />
-                <ErrorMessage name="docRealizadora" component={ErrComponent} />
               </Col>
             </Row>
-            <label className={styles.label} htmlFor="enderecoRealizadora">
-              Endereço:{" "}
-            </label>
-            <Field
-              id="enderecoRealizadora"
-              as={Input}
-              size="large"
-              name="enderecoRealizadora"
+            <FormInput
+              label="Endereço"
               placeholder="Av...Rua... nº"
+              name="enderecoRealizadora"
               type="text"
+              antdComponent={Input}
+              required
             />
-            <ErrorMessage name="enderecoRealizadora" component={ErrComponent} />
             <Row gutter={25}>
               <Col xs={24} md={8}>
-                <label className={styles.label} htmlFor="cidadeRealizadora">
-                  Cidade:{" "}
-                </label>
-                <Field
-                  id="cidadeRealizadora"
-                  as={Input}
-                  size="large"
+                <FormInput
+                  label="Cidade"
                   name="cidadeRealizadora"
                   type="text"
-                />
-                <ErrorMessage
-                  name="cidadeRealizadora"
-                  component={ErrComponent}
+                  antdComponent={Input}
+                  required
                 />
               </Col>
               <Col xs={24} md={8}>
-                <label className={styles.label} htmlFor="ufRealizadora">
-                  UF:{" "}
-                </label>
-                <Field
-                  id="ufRealizadora"
-                  as={Input}
-                  size="large"
+                <FormInput
+                  label="UF"
                   name="ufRealizadora"
                   type="text"
+                  antdComponent={Input}
+                  required
                 />
-                <ErrorMessage name="ufRealizadora" component={ErrComponent} />
               </Col>
               <Col xs={24} md={8}>
-                <label className={styles.label} htmlFor="cepRealizadora">
-                  CEP:{" "}
-                </label>
-                <Field
-                  id="cepRealizadora"
-                  as={Input}
-                  size="large"
+                <FormInput
+                  label="CEP"
                   name="cepRealizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
                   maxLength={8}
-                  placeholder="00000000"
-                  type="text"
-                />
-                <ErrorMessage name="cepRealizadora" component={ErrComponent} />
-              </Col>
-            </Row>
-            <Row gutter={25}>
-              <Col xs={24} md={12}>
-                <label
-                  className={styles.label}
-                  htmlFor="representanteRealizadora"
-                >
-                  Representante Legal:{" "}
-                </label>
-                <Field
-                  id="representanteRealizadora"
-                  as={Input}
-                  size="large"
-                  name="representanteRealizadora"
-                  type="text"
-                />
-                <ErrorMessage
-                  name="representanteRealizadora"
-                  component={ErrComponent}
-                />
-              </Col>
-              <Col xs={24} md={12}>
-                <label
-                  className={styles.label}
-                  htmlFor="cpfRepresentanteRealizadora"
-                >
-                  CPF:{" "}
-                </label>
-                <Field
-                  id="cpfRepresentanteRealizadora"
-                  as={Input}
-                  size="large"
-                  name="cpfRepresentanteRealizadora"
-                  maxLength={11}
-                  placeholder="00000000000"
-                  type="text"
-                />
-                <ErrorMessage
-                  name="cpfRepresentanteRealizadora"
-                  component={ErrComponent}
+                  showCount
+                  placeholder="Insira somente números"
                 />
               </Col>
             </Row>
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <label
-                  className={styles.label}
-                  htmlFor="contatoRepresentanteRealizadora"
-                >
-                  Telefone:{" "}
-                </label>
-                <Field
-                  id="contatoRepresentanteRealizadora"
-                  as={Input}
-                  size="large"
-                  maxLength={11}
-                  name="contatoRepresentanteRealizadora"
-                  placeholder="27999999999"
+                <FormInput
+                  label="Representante Legal"
+                  name="representanteRealizadora"
                   type="text"
-                />
-                <ErrorMessage
-                  name="contatoRepresentanteRealizadora"
-                  component={ErrComponent}
+                  antdComponent={Input}
+                  required
                 />
               </Col>
               <Col xs={24} md={12}>
-                <label
-                  className={styles.label}
-                  htmlFor="emailRepresentanteRealizadora"
-                >
-                  Email:{" "}
-                </label>
-                <Field
-                  id="emailRepresentanteRealizadora"
-                  as={Input}
-                  size="large"
-                  name="emailRepresentanteRealizadora"
-                  placeholder="Email do representante legal"
+                <FormInput
+                  label="CPF"
+                  name="cpfRepresentanteRealizadora"
                   type="text"
+                  antdComponent={Input}
+                  required
+                  maxLength={11}
+                  showCount
+                  placeholder="Insira somente números"
                 />
-                <ErrorMessage
+              </Col>
+            </Row>
+            <Row gutter={25}>
+              <Col xs={24} md={12}>
+                <FormInput
+                  label="Telefone"
+                  name="contatoRepresentanteRealizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                  maxLength={11}
+                  placeholder="Insira somente números"
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <FormInput
+                  label="Email"
                   name="emailRepresentanteRealizadora"
-                  component={ErrComponent}
+                  type="email"
+                  antdComponent={Input}
+                  required
                 />
               </Col>
             </Row>
             <Cabecalho title="Empresa Organizadora" size={5} />
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="empresaOrganizadora">
-                  Nome:{" "}
-                </label>
-                <Field
-                  id="empresaOrganizadora"
-                  as={Input}
-                  size="large"
+                <FormInput
+                  label="Nome"
                   name="empresaOrganizadora"
-                  placeholder="Quanto vai custar o ingresso?"
                   type="text"
-                />
-                <ErrorMessage
-                  name="empresaOrganizadora"
-                  component={ErrComponent}
+                  antdComponent={Input}
+                  required
                 />
               </Col>
               <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="docOrganizadora">
-                  CNPJ:{" "}
-                </label>
-                <Field
-                  id="docOrganizadora"
-                  as={Input}
-                  size="large"
+                <FormInput
+                  label="CNPJ"
                   name="docOrganizadora"
-                  maxLength={14}
-                  placeholder="00000000000000"
                   type="text"
+                  antdComponent={Input}
+                  maxLength={14}
+                  showCount
+                  required
+                  placeholder="Insira somente números"
                 />
-                <ErrorMessage name="docOrganizadora" component={ErrComponent} />
               </Col>
             </Row>
-            <label className={styles.label} htmlFor="enderecoOrganizadora">
-              Endereço:{" "}
-            </label>
-            <Field
-              id="enderecoOrganizadora"
-              as={Input}
-              size="large"
-              name="enderecoOrganizadora"
+            <FormInput
+              label="Endereço"
               placeholder="Av...Rua... nº"
-              type="text"
-            />
-            <ErrorMessage
               name="enderecoOrganizadora"
-              component={ErrComponent}
+              type="text"
+              antdComponent={Input}
+              required
             />
             <Row gutter={25}>
               <Col xs={24} md={8}>
-                <label className={styles.label} htmlFor="cidadeOrganizadora">
-                  Cidade:{" "}
-                </label>
-                <Field
-                  id="cidadeOrganizadora"
-                  as={Input}
-                  size="large"
+                <FormInput
+                  label="Cidade"
                   name="cidadeOrganizadora"
                   type="text"
-                />
-                <ErrorMessage
-                  name="cidadeOrganizadora"
-                  component={ErrComponent}
+                  antdComponent={Input}
+                  required
                 />
               </Col>
               <Col xs={24} md={8}>
-                <label className={styles.label} htmlFor="ufOrganizadora">
-                  UF:{" "}
-                </label>
-                <Field
-                  id="ufOrganizadora"
-                  as={Input}
-                  size="large"
+                <FormInput
+                  label="UF"
                   name="ufOrganizadora"
                   type="text"
+                  antdComponent={Input}
+                  required
                 />
-                <ErrorMessage name="ufOrganizadora" component={ErrComponent} />
               </Col>
               <Col xs={24} md={8}>
-                <label className={styles.label} htmlFor="cepOrganizadora">
-                  CEP:{" "}
-                </label>
-                <Field
-                  id="cepOrganizadora"
-                  as={Input}
-                  size="large"
+                <FormInput
+                  label="CEP"
                   name="cepOrganizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
                   maxLength={8}
-                  placeholder="00000000"
-                  type="text"
-                />
-                <ErrorMessage name="cepOrganizadora" component={ErrComponent} />
-              </Col>
-            </Row>
-            <Row gutter={25}>
-              <Col xs={24} md={12}>
-                <label
-                  className={styles.label}
-                  htmlFor="representanteOrganizadora"
-                >
-                  Representante Legal:{" "}
-                </label>
-                <Field
-                  id="representanteOrganizadora"
-                  as={Input}
-                  size="large"
-                  name="representanteOrganizadora"
-                  type="text"
-                />
-                <ErrorMessage
-                  name="representanteOrganizadora"
-                  component={ErrComponent}
-                />
-              </Col>
-              <Col xs={24} md={12}>
-                <label
-                  className={styles.label}
-                  htmlFor="cpfRepresentanteOrganizadora"
-                >
-                  CPF:{" "}
-                </label>
-                <Field
-                  id="cpfRepresentanteOrganizadora"
-                  as={Input}
-                  size="large"
-                  name="cpfRepresentanteOrganizadora"
-                  maxLength={11}
-                  placeholder="00000000000"
-                  type="text"
-                />
-                <ErrorMessage
-                  name="cpfRepresentanteOrganizadora"
-                  component={ErrComponent}
+                  showCount
+                  placeholder="Insira somente números"
                 />
               </Col>
             </Row>
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <label
-                  className={styles.label}
-                  htmlFor="contatoRepresentanteOrganizadora"
-                >
-                  Telefone:{" "}
-                </label>
-                <Field
-                  id="contatoRepresentanteOrganizadora"
-                  as={Input}
-                  size="large"
-                  maxLength={11}
-                  name="contatoRepresentanteOrganizadora"
-                  placeholder="27999999999"
+                <FormInput
+                  label="Representante Legal"
+                  name="representanteOrganizadora"
                   type="text"
-                />
-                <ErrorMessage
-                  name="contatoRepresentanteOrganizadora"
-                  component={ErrComponent}
+                  antdComponent={Input}
+                  required
                 />
               </Col>
               <Col xs={24} md={12}>
-                <label
-                  className={styles.label}
-                  htmlFor="emailRepresentanteOrganizadora"
-                >
-                  Email:{" "}
-                </label>
-                <Field
-                  id="emailRepresentanteOrganizadora"
-                  as={Input}
-                  size="large"
-                  name="emailRepresentanteOrganizadora"
-                  placeholder="Email do representante legal"
+                <FormInput
+                  label="CPF"
+                  name="cpfRepresentanteOrganizadora"
                   type="text"
+                  antdComponent={Input}
+                  required
+                  maxLength={11}
+                  showCount
+                  placeholder="Insira somente números"
                 />
-                <ErrorMessage
+              </Col>
+            </Row>
+            <Row gutter={25}>
+              <Col xs={24} md={12}>
+                <FormInput
+                  label="Telefone"
+                  name="contatoRepresentanteOrganizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                  maxLength={11}
+                  placeholder="Insira somente números"
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <FormInput
+                  label="Email"
                   name="emailRepresentanteOrganizadora"
-                  component={ErrComponent}
+                  type="email"
+                  antdComponent={Input}
+                  required
                 />
               </Col>
             </Row>
             <Cabecalho title="3. Empresas Apoiadoras:" size={4} />
-            <Field
-              id="empresasApoiadoras"
-              as={TextArea}
-              size="large"
+            <FormInput
               name="empresasApoiadoras"
-              type="text"
+              type="textarea"
+              antdComponent={TextArea}
+              required
             />
-            <ErrorMessage name="empresasApoiadoras" component={ErrComponent} />
             <Cabecalho title="4. Descritivo do Evento / Objetivo:" size={4} />
-            <Field
-              id="descritivoEvento"
-              as={TextArea}
-              size="large"
+            <FormInput
               name="descritivoEvento"
+              type="textarea"
+              antdComponent={TextArea}
+              required
               placeholder="Acima de 1500 caracteres"
-              type="text"
+              maxLength={4000}
+              showCount
             />
-            <ErrorMessage name="descritivoEvento" component={ErrComponent} />
-            <label className={styles.label} htmlFor="expectativaPubExpositor">
-              Expectativa de Público Expositor:{" "}
-            </label>
-            <Field
-              id="expectativaPubExpositor"
-              as={Input}
-              size="large"
+            <FormInput
+              label="Expectativa de Público Expositor"
               name="expectativaPubExpositor"
               type="text"
+              antdComponent={Input}
+              required
             />
-            <ErrorMessage
-              name="expectativaPubExpositor"
-              component={ErrComponent}
-            />
-            <label className={styles.label} htmlFor="expectativaPubVisitante">
-              Expectativa de Público Visitante:{" "}
-            </label>
-            <Field
-              id="expectativaPubVisitante"
-              as={Input}
-              size="large"
+            <FormInput
+              label="Expectativa de Público Visitante"
               name="expectativaPubVisitante"
               type="text"
-            />
-            <ErrorMessage
-              name="expectativaPubVisitante"
-              component={ErrComponent}
+              antdComponent={Input}
+              required
             />
             <Cabecalho title="5. Dados das Últimas 03 edições:" size={4} />
-            <Field
-              id="dadosUltimasEdicoes"
-              as={TextArea}
-              size="large"
+            <FormInput
               name="dadosUltimasEdicoes"
-              type="text"
+              type="textarea"
+              antdComponent={TextArea}
+              required
+              showCount
             />
-            <ErrorMessage name="dadosUltimasEdicoes" component={ErrComponent} />
             <Cabecalho title="6. Plano de Comunicação do Evento:" size={4} />
-            <Field
-              id="planoComunicacaoEvento"
-              as={TextArea}
-              size="large"
+            <FormInput
               name="planoComunicacaoEvento"
-              type="text"
-            />
-            <ErrorMessage
-              name="planoComunicacaoEvento"
-              component={ErrComponent}
+              type="textarea"
+              antdComponent={TextArea}
+              required
+              showCount
             />
             <Cabecalho title="7. Objeto da Proposta e Valores:" size={4} />
-            <label className={styles.label} htmlFor="valorLocacaoLivre">
-              Valor de Locação da Área Livre (R$/m²):{" "}
-            </label>
-            <Field
-              id="valorLocacaoLivre"
-              as={Input}
-              size="large"
+            <FormInput
+              label="Valor de Locação da Área Livre (R$/m²)"
               name="valorLocacaoLivre"
-              placeholder="R$ 100.000,00"
               type="text"
+              antdComponent={Input}
+              required
             />
-            <ErrorMessage name="valorLocacaoLivre" component={ErrComponent} />
-            <label className={styles.label} htmlFor="valorLocacaoMontada">
-              Valor de Locação da Área Montada (Área com estande montado)
-              (R$/m²):{" "}
-            </label>
-            <Field
-              id="valorLocacaoMontada"
-              as={Input}
-              size="large"
+            <FormInput
+              label="Valor de Locação da Área Montada (Área com estande montado)
+              (R$/m²)"
               name="valorLocacaoMontada"
               type="text"
-              placeholder="R$ 100.000,00"
+              antdComponent={Input}
+              required
             />
-            <ErrorMessage name="valorLocacaoMontada" component={ErrComponent} />
-            <label
-              className={styles.label}
-              htmlFor="descritivoEstruturaMontagem"
-            >
-              Descritivo da Estrutura de montagem e insumos de locação da área
-              montada:{" "}
-            </label>
-            <Field
-              id="descritivoEstruturaMontagem"
-              as={TextArea}
-              size="large"
+            <FormInput
+              label="Descritivo da Estrutura de montagem e insumos de locação da área
+              montada"
               name="descritivoEstruturaMontagem"
-              type="text"
+              type="textarea"
+              antdComponent={TextArea}
+              required
             />
-            <ErrorMessage
-              name="descritivoEstruturaMontagem"
-              component={ErrComponent}
-            />
-            <label className={styles.label} htmlFor="txsAdicionais">
-              Taxas Adicionais:{" "}
-            </label>
-            <Field
-              id="txsAdicionais"
-              as={Input}
-              size="large"
+            <FormInput
+              label="Taxas Adicionais"
               name="txsAdicionais"
               type="text"
+              antdComponent={Input}
+              required
             />
-            <ErrorMessage name="txsAdicionais" component={ErrComponent} />
-            <label className={styles.label} htmlFor="outrosBeneficios">
-              Outros benefícios:{" "}
-            </label>
-            <Field
-              id="outrosBeneficios"
-              as={Input}
-              size="large"
+            <FormInput
+              label="Outros benefícios"
               name="outrosBeneficios"
               type="text"
+              antdComponent={Input}
+              required
             />
-            <ErrorMessage name="outrosBeneficios" component={ErrComponent} />
-
             <Cabecalho title="8. Informações Adicionais:" size={4} />
-            <Field
-              id="infoAdicional"
-              as={TextArea}
-              size="large"
+            <FormInput
               name="infoAdicional"
-              type="text"
+              type="textarea"
+              antdComponent={TextArea}
+              required
             />
-            <ErrorMessage name="infoAdicional" component={ErrComponent} />
             <Cabecalho title="9. Anexos:" size={4} />
             <label className={styles.label}>Planta Baixa: </label>
             <Upload {...props}>

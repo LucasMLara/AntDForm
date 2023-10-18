@@ -17,8 +17,12 @@ export const FeirasSchema = Yup.object().shape({
   valorEntradaVisitantes: Yup.number().required("Campo obrigatório!"),
   empresaRealizadora: Yup.string().required("Campo obrigatório!"),
   empresaOrganizadora: Yup.string().required("Campo obrigatório!"),
-  docRealizadora: Yup.string().required("Campo obrigatório!"),
-  docOrganizadora: Yup.string().required("Campo obrigatório!"),
+  docRealizadora: Yup.string()
+    .min(14, "Insira 14 dígitos")
+    .required("Campo obrigatório!"),
+  docOrganizadora: Yup.string()
+    .min(14, "Insira 14 dígitos")
+    .required("Campo obrigatório!"),
   enderecoRealizadora: Yup.string().required("Campo obrigatório"),
   enderecoOrganizadora: Yup.string().required("Campo obrigatório"),
   cidadeRealizadora: Yup.string().required("Campo obrigatório"),

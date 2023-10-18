@@ -7,8 +7,8 @@ const { Paragraph } = Typography;
 
 interface FeiraInputProps {
   name: string;
-  label: string;
-  placeholder: string;
+  label?: string | null;
+  placeholder?: string;
   type: string;
   antdComponent?: React.ComponentType<any>;
   required?: boolean;
@@ -27,16 +27,18 @@ const FormInput: React.FC<FeiraInputProps> = ({
   showCount,
 }) => {
   return (
-    <div>
-      <label className={styles.label} htmlFor={name}>
-        {`${label}:`}
-        {required && (
-          <Paragraph style={{ display: "inline" }} type="danger">
-            {" "}
-            *
-          </Paragraph>
-        )}
-      </label>
+    <div style={{ margin: ".2em 0", padding: ".5em" }}>
+      {label && (
+        <label className={styles.label} htmlFor={name}>
+          {`${label}:`}
+          {required && (
+            <Paragraph style={{ display: "inline" }} type="danger">
+              {" "}
+              *
+            </Paragraph>
+          )}
+        </label>
+      )}
       <Field
         showCount={showCount}
         maxLength={maxLength}
