@@ -1,7 +1,5 @@
 import * as Yup from "yup";
 
-//TODO verificar data inicio e fim
-
 export const FeirasSchema = Yup.object().shape({
   nomeDaFeira: Yup.string()
     .min(2, "Entre com um nome válido")
@@ -11,7 +9,7 @@ export const FeirasSchema = Yup.object().shape({
     .min(2, "Entre com um nome válido")
     .max(50, "Nome muito comprido!")
     .required("Campo obrigatório!"),
-  periodoEvento: Yup.object().required(),
+  periodoEvento: Yup.string().required("Campo obrigatório!"),
   horarioFuncionamento: Yup.string()
     .min(2, "Entre com um nome válido")
     .max(50, "Nome muito comprido!")
@@ -42,7 +40,9 @@ export const FeirasSchema = Yup.object().shape({
     .email("Formato de email inválido")
     .required("Campo obrigatório!"),
   empresasApoiadoras: Yup.string().required("Campo obrigatório"),
-  descritivoEvento: Yup.string().min(1500, "Requer no mínimo 1500 caracteres"),
+  descritivoEvento: Yup.string()
+    .min(1500, "Requer no mínimo 1500 caracteres")
+    .required("Campo obrigatório"),
   expectativaPubExpositor: Yup.string().required("Campo obrigatório"),
   expectativaPubVisitante: Yup.string().required("Campo obrigatório"),
   dadosUltimasEdicoes: Yup.string().required("Campo obrigatório"),
@@ -52,14 +52,13 @@ export const FeirasSchema = Yup.object().shape({
   valorLocacaoMontada: Yup.string().required("Campo obrigatório"),
   txsAdicionais: Yup.string().required("Campo obrigatório"),
   outrosBeneficios: Yup.string().required("Campo obrigatório"),
-  infoAdicional: Yup.string().required(),
+  infoAdicional: Yup.string().required("Campo obrigatório"),
   plantaBaixa: Yup.object()
     .shape({ name: Yup.string().required() })
     .required("Campo obrigatório"),
   comprovanteExclusividadeRegistroINPI: Yup.object()
     .shape({ name: Yup.string().required() })
     .required("Campo obrigatório"),
-  aceiteTermos: Yup.boolean().required(),
 });
 
 export const INITIAL_VALUES = {
@@ -70,7 +69,7 @@ export const INITIAL_VALUES = {
   empresaRealizadora: "",
   empresaOrganizadora: "",
   docRealizadora: "",
-  periodoEvento: {},
+  periodoEvento: "",
   docOrganizadora: "",
   enderecoRealizadora: "",
   enderecoOrganizadora: "",
@@ -100,7 +99,6 @@ export const INITIAL_VALUES = {
   infoAdicional: "",
   plantaBaixa: null,
   comprovanteExclusividadeRegistroINPI: null,
-  aceiteTermos: false,
   contatoRepresentanteRealizadora: "",
   contatoRepresentanteOrganizadora: "",
 };
