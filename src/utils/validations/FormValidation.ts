@@ -1,5 +1,17 @@
 import * as Yup from "yup";
 
+const replaceNonIntegerChars = (
+  message = "Campo obrigatório!",
+  minDigit: number,
+  minDigitErrorMsg: string
+) =>
+  Yup.string()
+    .matches(/^\d+$/, {
+      message: "Somente números são permitidos.",
+    })
+    .min(minDigit, minDigitErrorMsg)
+    .required(message);
+
 export const FeirasSchema = Yup.object().shape({
   nomeDaFeira: Yup.string()
     .min(2, "Entre com um nome válido")
@@ -14,32 +26,60 @@ export const FeirasSchema = Yup.object().shape({
     .min(2, "Entre com um nome válido")
     .max(50, "Nome muito comprido!")
     .required("Campo obrigatório!"),
-  valorEntradaVisitantes: Yup.number().required("Campo obrigatório!"),
+  valorEntradaVisitantes: Yup.string().required("Campo obrigatório!"),
   empresaRealizadora: Yup.string().required("Campo obrigatório!"),
   empresaOrganizadora: Yup.string().required("Campo obrigatório!"),
-  docRealizadora: Yup.string()
-    .min(14, "Insira 14 dígitos")
-    .required("Campo obrigatório!"),
-  docOrganizadora: Yup.string()
-    .min(14, "Insira 14 dígitos")
-    .required("Campo obrigatório!"),
+  docRealizadora: replaceNonIntegerChars(
+    "Campo Obrigatório",
+    14,
+    "Insira 14 dígitos"
+  ),
+  docOrganizadora: replaceNonIntegerChars(
+    "Campo Obrigatório",
+    14,
+    "Insira 14 dígitos"
+  ),
   enderecoRealizadora: Yup.string().required("Campo obrigatório"),
   enderecoOrganizadora: Yup.string().required("Campo obrigatório"),
   cidadeRealizadora: Yup.string().required("Campo obrigatório"),
   cidadeOrganizadora: Yup.string().required("Campo obrigatório"),
   ufRealizadora: Yup.string().required("Campo obrigatório"),
   ufOrganizadora: Yup.string().required("Campo obrigatório"),
-  cepRealizadora: Yup.string().required("Campo obrigatório"),
-  cepOrganizadora: Yup.string().required("Campo obrigatório"),
+  cepRealizadora: replaceNonIntegerChars(
+    "Campo Obrigatório",
+    8,
+    "Insira 8 dígitos"
+  ),
+  cepOrganizadora: replaceNonIntegerChars(
+    "Campo Obrigatório",
+    8,
+    "Insira 8 dígitos"
+  ),
   representanteRealizadora: Yup.string().required("Campo obrigatório"),
   representanteOrganizadora: Yup.string().required("Campo obrigatório"),
-  cpfRepresentanteRealizadora: Yup.string().required("Campo obrigatório"),
-  cpfRepresentanteOrganizadora: Yup.string().required("Campo obrigatório"),
+  cpfRepresentanteRealizadora: replaceNonIntegerChars(
+    "Campo Obrigatório",
+    11,
+    "Insira 11 dígitos"
+  ),
+  cpfRepresentanteOrganizadora: replaceNonIntegerChars(
+    "Campo Obrigatório",
+    11,
+    "Insira 11 dígitos"
+  ),
   emailRepresentanteRealizadora: Yup.string()
     .email("Formato de email inválido")
     .required("Campo obrigatório!"),
-  contatoRepresentanteRealizadora: Yup.string().required("Campo obrigatório"),
-  contatoRepresentanteOrganizadora: Yup.string().required("Campo obrigatório"),
+  contatoRepresentanteRealizadora: replaceNonIntegerChars(
+    "Campo Obrigatório",
+    11,
+    "Insira 11 dígitos"
+  ),
+  contatoRepresentanteOrganizadora: replaceNonIntegerChars(
+    "Campo Obrigatório",
+    11,
+    "Insira 11 dígitos"
+  ),
   emailRepresentanteOrganizadora: Yup.string()
     .email("Formato de email inválido")
     .required("Campo obrigatório!"),
