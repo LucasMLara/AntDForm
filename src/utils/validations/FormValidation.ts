@@ -21,7 +21,13 @@ export const FeirasSchema = Yup.object().shape({
     .min(2, "Entre com um nome válido")
     .max(50, "Nome muito comprido!")
     .required("Campo obrigatório!"),
-  periodoEvento: Yup.string().required("Campo obrigatório!"),
+  periodoEvento: Yup.array()
+    .test("periodoEvento", "Preencha corretamente as datas", (e) => {
+      const data1 = e?.[0]?.[0];
+      const data2 = e?.[0]?.[1];
+      return data1 || data2;
+    })
+    .required("Campo Obrigatório"),
   horarioFuncionamento: Yup.string()
     .min(2, "Entre com um nome válido")
     .max(50, "Nome muito comprido!")
@@ -97,12 +103,9 @@ export const FeirasSchema = Yup.object().shape({
   txsAdicionais: Yup.string().required("Campo obrigatório"),
   outrosBeneficios: Yup.string().required("Campo obrigatório"),
   infoAdicional: Yup.string().required("Campo obrigatório"),
-  plantaBaixa: Yup.object()
-    .shape({ name: Yup.string().required() })
-    .required("Campo obrigatório"),
-  comprovanteExclusividadeRegistroINPI: Yup.object()
-    .shape({ name: Yup.string().required() })
-    .required("Campo obrigatório"),
+  plantaBaixa: Yup.string().required("Campo obrigatório"),
+  comprovanteExclusividadeRegistroINPI:
+    Yup.string().required("Campo obrigatório"),
 });
 
 export const INITIAL_VALUES = {
@@ -113,7 +116,7 @@ export const INITIAL_VALUES = {
   empresaRealizadora: "",
   empresaOrganizadora: "",
   docRealizadora: "",
-  periodoEvento: "",
+  periodoEvento: [undefined, undefined],
   docOrganizadora: "",
   enderecoRealizadora: "",
   enderecoOrganizadora: "",
@@ -141,8 +144,10 @@ export const INITIAL_VALUES = {
   descritivoEstruturaMontagem: "",
   outrosBeneficios: "",
   infoAdicional: "",
-  plantaBaixa: null,
-  comprovanteExclusividadeRegistroINPI: null,
+  plantaBaixa: "",
+  comprovanteExclusividadeRegistroINPI: "",
+  contratoLocacao: "",
+  manualExpositor: "",
   contatoRepresentanteRealizadora: "",
   contatoRepresentanteOrganizadora: "",
 };

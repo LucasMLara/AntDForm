@@ -24,7 +24,7 @@ const App: React.FC = () => {
       <Text style={{ fontSize: "1.2em" }} mark>
         <QuestionOutlined
           onClick={showModal}
-          title="Cheque aqui as informações pertinentes"
+          title="Impedimento de Contratação - Vedações Previstas"
           style={{ color: "#2576c7cc" }}
         />
       </Text>

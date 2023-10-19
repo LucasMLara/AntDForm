@@ -1,24 +1,12 @@
 "use client";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import ModalTermos from "../components/ModalTermos";
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/pt_BR";
 import "dayjs/locale/zh-cn";
-import { UploadOutlined } from "@ant-design/icons";
-import {
-  Input,
-  Col,
-  Row,
-  Button,
-  DatePicker,
-  Typography,
-  Upload,
-  message,
-  UploadProps,
-} from "antd";
+import { Input, Col, Row, Button, DatePicker, Typography, Spin } from "antd";
 import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
-import FormInput from "./FormInput";
 import {
   FeirasSchema,
   INITIAL_VALUES,
@@ -26,34 +14,19 @@ import {
 import LogoTipo from "@/components/Image";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import LogoSebrae from "../../public/SebraeLogo.svg";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FormContext } from "@/utils/validations/FormContext";
+import type { RangePickerProps } from "antd/es/date-picker";
+import UploadInput from "./UploadInput";
 
+import TextInput from "./TextInput";
+import TextAreaInput from "./TextAreaInput";
+import Paragraph from "antd/es/typography/Paragraph";
 const { Title } = Typography;
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
 dayjs.extend(customParseFormat);
-
-const props: UploadProps = {
-  name: "file",
-  action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-  headers: {
-    authorization: "authorization-text",
-  },
-  onChange(info) {
-    if (info.file.status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} - Arquivo carregado com Sucesso`);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} - Carregamento de arquivo inválido!.`);
-    }
-  },
-};
-
-const ErrComponent = () => <span className={styles.error}></span>;
 
 type Sizes = 1 | 2 | 3 | 4 | 5;
 const Cabecalho = ({ title, size }: { title: string; size?: Sizes }) => (
@@ -62,13 +35,20 @@ const Cabecalho = ({ title, size }: { title: string; size?: Sizes }) => (
   </Title>
 );
 
-import type { RangePickerProps } from "antd/es/date-picker";
-
 const FormFeira = () => {
+  const [listFiles, setListFiles] = useState<Array<File>>([]);
+
   const { termo } = useContext(FormContext);
   const defaultEndDate = dayjs().add(90, "day");
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     return current && current < defaultEndDate;
+  };
+
+  const enviarForm = async (data: any) => {
+    // api.post("yrk", {
+    //   nome: data.nomeEvento,
+    //   plantaBaixa: listformdata.filter onde eu vou buscar o nome do arquivo e o status é diuferente de error
+    // })
   };
 
   return (
@@ -80,17 +60,24 @@ const FormFeira = () => {
       <Formik
         initialValues={INITIAL_VALUES}
         validationSchema={FeirasSchema}
-        onSubmit={(values) => {
-          console.log("submit");
-          setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
-          }, 500);
+        onSubmit={(values, { setSubmitting }) => {
+          enviarForm(values);
+          setSubmitting(false);
         }}
       >
-        {() => (
-          <Form className={styles.formWrapper}>
+        {({
+          values,
+          errors,
+          handleSubmit,
+          setFieldValue,
+          isSubmitting,
+          handleChange,
+        }) => (
+          <Form className={styles.formWrapper} onSubmit={handleSubmit}>
             <Cabecalho title="1. DADOS GERAIS" size={4} />
-            <FormInput
+            <TextInput
+              handleChange={handleChange("nomeDaFeira")}
+              value={values.nomeDaFeira}
               label="Nome da Feira"
               placeholder="Insira o nome do seu evento"
               name="nomeDaFeira"
@@ -98,7 +85,9 @@ const FormFeira = () => {
               antdComponent={Input}
               required
             />
-            <FormInput
+            <TextInput
+              handleChange={handleChange("localDaFeira")}
+              value={values.localDaFeira}
               label="Local"
               placeholder="Insira o local do seu evento"
               name="localDaFeira"
@@ -107,24 +96,28 @@ const FormFeira = () => {
               required
             />
             <Cabecalho title="Período de Realização" size={5} />
-            <Row>
+            <Row style={{ margin: ".2em 0", padding: ".5em" }}>
               <Col>
-                <Field
-                  id="FALTA POR NOME"
+                <RangePicker
+                  id="periodoEvento"
                   locale={locale}
                   defaultValue={[defaultEndDate, null]}
                   format="DD-MM-YYYY"
                   disabledDate={disabledDate}
-                  as={RangePicker}
-                  onChange={(e: any) => console.log(e)}
                   size="large"
-                  name="FALTA POR NOME"
-                  type="date"
+                  name="periodoEvento"
+                  onChange={(_, dateString) =>
+                    setFieldValue("periodoEvento", [dateString])
+                  }
                 />
-                <ErrorMessage name="FALTA POR NOME" component={ErrComponent} />
+                <ErrorMessage name="periodoEvento">
+                  {(errMsg) => <Paragraph type="danger">{errMsg}</Paragraph>}
+                </ErrorMessage>
               </Col>
             </Row>
-            <FormInput
+            <TextInput
+              handleChange={handleChange("horarioFuncionamento")}
+              value={values.horarioFuncionamento}
               label="Horário de Funcionamento"
               placeholder="Qual o horário do funcionamento?"
               name="horarioFuncionamento"
@@ -132,7 +125,9 @@ const FormFeira = () => {
               antdComponent={Input}
               required
             />
-            <FormInput
+            <TextInput
+              handleChange={handleChange("valorEntradaVisitantes")}
+              value={values.valorEntradaVisitantes}
               label="Valor da entrada dos visitantes"
               placeholder="Quanto vai custar o ingresso?"
               name="valorEntradaVisitantes"
@@ -144,7 +139,9 @@ const FormFeira = () => {
             <Cabecalho title="Empresa Realizadora" size={5} />
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("empresaRealizadora")}
+                  value={values.empresaRealizadora}
                   label="Nome"
                   placeholder="Quanto vai custar o ingresso?"
                   name="empresaRealizadora"
@@ -154,7 +151,9 @@ const FormFeira = () => {
                 />
               </Col>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("docRealizadora")}
+                  value={values.docRealizadora}
                   label="CNPJ"
                   placeholder="Insira somente números"
                   name="docRealizadora"
@@ -166,7 +165,9 @@ const FormFeira = () => {
                 />
               </Col>
             </Row>
-            <FormInput
+            <TextInput
+              handleChange={handleChange("enderecoRealizadora")}
+              value={values.enderecoRealizadora}
               label="Endereço"
               placeholder="Av...Rua... nº"
               name="enderecoRealizadora"
@@ -176,7 +177,9 @@ const FormFeira = () => {
             />
             <Row gutter={25}>
               <Col xs={24} md={8}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("cidadeRealizadora")}
+                  value={values.cidadeRealizadora}
                   label="Cidade"
                   name="cidadeRealizadora"
                   type="text"
@@ -185,7 +188,9 @@ const FormFeira = () => {
                 />
               </Col>
               <Col xs={24} md={8}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("ufRealizadora")}
+                  value={values.ufRealizadora}
                   label="UF"
                   name="ufRealizadora"
                   type="text"
@@ -194,7 +199,9 @@ const FormFeira = () => {
                 />
               </Col>
               <Col xs={24} md={8}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("cepRealizadora")}
+                  value={values.cepRealizadora}
                   label="CEP"
                   name="cepRealizadora"
                   type="text"
@@ -208,7 +215,9 @@ const FormFeira = () => {
             </Row>
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("representanteRealizadora")}
+                  value={values.representanteRealizadora}
                   label="Representante Legal"
                   name="representanteRealizadora"
                   type="text"
@@ -217,7 +226,9 @@ const FormFeira = () => {
                 />
               </Col>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("cpfRepresentanteRealizadora")}
+                  value={values.cpfRepresentanteRealizadora}
                   label="CPF"
                   name="cpfRepresentanteRealizadora"
                   type="text"
@@ -231,18 +242,23 @@ const FormFeira = () => {
             </Row>
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("contatoRepresentanteRealizadora")}
+                  value={values.contatoRepresentanteRealizadora}
                   label="Telefone"
                   name="contatoRepresentanteRealizadora"
                   type="text"
                   antdComponent={Input}
                   required
                   maxLength={11}
-                  placeholder="Insira somente números"
+                  showCount
+                  placeholder="Insira somente números: Ex: 27999999999"
                 />
               </Col>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("emailRepresentanteRealizadora")}
+                  value={values.emailRepresentanteRealizadora}
                   label="Email"
                   name="emailRepresentanteRealizadora"
                   type="email"
@@ -254,7 +270,9 @@ const FormFeira = () => {
             <Cabecalho title="Empresa Organizadora" size={5} />
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("empresaOrganizadora")}
+                  value={values.empresaOrganizadora}
                   label="Nome"
                   name="empresaOrganizadora"
                   type="text"
@@ -263,7 +281,9 @@ const FormFeira = () => {
                 />
               </Col>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("docOrganizadora")}
+                  value={values.docOrganizadora}
                   label="CNPJ"
                   name="docOrganizadora"
                   type="text"
@@ -275,7 +295,9 @@ const FormFeira = () => {
                 />
               </Col>
             </Row>
-            <FormInput
+            <TextInput
+              handleChange={handleChange("enderecoOrganizadora")}
+              value={values.enderecoOrganizadora}
               label="Endereço"
               placeholder="Av...Rua... nº"
               name="enderecoOrganizadora"
@@ -285,7 +307,9 @@ const FormFeira = () => {
             />
             <Row gutter={25}>
               <Col xs={24} md={8}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("cidadeOrganizadora")}
+                  value={values.cidadeOrganizadora}
                   label="Cidade"
                   name="cidadeOrganizadora"
                   type="text"
@@ -294,7 +318,9 @@ const FormFeira = () => {
                 />
               </Col>
               <Col xs={24} md={8}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("ufOrganizadora")}
+                  value={values.ufOrganizadora}
                   label="UF"
                   name="ufOrganizadora"
                   type="text"
@@ -303,7 +329,9 @@ const FormFeira = () => {
                 />
               </Col>
               <Col xs={24} md={8}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("cepOrganizadora")}
+                  value={values.cepOrganizadora}
                   label="CEP"
                   name="cepOrganizadora"
                   type="text"
@@ -317,7 +345,9 @@ const FormFeira = () => {
             </Row>
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("representanteOrganizadora")}
+                  value={values.representanteOrganizadora}
                   label="Representante Legal"
                   name="representanteOrganizadora"
                   type="text"
@@ -326,7 +356,9 @@ const FormFeira = () => {
                 />
               </Col>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("cpfRepresentanteOrganizadora")}
+                  value={values.cpfRepresentanteOrganizadora}
                   label="CPF"
                   name="cpfRepresentanteOrganizadora"
                   type="text"
@@ -340,18 +372,25 @@ const FormFeira = () => {
             </Row>
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange(
+                    "contatoRepresentanteOrganizadora"
+                  )}
+                  value={values.contatoRepresentanteOrganizadora}
                   label="Telefone"
                   name="contatoRepresentanteOrganizadora"
                   type="text"
+                  showCount
                   antdComponent={Input}
                   required
                   maxLength={11}
-                  placeholder="Insira somente números"
+                  placeholder="Insira somente números: Ex: 27999999999"
                 />
               </Col>
               <Col xs={24} md={12}>
-                <FormInput
+                <TextInput
+                  handleChange={handleChange("emailRepresentanteOrganizadora")}
+                  value={values.emailRepresentanteOrganizadora}
                   label="Email"
                   name="emailRepresentanteOrganizadora"
                   type="email"
@@ -361,14 +400,18 @@ const FormFeira = () => {
               </Col>
             </Row>
             <Cabecalho title="3. Empresas Apoiadoras:" size={4} />
-            <FormInput
+            <TextAreaInput
+              handleChange={handleChange("empresasApoiadoras")}
+              value={values.empresasApoiadoras}
               name="empresasApoiadoras"
               type="textarea"
               antdComponent={TextArea}
               required
             />
             <Cabecalho title="4. Descritivo do Evento / Objetivo:" size={4} />
-            <FormInput
+            <TextAreaInput
+              handleChange={handleChange("descritivoEvento")}
+              value={values.descritivoEvento}
               name="descritivoEvento"
               type="textarea"
               antdComponent={TextArea}
@@ -377,14 +420,18 @@ const FormFeira = () => {
               maxLength={4000}
               showCount
             />
-            <FormInput
+            <TextInput
+              handleChange={handleChange("expectativaPubExpositor")}
+              value={values.expectativaPubExpositor}
               label="Expectativa de Público Expositor"
               name="expectativaPubExpositor"
               type="text"
               antdComponent={Input}
               required
             />
-            <FormInput
+            <TextInput
+              handleChange={handleChange("expectativaPubVisitante")}
+              value={values.expectativaPubVisitante}
               label="Expectativa de Público Visitante"
               name="expectativaPubVisitante"
               type="text"
@@ -392,7 +439,9 @@ const FormFeira = () => {
               required
             />
             <Cabecalho title="5. Dados das Últimas 03 edições:" size={4} />
-            <FormInput
+            <TextAreaInput
+              handleChange={handleChange("dadosUltimasEdicoes")}
+              value={values.dadosUltimasEdicoes}
               name="dadosUltimasEdicoes"
               type="textarea"
               antdComponent={TextArea}
@@ -400,7 +449,9 @@ const FormFeira = () => {
               showCount
             />
             <Cabecalho title="6. Plano de Comunicação do Evento:" size={4} />
-            <FormInput
+            <TextAreaInput
+              handleChange={handleChange("planoComunicacaoEvento")}
+              value={values.planoComunicacaoEvento}
               name="planoComunicacaoEvento"
               type="textarea"
               antdComponent={TextArea}
@@ -408,14 +459,18 @@ const FormFeira = () => {
               showCount
             />
             <Cabecalho title="7. Objeto da Proposta e Valores:" size={4} />
-            <FormInput
+            <TextInput
+              handleChange={handleChange("valorLocacaoLivre")}
+              value={values.valorLocacaoLivre}
               label="Valor de Locação da Área Livre (R$/m²)"
               name="valorLocacaoLivre"
               type="text"
               antdComponent={Input}
               required
             />
-            <FormInput
+            <TextInput
+              handleChange={handleChange("valorLocacaoMontada")}
+              value={values.valorLocacaoMontada}
               label="Valor de Locação da Área Montada (Área com estande montado)
               (R$/m²)"
               name="valorLocacaoMontada"
@@ -423,7 +478,9 @@ const FormFeira = () => {
               antdComponent={Input}
               required
             />
-            <FormInput
+            <TextAreaInput
+              handleChange={handleChange("descritivoEstruturaMontagem")}
+              value={values.descritivoEstruturaMontagem}
               label="Descritivo da Estrutura de montagem e insumos de locação da área
               montada"
               name="descritivoEstruturaMontagem"
@@ -431,14 +488,18 @@ const FormFeira = () => {
               antdComponent={TextArea}
               required
             />
-            <FormInput
+            <TextInput
+              handleChange={handleChange("txsAdicionais")}
+              value={values.txsAdicionais}
               label="Taxas Adicionais"
               name="txsAdicionais"
               type="text"
               antdComponent={Input}
               required
             />
-            <FormInput
+            <TextInput
+              handleChange={handleChange("outrosBeneficios")}
+              value={values.outrosBeneficios}
               label="Outros benefícios"
               name="outrosBeneficios"
               type="text"
@@ -446,49 +507,88 @@ const FormFeira = () => {
               required
             />
             <Cabecalho title="8. Informações Adicionais:" size={4} />
-            <FormInput
+            <TextInput
+              handleChange={handleChange("infoAdicional")}
+              value={values.infoAdicional}
               name="infoAdicional"
               type="textarea"
               antdComponent={TextArea}
               required
             />
             <Cabecalho title="9. Anexos:" size={4} />
-            <label className={styles.label}>Planta Baixa: </label>
-            <Upload {...props}>
-              <Button icon={<UploadOutlined />} />
-            </Upload>
-            <label className={styles.label}>
-              Comprovante de Exclusividade / Registro INPI:{" "}
-            </label>
-            <Upload {...props}>
-              <Button icon={<UploadOutlined />} />
-            </Upload>
-            <label className={styles.label}>
-              Contrato de Locação de espaço:{" "}
-            </label>
-            <Upload {...props}>
-              <Button icon={<UploadOutlined />} />
-            </Upload>
-            <label className={styles.label}>
-              Manual do Exposito ou Regras para Exposição:{" "}
-            </label>
-            <Upload {...props}>
-              <Button icon={<UploadOutlined />} />
-            </Upload>
+            <UploadInput
+              onRemove={(value) => {
+                console.log(value);
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              label="Planta Baixa"
+              name="plantaBaixa"
+              required
+              onChange={(value) => {
+                console.log("VALUE NO FORM", value);
+                setFieldValue("plantaBaixa", value.name);
+                setListFiles((ps) =>
+                  ps.length > 0 ? [...ps, value] : [value]
+                );
+              }}
+            />
+            <UploadInput
+              onRemove={(value) => {
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              label="Comprovante de Exclusividade / Registro INPI"
+              name="comprovanteExclusividadeRegistroINPI"
+              required
+              onChange={(value) => {
+                setFieldValue(
+                  "comprovanteExclusividadeRegistroINPI",
+                  value.name
+                );
+                setListFiles((ps) =>
+                  ps.length > 0 ? [...ps, value] : [value]
+                );
+              }}
+            />
+            <UploadInput
+              onRemove={(value) => {
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              label="Contrato de Locação de espaço"
+              name="contratoLocacao"
+              onChange={(value) => {
+                setFieldValue("contratoLocacao", value.name);
+                setListFiles((ps) =>
+                  ps.length > 0 ? [...ps, value] : [value]
+                );
+              }}
+            />
+            <UploadInput
+              onRemove={(value) => {
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              label="Manual do Exposito ou Regras para Exposição"
+              name="manualExpositor"
+              onChange={(value) => {
+                setFieldValue("manualExpositor", value.name);
+                setListFiles((ps) =>
+                  ps.length > 0 ? [...ps, value] : [value]
+                );
+              }}
+            />
             <Row style={{ margin: "1em", padding: "1em" }}>
               <ModalTermos />
             </Row>
             <Row style={{ justifyContent: "center" }}>
               <Button
                 type="primary"
-                disabled={!termo}
+                disabled={!termo || isSubmitting}
                 title={
                   !termo ? "É Necessário aceitar os termos contratuais!" : ""
                 }
                 htmlType="submit"
                 style={{ width: "40%" }}
               >
-                Enviar
+                {isSubmitting ? <Spin /> : "Enviar"}
               </Button>
             </Row>
           </Form>
