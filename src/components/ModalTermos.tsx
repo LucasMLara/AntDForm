@@ -38,7 +38,7 @@ const ModalInfos: React.FC = () => {
             Aceito os termos
           </Button>,
         ]}
-        title="IMPEDIMENTO DE CONTRATAÇÃO - VEDAÇÃÇÕES PREVISTAS NO ART. 42 DA RLCSS"
+        title="IMPEDIMENTO DE CONTRATAÇÃO - VEDAÇÕES PREVISTAS NO ART. 42 DA RLCSS"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
