@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useContext } from "react";
 import { Button, Modal, Typography } from "antd";
@@ -27,7 +27,7 @@ const ModalInfos: React.FC = () => {
   return (
     <>
       <Button type={!termo ? "primary" : "default"} onClick={showModal}>
-        { !termo ? 'Termos contratuais' : "Termos Aceitos!"}
+        {!termo ? "Termos contratuais" : "Termos Aceitos!"}
       </Button>
       <Modal
         footer={[
@@ -38,7 +38,7 @@ const ModalInfos: React.FC = () => {
             Aceito os termos
           </Button>,
         ]}
-        title="IMPEDIMENTO DE CONTRATAÇÃO - VEDAÇÃÇÕES PREVISTAS NO ART. 42 DA RLCSS"
+        title="IMPEDIMENTO DE CONTRATAÇÃO - VEDAÇÕES PREVISTAS NO ART. 42 DA RLCSS"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}

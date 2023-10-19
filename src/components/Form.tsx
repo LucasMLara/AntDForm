@@ -1,317 +1,610 @@
 "use client";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import ModalTermos from "../components/ModalTermos";
-import dayjs from 'dayjs';
-import locale from 'antd/es/date-picker/locale/pt_BR';
-import 'dayjs/locale/zh-cn';
-import { UploadOutlined } from '@ant-design/icons';
-import {Input, Col, Row, Button, DatePicker, Typography, Upload, message, UploadProps } from "antd";
-import styles from "../app/styles.module.css"
+import dayjs from "dayjs";
+import locale from "antd/es/date-picker/locale/pt_BR";
+import "dayjs/locale/zh-cn";
+import {
+  Input,
+  Col,
+  Row,
+  Button,
+  DatePicker,
+  Typography,
+  Spin,
+  Tag,
+} from "antd";
+import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
-import { FeirasSchema, INITIAL_VALUES } from "@/utils/validations/FormValidation";
-const { Title, Paragraph } = Typography;
-const{TextArea} = Input;
-const {RangePicker} = DatePicker
-import LogoTipo from "@/components/Image"
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-// import type { RangePickerProps } from 'antd/es/date-picker';
-import LogoSebrae from "../../public/SebraeLogo.svg"
-import {  useContext } from "react";
-
+import {
+  FeirasSchema,
+  INITIAL_VALUES,
+} from "@/utils/validations/FormValidation";
+import LogoTipo from "@/components/Image";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import LogoSebrae from "../../public/SebraeLogo.svg";
+import { useContext, useState } from "react";
 import { FormContext } from "@/utils/validations/FormContext";
+import type { RangePickerProps } from "antd/es/date-picker";
+import UploadInput from "./UploadInput";
+
+import TextInput from "./TextInput";
+import TextAreaInput from "./TextAreaInput";
+import Paragraph from "antd/es/typography/Paragraph";
+
+const { Title } = Typography;
+const { TextArea } = Input;
+const { RangePicker } = DatePicker;
 
 dayjs.extend(customParseFormat);
 
-/**
- * TODO criar css modules para os erros do errormsg do formik
- * e aplicar a validação do joy, fazer context para o termo de aceite no modal
- */
+type Sizes = 1 | 2 | 3 | 4 | 5;
 
-const props: UploadProps = {
-  name: 'file',
-  action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-  headers: {
-    authorization: 'authorization-text',
-  },
-  onChange(info) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} - Arquivo carregado com Sucesso`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} - Carregamento de arquivo inválido!.`);
-    }
-  },
-};
-
-interface FieldErrorMessageProps {
-  name: string;
-}
-
-const FieldErrorMessage: React.FC<FieldErrorMessageProps> = ({ name }) => {
-  return (
-    <ErrorMessage name={name}>
-      {(errorMessage) => (
-        <Paragraph type="danger">{errorMessage}</Paragraph>
-      )}
-    </ErrorMessage>
-  );
-};
-
-type Sizes = 1 | 2 | 3 | 4 |5;
-const Cabecalho = ({title, size} : {title: string, size?: Sizes }) => <Title level={size}   style={{marginTop: "0.5em"}} type="secondary">{title}</Title>
-
-import type { RangePickerProps } from 'antd/es/date-picker';
-
+const Cabecalho = ({ title, size }: { title: string; size?: Sizes }) => (
+  <Title level={size} style={{ marginTop: "0.5em" }} type="secondary">
+    {title}
+  </Title>
+);
 
 const FormFeira = () => {
-  const {termo} = useContext(FormContext)
-  const defaultEndDate = dayjs().add(90, 'day');
-  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+  const [listFiles, setListFiles] = useState<Array<File>>([]);
+
+  const { termo } = useContext(FormContext);
+  const defaultEndDate = dayjs().add(90, "day");
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     return current && current < defaultEndDate;
+  };
+
+  const enviarForm = async (data: any) => {
+    // api.post("yrk", {
+    //   nome: data.nomeEvento,
+    //   plantaBaixa: listformdata.filter onde eu vou buscar o nome do arquivo e o status é diuferente de error
+    // })
   };
 
   return (
     <>
       <Header />
       <div className={styles.wrapper}>
-        <LogoTipo src={LogoSebrae}  alt="Logo Sebrae" width={250} height={250}/>
+        <LogoTipo src={LogoSebrae} alt="Logo Sebrae" width={250} height={250} />
       </div>
       <Formik
         initialValues={INITIAL_VALUES}
         validationSchema={FeirasSchema}
-        onSubmit={(values) => {
-          console.log("submit");
-          console.log(FeirasSchema)
-          setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
-          }, 500);
+        onSubmit={(values, { setSubmitting }) => {
+          enviarForm(values);
+          setSubmitting(false);
         }}
       >
-        {() => (
-          <Form className={styles.formWrapper}>
-            <Cabecalho title="1. DADOS GERAIS" size={4}/>
-            <label className={styles.label} htmlFor="nomeDaFeira">Nome da Feira: </label>
-              <Field id="nomeDaFeira" as={Input}size="large" name="nomeDaFeira" placeholder="Insira o nome do seu evento" type="text"  />
-              <FieldErrorMessage name="nomeDaFeira" />
-              <label className={styles.label} htmlFor="localDaFeira">Local: </label>
-                <Field id="localDaFeira" as={Input}size="large" name="localDaFeira" placeholder="Insira o local do seu evento" type="text" />
-                <FieldErrorMessage name="localDaFeira" />
-                <Cabecalho title="Período de Realização" size={5}/>
-                <Row gutter={15}>
-                  <Col md={12} xs={24}>
-                  <Field 
-                    id="periodoEvento" 
-                    locale={locale}
-                    defaultValue={[defaultEndDate, null]}
-                    format="DD-MM-YYYY"
-                    disabledDate={disabledDate}  
-                    onBlur={() => console.log("saiu da data") }
-                    onChange={(e: any)=> console.log(e)}
-                    as={RangePicker} size="large" name="periodoEvento" type="date" />
-                    <FieldErrorMessage name="periodoEvento" />
-                  </Col>
-                </Row>
-              <label className={styles.label} htmlFor="horarioFuncionamento">Horário de Funcionamento: </label>
-                <Field id="horarioFuncionamento" as={Input}size="large" name="horarioFuncionamento" placeholder="Qual o horário do funcionamento?" type="text" />
-                <FieldErrorMessage name="horarioFuncionamento" />
-              <label className={styles.label} htmlFor="valorEntradaVisitantes">Valor da entrada dos visitantes: </label>
-                <Field id="valorEntradaVisitantes" as={Input}size="large" name="valorEntradaVisitantes" placeholder="Quanto vai custar o ingresso?" type="text" />
-                <FieldErrorMessage name="valorEntradaVisitantes" />
-
-            <Cabecalho title="2. PRINCIPAIS INSTITUIÇÕES ENVOLVIDAS" size={5}/>
-            <Cabecalho title="Empresa Realizadora" size={5}/>
-            <Row gutter={25}>
-              <Col xs={24} md={12}>
-              <label className={styles.label} htmlFor="empresaRealizadora">Nome: </label>
-                <Field id="empresaRealizadora" as={Input}size="large" name="empresaRealizadora" placeholder="Quanto vai custar o ingresso?" type="text" />
-                <FieldErrorMessage name="empresaRealizadora" />
-              </Col>
-              <Col xs={24} md={12}>
-              <label className={styles.label} htmlFor="docRealizadora">CNPJ: </label>
-                <Field id="docRealizadora" as={Input}size="large" name="docRealizadora" maxLength={14} placeholder="00000000000000" type="text" />
-                <FieldErrorMessage name="docRealizadora" />
+        {({
+          values,
+          errors,
+          handleSubmit,
+          setFieldValue,
+          isSubmitting,
+          handleChange,
+        }) => (
+          <Form className={styles.formWrapper} onSubmit={handleSubmit}>
+            <Cabecalho title="1. DADOS GERAIS" size={4} />
+            <TextInput
+              handleChange={handleChange("nomeDaFeira")}
+              value={values.nomeDaFeira}
+              label="Nome da Feira"
+              placeholder="Insira o nome do seu evento"
+              name="nomeDaFeira"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <TextInput
+              handleChange={handleChange("localDaFeira")}
+              value={values.localDaFeira}
+              label="Local"
+              placeholder="Insira o local do seu evento"
+              name="localDaFeira"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <Cabecalho title="Período de Realização" size={5} />
+            <Row style={{ margin: ".2em 0", padding: ".5em" }}>
+              <Col>
+                <RangePicker
+                  id="periodoEvento"
+                  locale={locale}
+                  defaultValue={[defaultEndDate, null]}
+                  format="DD-MM-YYYY"
+                  disabledDate={disabledDate}
+                  size="large"
+                  name="periodoEvento"
+                  onChange={(_, dateString) =>
+                    setFieldValue("periodoEvento", [dateString])
+                  }
+                />
+                <ErrorMessage name="periodoEvento">
+                  {(errMsg) => <Paragraph type="danger">{errMsg}</Paragraph>}
+                </ErrorMessage>
+                <Tag style={{ margin: "0 1em" }} color="geekblue">
+                  Antecedência mínima de 90 dias!
+                </Tag>
               </Col>
             </Row>
-            <label className={styles.label} htmlFor="enderecoRealizadora">Endereço: </label>
-              <Field id="enderecoRealizadora" as={Input}size="large" name="enderecoRealizadora" placeholder="Av...Rua... nº" type="text" />
-              <FieldErrorMessage name="enderecoRealizadora" />
+            <TextInput
+              handleChange={handleChange("horarioFuncionamento")}
+              value={values.horarioFuncionamento}
+              label="Horário de Funcionamento"
+              placeholder="Qual o horário do funcionamento?"
+              name="horarioFuncionamento"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <TextInput
+              handleChange={handleChange("valorEntradaVisitantes")}
+              value={values.valorEntradaVisitantes}
+              label="Valor da entrada dos visitantes"
+              placeholder="Quanto vai custar o ingresso?"
+              name="valorEntradaVisitantes"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <Cabecalho title="2. PRINCIPAIS INSTITUIÇÕES ENVOLVIDAS" size={5} />
+            <Cabecalho title="Empresa Realizadora" size={5} />
             <Row gutter={25}>
-              <Col xs={24} md={8}><label className={styles.label} htmlFor="cidadeRealizadora">Cidade: </label>
-              <Field id="cidadeRealizadora" as={Input}size="large" name="cidadeRealizadora"  type="text" />
-              <FieldErrorMessage name="cidadeRealizadora" />
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("empresaRealizadora")}
+                  value={values.empresaRealizadora}
+                  label="Nome"
+                  placeholder="Quanto vai custar o ingresso?"
+                  name="empresaRealizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                />
               </Col>
-              <Col xs={24} md={8}><label className={styles.label} htmlFor="ufRealizadora">UF: </label>
-              <Field id="ufRealizadora" as={Input}size="large" name="ufRealizadora"  type="text" />
-              <FieldErrorMessage name="ufRealizadora" />
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("docRealizadora")}
+                  value={values.docRealizadora}
+                  label="CNPJ"
+                  placeholder="Insira somente números"
+                  name="docRealizadora"
+                  showCount
+                  maxLength={14}
+                  type="text"
+                  antdComponent={Input}
+                  required
+                />
+              </Col>
+            </Row>
+            <TextInput
+              handleChange={handleChange("enderecoRealizadora")}
+              value={values.enderecoRealizadora}
+              label="Endereço"
+              placeholder="Av...Rua... nº"
+              name="enderecoRealizadora"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <Row gutter={25}>
+              <Col xs={24} md={8}>
+                <TextInput
+                  handleChange={handleChange("cidadeRealizadora")}
+                  value={values.cidadeRealizadora}
+                  label="Cidade"
+                  name="cidadeRealizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                />
               </Col>
               <Col xs={24} md={8}>
-                <label className={styles.label} htmlFor="cepRealizadora">CEP: </label>
-                <Field id="cepRealizadora" as={Input}size="large" name="cepRealizadora"   maxLength={8} placeholder="00000000" type="text" />
-                <FieldErrorMessage name="cepRealizadora" />
-              </Col>
-            </Row>
-            <Row gutter={25}>
-              <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="representanteRealizadora">Representante Legal: </label>
-                <Field id="representanteRealizadora" as={Input}size="large" name="representanteRealizadora"  type="text" />
-                <FieldErrorMessage name="representanteRealizadora" />
-
-              </Col>
-              <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="cpfRepresentanteRealizadora">CPF: </label>
-                <Field id="cpfRepresentanteRealizadora" as={Input}size="large" name="cpfRepresentanteRealizadora"  maxLength={11} placeholder="00000000000" type="text" />
-                <FieldErrorMessage name="cpfRepresentanteRealizadora" />
-
-              </Col>
-            </Row>
-            <Row gutter={25}>
-              <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="contatoRepresentanteRealizadora">Telefone: </label>
-                <Field id="contatoRepresentanteRealizadora" as={Input}size="large" maxLength={11} name="contatoRepresentanteRealizadora" placeholder="27999999999"  type="text" />
-                <FieldErrorMessage name="contatoRepresentanteRealizadora" />
-              </Col>
-              <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="emailRepresentanteRealizadora">Email: </label>
-                <Field id="emailRepresentanteRealizadora" as={Input}size="large" name="emailRepresentanteRealizadora" placeholder="Email do representante legal" type="text" />
-                <FieldErrorMessage name="emailRepresentanteRealizadora" />
-              </Col>
-            </Row>
-            <Cabecalho title="Empresa Organizadora" size={5}/>
-            <Row gutter={25}>
-              <Col xs={24} md={12}>
-              <label className={styles.label} htmlFor="empresaOrganizadora">Nome: </label>
-                <Field id="empresaOrganizadora" as={Input}size="large" name="empresaOrganizadora" placeholder="Quanto vai custar o ingresso?" type="text" />
-                <FieldErrorMessage name="empresaOrganizadora" />
-              </Col>
-              <Col xs={24} md={12}>
-              <label className={styles.label} htmlFor="docOrganizadora">CNPJ: </label>
-                <Field id="docOrganizadora" as={Input}size="large" name="docOrganizadora" maxLength={14} placeholder="00000000000000" type="text" />
-                <FieldErrorMessage name="docOrganizadora" />
-              </Col>
-            </Row>
-            <label className={styles.label} htmlFor="enderecoOrganizadora">Endereço: </label>
-              <Field id="enderecoOrganizadora" as={Input}size="large" name="enderecoOrganizadora" placeholder="Av...Rua... nº" type="text" />
-              <FieldErrorMessage name="enderecoOrganizadora" />
-            <Row gutter={25}>
-              <Col xs={24} md={8}><label className={styles.label} htmlFor="cidadeOrganizadora">Cidade: </label>
-              <Field id="cidadeOrganizadora" as={Input}size="large" name="cidadeOrganizadora"  type="text" />
-              <FieldErrorMessage name="cidadeOrganizadora" />
-              </Col>
-              <Col xs={24} md={8}><label className={styles.label} htmlFor="ufOrganizadora">UF: </label>
-              <Field id="ufOrganizadora" as={Input}size="large" name="ufOrganizadora"  type="text" />
-              <FieldErrorMessage name="ufOrganizadora" />
+                <TextInput
+                  handleChange={handleChange("ufRealizadora")}
+                  value={values.ufRealizadora}
+                  label="UF"
+                  name="ufRealizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                />
               </Col>
               <Col xs={24} md={8}>
-                <label className={styles.label} htmlFor="cepOrganizadora">CEP: </label>
-              <Field id="cepOrganizadora" as={Input}size="large" name="cepOrganizadora"   maxLength={8} placeholder="00000000" type="text" />
-              <FieldErrorMessage name="cepOrganizadora" />
+                <TextInput
+                  handleChange={handleChange("cepRealizadora")}
+                  value={values.cepRealizadora}
+                  label="CEP"
+                  name="cepRealizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                  maxLength={8}
+                  showCount
+                  placeholder="Insira somente números"
+                />
               </Col>
             </Row>
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="representanteOrganizadora">Representante Legal: </label>
-                <Field id="representanteOrganizadora" as={Input}size="large" name="representanteOrganizadora"  type="text" />
-                <FieldErrorMessage name="representanteOrganizadora" />
-
+                <TextInput
+                  handleChange={handleChange("representanteRealizadora")}
+                  value={values.representanteRealizadora}
+                  label="Representante Legal"
+                  name="representanteRealizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                />
               </Col>
               <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="cpfRepresentanteOrganizadora">CPF: </label>
-                <Field id="cpfRepresentanteOrganizadora" as={Input}size="large" name="cpfRepresentanteOrganizadora"  maxLength={11} placeholder="00000000000" type="text" />
-                <FieldErrorMessage name="cpfRepresentanteOrganizadora" />
-
+                <TextInput
+                  handleChange={handleChange("cpfRepresentanteRealizadora")}
+                  value={values.cpfRepresentanteRealizadora}
+                  label="CPF"
+                  name="cpfRepresentanteRealizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                  maxLength={11}
+                  showCount
+                  placeholder="Insira somente números"
+                />
               </Col>
             </Row>
             <Row gutter={25}>
               <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="contatoRepresentanteOrganizadora">Telefone: </label>
-                <Field id="contatoRepresentanteOrganizadora" as={Input}size="large" maxLength={11} name="contatoRepresentanteOrganizadora" placeholder="27999999999"  type="text" />
-                <FieldErrorMessage name="contatoRepresentanteOrganizadora" />
-
+                <TextInput
+                  handleChange={handleChange("contatoRepresentanteRealizadora")}
+                  value={values.contatoRepresentanteRealizadora}
+                  label="Telefone"
+                  name="contatoRepresentanteRealizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                  maxLength={11}
+                  showCount
+                  placeholder="Insira somente números: Ex: 27999999999"
+                />
               </Col>
               <Col xs={24} md={12}>
-                <label className={styles.label} htmlFor="emailRepresentanteOrganizadora">Email: </label>
-                <Field id="emailRepresentanteOrganizadora" as={Input}size="large" name="emailRepresentanteOrganizadora" placeholder="Email do representante legal" type="text" />
-                <FieldErrorMessage name="emailRepresentanteOrganizadora" />
-
+                <TextInput
+                  handleChange={handleChange("emailRepresentanteRealizadora")}
+                  value={values.emailRepresentanteRealizadora}
+                  label="Email"
+                  name="emailRepresentanteRealizadora"
+                  type="email"
+                  antdComponent={Input}
+                  required
+                />
               </Col>
             </Row>
-            <Cabecalho title="3. Empresas Apoiadoras:" size={4}/>
-                <Field id="empresasApoiadoras" as={TextArea}size="large" name="empresasApoiadoras" type="text" />
-                <FieldErrorMessage name="empresasApoiadoras" />
-
-            <Cabecalho title="4. Descritivo do Evento / Objetivo:" size={4}/>
-              <Field id="descritivoEvento" as={TextArea}size="large" name="descritivoEvento" placeholder="Acima de 1500 caracteres" type="text" />
-              <FieldErrorMessage name="descritivoEvento" />
-
-              <label className={styles.label} htmlFor="expectativaPubExpositor">Expectativa de Público Expositor: </label>
-                <Field id="expectativaPubExpositor" as={Input}size="large" name="expectativaPubExpositor" type="text" />
-                <FieldErrorMessage name="expectativaPubExpositor" />
-
-              <label className={styles.label} htmlFor="expectativaPubVisitante">Expectativa de Público Visitante: </label>
-                <Field id="expectativaPubVisitante" as={Input}size="large" name="expectativaPubVisitante"  type="text" />
-                <FieldErrorMessage name="expectativaPubVisitante" />
-
-            <Cabecalho title="5. Dados das Últimas 03 edições:" size={4}/>
-              <Field id="dadosUltimasEdicoes" as={TextArea}size="large" name="dadosUltimasEdicoes" type="text" />
-              <FieldErrorMessage name="dadosUltimasEdicoes" />
-
-            <Cabecalho title="6. Plano de Comunicação do Evento:" size={4}/>
-                  <Field id="planoComunicacaoEvento" as={TextArea}size="large" name="planoComunicacaoEvento" type="text" />
-                  <FieldErrorMessage name="planoComunicacaoEvento" />
-
-            <Cabecalho title="7. Objeto da Proposta e Valores:" size={4}/>
-            <label className={styles.label} htmlFor="valorLocacaoLivre">Valor de Locação da Área Livre  (R$/m²): </label>
-                <Field id="valorLocacaoLivre" as={Input}size="large" name="valorLocacaoLivre"  placeholder="R$ 100.000,00" type="text" />
-                <FieldErrorMessage name="valorLocacaoLivre" />
-
-            <label className={styles.label} htmlFor="valorLocacaoMontada">Valor de Locação da Área Montada (Área com estande montado) (R$/m²): </label>
-                <Field id="valorLocacaoMontada" as={Input}size="large" name="valorLocacaoMontada"  type="text" placeholder="R$ 100.000,00"/>
-                <FieldErrorMessage name="valorLocacaoMontada" />
-
-            <label className={styles.label} htmlFor="descritivoEstruturaMontagem">Descritivo da Estrutura de montagem e insumos de locação da área montada: </label>
-                <Field id="descritivoEstruturaMontagem" as={TextArea} size="large" name="descritivoEstruturaMontagem"  type="text" />
-                <FieldErrorMessage name="descritivoEstruturaMontagem" />
-
-            <label className={styles.label} htmlFor="txsAdicionais">Taxas Adicionais: </label>
-                <Field id="txsAdicionais" as={Input} size="large" name="txsAdicionais"  type="text" />
-                <FieldErrorMessage name="txsAdicionais" />
-
-            <label className={styles.label} htmlFor="outrosBeneficios">Outros benefícios: </label>
-                <Field id="outrosBeneficios" as={Input} size="large" name="outrosBeneficios"  type="text" />
-                <FieldErrorMessage name="outrosBeneficios" />
-
-
-            <Cabecalho title="8. Informações Adicionais:" size={4}/>
-                  <Field id="infoAdicional" as={TextArea}size="large" name="infoAdicional" type="text" />
-                  <FieldErrorMessage name="infoAdicional" />
-
-            <Cabecalho title="9. Anexos:" size={4}/>
-            <label className={styles.label}>Planta Baixa: </label>
-              <Upload id="plantaBaixa" name="plantaBaixa"{...props}>
-                <Button icon={<UploadOutlined />} />
-              </Upload>
-              <FieldErrorMessage name="plantaBaixa" />
-            <label className={styles.label}>Comprovante de Exclusividade / Registro INPI: </label>
-              <Upload name="comprovanteExclusividadeRegistroINPI" id="" {...props}>
-                <Button icon={<UploadOutlined />} />
-              </Upload>
-              <FieldErrorMessage name="comprovanteExclusividadeRegistroINPI" />
-            <label className={styles.label}>Contrato de Locação de espaço: </label>
-              <Upload {...props}>
-                <Button icon={<UploadOutlined />} />
-              </Upload>
-            <label className={styles.label}>Manual do Exposito ou Regras para Exposição: </label>
-              <Upload {...props}>
-                <Button icon={<UploadOutlined />} />
-              </Upload>
-              <Row style={{margin: '1em', padding: "1em"}}>
-                  <ModalTermos />
-              </Row>
-              <Row style={{justifyContent:'center'}}>
-                  <Button type="primary" disabled={!termo} title={!termo ? "É Necessário aceitar os termos contratuais!" : ""} htmlType="submit" style={{width:"40%"}}>Enviar</Button>
-              </Row>
+            <Cabecalho title="Empresa Organizadora" size={5} />
+            <Row gutter={25}>
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("empresaOrganizadora")}
+                  value={values.empresaOrganizadora}
+                  label="Nome"
+                  name="empresaOrganizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("docOrganizadora")}
+                  value={values.docOrganizadora}
+                  label="CNPJ"
+                  name="docOrganizadora"
+                  type="text"
+                  antdComponent={Input}
+                  maxLength={14}
+                  showCount
+                  required
+                  placeholder="Insira somente números"
+                />
+              </Col>
+            </Row>
+            <TextInput
+              handleChange={handleChange("enderecoOrganizadora")}
+              value={values.enderecoOrganizadora}
+              label="Endereço"
+              placeholder="Av...Rua... nº"
+              name="enderecoOrganizadora"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <Row gutter={25}>
+              <Col xs={24} md={8}>
+                <TextInput
+                  handleChange={handleChange("cidadeOrganizadora")}
+                  value={values.cidadeOrganizadora}
+                  label="Cidade"
+                  name="cidadeOrganizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                />
+              </Col>
+              <Col xs={24} md={8}>
+                <TextInput
+                  handleChange={handleChange("ufOrganizadora")}
+                  value={values.ufOrganizadora}
+                  label="UF"
+                  name="ufOrganizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                />
+              </Col>
+              <Col xs={24} md={8}>
+                <TextInput
+                  handleChange={handleChange("cepOrganizadora")}
+                  value={values.cepOrganizadora}
+                  label="CEP"
+                  name="cepOrganizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                  maxLength={8}
+                  showCount
+                  placeholder="Insira somente números"
+                />
+              </Col>
+            </Row>
+            <Row gutter={25}>
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("representanteOrganizadora")}
+                  value={values.representanteOrganizadora}
+                  label="Representante Legal"
+                  name="representanteOrganizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("cpfRepresentanteOrganizadora")}
+                  value={values.cpfRepresentanteOrganizadora}
+                  label="CPF"
+                  name="cpfRepresentanteOrganizadora"
+                  type="text"
+                  antdComponent={Input}
+                  required
+                  maxLength={11}
+                  showCount
+                  placeholder="Insira somente números"
+                />
+              </Col>
+            </Row>
+            <Row gutter={25}>
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange(
+                    "contatoRepresentanteOrganizadora"
+                  )}
+                  value={values.contatoRepresentanteOrganizadora}
+                  label="Telefone"
+                  name="contatoRepresentanteOrganizadora"
+                  type="text"
+                  showCount
+                  antdComponent={Input}
+                  required
+                  maxLength={11}
+                  placeholder="Insira somente números: Ex: 27999999999"
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("emailRepresentanteOrganizadora")}
+                  value={values.emailRepresentanteOrganizadora}
+                  label="Email"
+                  name="emailRepresentanteOrganizadora"
+                  type="email"
+                  antdComponent={Input}
+                  required
+                />
+              </Col>
+            </Row>
+            <Cabecalho title="3. Empresas Apoiadoras:" size={4} />
+            <TextAreaInput
+              handleChange={handleChange("empresasApoiadoras")}
+              value={values.empresasApoiadoras}
+              name="empresasApoiadoras"
+              type="textarea"
+              antdComponent={TextArea}
+              required
+            />
+            <Cabecalho title="4. Descritivo do Evento / Objetivo:" size={4} />
+            <TextAreaInput
+              handleChange={handleChange("descritivoEvento")}
+              value={values.descritivoEvento}
+              name="descritivoEvento"
+              type="textarea"
+              antdComponent={TextArea}
+              required
+              placeholder="Acima de 1500 caracteres"
+              maxLength={4000}
+              showCount
+            />
+            <TextInput
+              handleChange={handleChange("expectativaPubExpositor")}
+              value={values.expectativaPubExpositor}
+              label="Expectativa de Público Expositor"
+              name="expectativaPubExpositor"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <TextInput
+              handleChange={handleChange("expectativaPubVisitante")}
+              value={values.expectativaPubVisitante}
+              label="Expectativa de Público Visitante"
+              name="expectativaPubVisitante"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <Cabecalho title="5. Dados das Últimas 03 edições:" size={4} />
+            <TextAreaInput
+              handleChange={handleChange("dadosUltimasEdicoes")}
+              value={values.dadosUltimasEdicoes}
+              name="dadosUltimasEdicoes"
+              type="textarea"
+              antdComponent={TextArea}
+              required
+              showCount
+            />
+            <Cabecalho title="6. Plano de Comunicação do Evento:" size={4} />
+            <TextAreaInput
+              handleChange={handleChange("planoComunicacaoEvento")}
+              value={values.planoComunicacaoEvento}
+              name="planoComunicacaoEvento"
+              type="textarea"
+              antdComponent={TextArea}
+              required
+              showCount
+            />
+            <Cabecalho title="7. Objeto da Proposta e Valores:" size={4} />
+            <TextInput
+              handleChange={handleChange("valorLocacaoLivre")}
+              value={values.valorLocacaoLivre}
+              label="Valor de Locação da Área Livre (R$/m²)"
+              name="valorLocacaoLivre"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <TextInput
+              handleChange={handleChange("valorLocacaoMontada")}
+              value={values.valorLocacaoMontada}
+              label="Valor de Locação da Área Montada (Área com estande montado)
+              (R$/m²)"
+              name="valorLocacaoMontada"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <TextAreaInput
+              handleChange={handleChange("descritivoEstruturaMontagem")}
+              value={values.descritivoEstruturaMontagem}
+              label="Descritivo da Estrutura de montagem e insumos de locação da área
+              montada"
+              name="descritivoEstruturaMontagem"
+              type="textarea"
+              antdComponent={TextArea}
+              required
+            />
+            <TextInput
+              handleChange={handleChange("txsAdicionais")}
+              value={values.txsAdicionais}
+              label="Taxas Adicionais"
+              name="txsAdicionais"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <TextInput
+              handleChange={handleChange("outrosBeneficios")}
+              value={values.outrosBeneficios}
+              label="Outros benefícios"
+              name="outrosBeneficios"
+              type="text"
+              antdComponent={Input}
+              required
+            />
+            <Cabecalho title="8. Informações Adicionais:" size={4} />
+            <TextAreaInput
+              handleChange={handleChange("infoAdicional")}
+              value={values.infoAdicional}
+              name="infoAdicional"
+              type="textarea"
+              antdComponent={TextArea}
+              required
+            />
+            <Cabecalho title="9. Anexos:" size={4} />
+            <UploadInput
+              onRemove={(value) => {
+                // console.log(value);
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              label="Planta Baixa"
+              name="plantaBaixa"
+              required
+              onChange={(value) => {
+                // console.log("VALUE NO FORM", value);
+                setFieldValue("plantaBaixa", value.name);
+                setListFiles((ps) =>
+                  ps.length > 0 ? [...ps, value] : [value]
+                );
+              }}
+            />
+            <UploadInput
+              onRemove={(value) => {
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              label="Comprovante de Exclusividade / Registro INPI"
+              name="comprovanteExclusividadeRegistroINPI"
+              required
+              onChange={(value) => {
+                setFieldValue(
+                  "comprovanteExclusividadeRegistroINPI",
+                  value.name
+                );
+                setListFiles((ps) =>
+                  ps.length > 0 ? [...ps, value] : [value]
+                );
+              }}
+            />
+            <UploadInput
+              onRemove={(value) => {
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              label="Contrato de Locação de espaço"
+              name="contratoLocacao"
+              onChange={(value) => {
+                setFieldValue("contratoLocacao", value.name);
+                setListFiles((ps) =>
+                  ps.length > 0 ? [...ps, value] : [value]
+                );
+              }}
+            />
+            <UploadInput
+              onRemove={(value) => {
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              label="Manual do Exposito ou Regras para Exposição"
+              name="manualExpositor"
+              onChange={(value) => {
+                setFieldValue("manualExpositor", value.name);
+                setListFiles((ps) =>
+                  ps.length > 0 ? [...ps, value] : [value]
+                );
+              }}
+            />
+            <Row style={{ margin: "1em", padding: "1em" }}>
+              <ModalTermos />
+            </Row>
+            <Row style={{ justifyContent: "center" }}>
+              <Button
+                type="primary"
+                disabled={!termo || isSubmitting}
+                title={
+                  !termo ? "É Necessário aceitar os termos contratuais!" : ""
+                }
+                htmlType="submit"
+                style={{ width: "40%" }}
+              >
+                {isSubmitting ? <Spin /> : "Enviar"}
+              </Button>
+            </Row>
           </Form>
         )}
       </Formik>
