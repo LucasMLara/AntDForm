@@ -4,7 +4,16 @@ import ModalTermos from "../components/ModalTermos";
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/pt_BR";
 import "dayjs/locale/zh-cn";
-import { Input, Col, Row, Button, DatePicker, Typography, Spin } from "antd";
+import {
+  Input,
+  Col,
+  Row,
+  Button,
+  DatePicker,
+  Typography,
+  Spin,
+  Tag,
+} from "antd";
 import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
 import {
@@ -22,6 +31,7 @@ import UploadInput from "./UploadInput";
 import TextInput from "./TextInput";
 import TextAreaInput from "./TextAreaInput";
 import Paragraph from "antd/es/typography/Paragraph";
+
 const { Title } = Typography;
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -29,6 +39,7 @@ const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
 
 type Sizes = 1 | 2 | 3 | 4 | 5;
+
 const Cabecalho = ({ title, size }: { title: string; size?: Sizes }) => (
   <Title level={size} style={{ marginTop: "0.5em" }} type="secondary">
     {title}
@@ -113,6 +124,9 @@ const FormFeira = () => {
                 <ErrorMessage name="periodoEvento">
                   {(errMsg) => <Paragraph type="danger">{errMsg}</Paragraph>}
                 </ErrorMessage>
+                <Tag style={{ margin: "0 1em" }} color="geekblue">
+                  Antecedência mínima de 90 dias!
+                </Tag>
               </Col>
             </Row>
             <TextInput
@@ -507,7 +521,7 @@ const FormFeira = () => {
               required
             />
             <Cabecalho title="8. Informações Adicionais:" size={4} />
-            <TextInput
+            <TextAreaInput
               handleChange={handleChange("infoAdicional")}
               value={values.infoAdicional}
               name="infoAdicional"
@@ -518,14 +532,14 @@ const FormFeira = () => {
             <Cabecalho title="9. Anexos:" size={4} />
             <UploadInput
               onRemove={(value) => {
-                console.log(value);
+                // console.log(value);
                 setListFiles((ps) => ps.filter((val) => val.name !== value));
               }}
               label="Planta Baixa"
               name="plantaBaixa"
               required
               onChange={(value) => {
-                console.log("VALUE NO FORM", value);
+                // console.log("VALUE NO FORM", value);
                 setFieldValue("plantaBaixa", value.name);
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
