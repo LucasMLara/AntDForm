@@ -1,5 +1,5 @@
 "use client";
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage, FormikHelpers } from "formik";
 import ModalTermos from "../components/ModalTermos";
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/pt_BR";
@@ -58,7 +58,10 @@ const FormFeira = () => {
   };
 
   const enviarForm = async (data: IFormValues) => {
-    console.log("📓 ~ file: Form.tsx:61 ~ enviarForm ~ data:", data);
+    console.log(
+      "📓 ~ file: Form.tsx:61 ~ enviarForm ~ data:",
+      JSON.stringify(data, null, 2)
+    );
     const filteredList = listFiles.filter(
       (file) => !file.hasOwnProperty("status")
     );
@@ -76,9 +79,14 @@ const FormFeira = () => {
       <Formik
         initialValues={MOCK_VALUES}
         validationSchema={FeirasSchema}
-        onSubmit={(values: IFormValues, { setSubmitting }) => {
-          enviarForm(values);
-          setSubmitting(false);
+        onSubmit={(
+          values: IFormValues,
+          { setSubmitting }: FormikHelpers<any>
+        ) => {
+          setTimeout(() => {
+            enviarForm(values);
+            setSubmitting(false);
+          }, 2000);
         }}
       >
         {({
