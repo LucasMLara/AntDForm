@@ -10,6 +10,7 @@
 body{
   background-color: rgba(0, 94, 184, 0.15);
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 ::selection {

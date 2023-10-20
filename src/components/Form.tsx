@@ -18,6 +18,7 @@ import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
 import {
   FeirasSchema,
+  MOCK_VALUES,
   INITIAL_VALUES,
 } from "@/utils/validations/FormValidation";
 import LogoTipo from "@/components/Image";
@@ -31,6 +32,7 @@ import UploadInput from "./UploadInput";
 import TextInput from "./TextInput";
 import TextAreaInput from "./TextAreaInput";
 import Paragraph from "antd/es/typography/Paragraph";
+import { IFormValues } from "@/utils/validations/FormInterface";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -55,11 +57,14 @@ const FormFeira = () => {
     return current && current < defaultEndDate;
   };
 
-  const enviarForm = async (data: any) => {
-    // api.post("yrk", {
-    //   nome: data.nomeEvento,
-    //   plantaBaixa: listformdata.filter onde eu vou buscar o nome do arquivo e o status é diuferente de error
-    // })
+  const enviarForm = async (data: IFormValues) => {
+    console.log("📓 ~ file: Form.tsx:61 ~ enviarForm ~ data:", data);
+    const filteredList = listFiles.filter(
+      (file) => !file.hasOwnProperty("status")
+    );
+
+    // console.log(filteredList);
+    // console.log(listFiles);
   };
 
   return (
@@ -69,16 +74,15 @@ const FormFeira = () => {
         <LogoTipo src={LogoSebrae} alt="Logo Sebrae" width={250} height={250} />
       </div>
       <Formik
-        initialValues={INITIAL_VALUES}
+        initialValues={MOCK_VALUES}
         validationSchema={FeirasSchema}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values: IFormValues, { setSubmitting }) => {
           enviarForm(values);
           setSubmitting(false);
         }}
       >
         {({
           values,
-          errors,
           handleSubmit,
           setFieldValue,
           isSubmitting,
@@ -532,14 +536,13 @@ const FormFeira = () => {
             <Cabecalho title="9. Anexos:" size={4} />
             <UploadInput
               onRemove={(value) => {
-                // console.log(value);
+                setFieldValue("plantaBaixa", "");
                 setListFiles((ps) => ps.filter((val) => val.name !== value));
               }}
               label="Planta Baixa"
               name="plantaBaixa"
               required
               onChange={(value) => {
-                // console.log("VALUE NO FORM", value);
                 setFieldValue("plantaBaixa", value.name);
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
