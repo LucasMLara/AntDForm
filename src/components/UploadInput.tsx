@@ -13,7 +13,6 @@ interface IUpload {
   label: string;
   onChange(value: File): void;
   required?: boolean;
-  onRemove(value: string): void;
 }
 
 const UploadInput: React.FC<IUpload> = ({
@@ -21,11 +20,9 @@ const UploadInput: React.FC<IUpload> = ({
   label,
   onChange,
   required,
-  onRemove,
 }) => {
   const handleFileChange = (info: UploadChangeParam<UploadFile<any>>) => {
     let file = info.file as unknown as File;
-
     onChange(file);
   };
 
@@ -46,7 +43,6 @@ const UploadInput: React.FC<IUpload> = ({
       )}
       <Upload
         name={name}
-        onRemove={(value) => onRemove(value?.name ?? "")}
         maxCount={1}
         onChange={handleFileChange}
         beforeUpload={() => false}

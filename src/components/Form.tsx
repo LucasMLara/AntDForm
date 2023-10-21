@@ -1,5 +1,5 @@
 "use client";
-import { Formik, Form, ErrorMessage, FormikHelpers } from "formik";
+import { Formik, Form, ErrorMessage, FormikHelpers, Field } from "formik";
 import ModalTermos from "../components/ModalTermos";
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/pt_BR";
@@ -13,6 +13,7 @@ import {
   Typography,
   Spin,
   Tag,
+  Upload,
 } from "antd";
 import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
@@ -57,17 +58,20 @@ const FormFeira = () => {
     return current && current < defaultEndDate;
   };
 
+  //TODO Tratar os dados daqui para que filtre o listfiles para ter somente os arquivos q não tenham sido removidos (que nao possuam o field status)
+  // criar um estado para popular todos os dados que serão enviados limpos para a requisição
+
   const enviarForm = async (data: IFormValues) => {
-    console.log(
-      "📓 ~ file: Form.tsx:61 ~ enviarForm ~ data:",
-      JSON.stringify(data, null, 2)
-    );
+    const { plantaBaixa, comprovanteExclusividadeRegistroINPI } = data;
+
     const filteredList = listFiles.filter(
       (file) => !file.hasOwnProperty("status")
     );
 
-    // console.log(filteredList);
-    // console.log(listFiles);
+    console.log(JSON.stringify(filteredList, null, 2));
+    console.log(JSON.stringify(listFiles, null, 2));
+    console.log(JSON.stringify(plantaBaixa, null, 2));
+    console.log(JSON.stringify(comprovanteExclusividadeRegistroINPI, null, 2));
   };
 
   return (
@@ -86,7 +90,7 @@ const FormFeira = () => {
           setTimeout(() => {
             enviarForm(values);
             setSubmitting(false);
-          }, 2000);
+          }, 1000);
         }}
       >
         {({
@@ -543,61 +547,68 @@ const FormFeira = () => {
             />
             <Cabecalho title="9. Anexos:" size={4} />
             <UploadInput
-              onRemove={(value) => {
-                setFieldValue("plantaBaixa", "");
-                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              onChange={(value: any) => {
+                if (value.status === "removed") {
+                  setFieldValue("plantaBaixa", "");
+                  setListFiles((ps) => ps.filter((val) => val.name !== value));
+                  return;
+                }
+                setListFiles((ps) =>
+                  ps.length > 0 ? [...ps, value] : [value]
+                );
+                setFieldValue("plantaBaixa", value.name);
               }}
               label="Planta Baixa"
               name="plantaBaixa"
               required
-              onChange={(value) => {
-                setFieldValue("plantaBaixa", value.name);
-                setListFiles((ps) =>
-                  ps.length > 0 ? [...ps, value] : [value]
-                );
-              }}
             />
             <UploadInput
-              onRemove={(value) => {
-                setListFiles((ps) => ps.filter((val) => val.name !== value));
-              }}
               label="Comprovante de Exclusividade / Registro INPI"
               name="comprovanteExclusividadeRegistroINPI"
               required
-              onChange={(value) => {
+              onChange={(value: any) => {
+                if (value.status === "removed") {
+                  setFieldValue("comprovanteExclusividadeRegistroINPI", "");
+                  setListFiles((ps) => ps.filter((val) => val.name !== value));
+                  return;
+                }
+                setListFiles((ps) =>
+                  ps.length > 0 ? [...ps, value] : [value]
+                );
                 setFieldValue(
                   "comprovanteExclusividadeRegistroINPI",
                   value.name
                 );
-                setListFiles((ps) =>
-                  ps.length > 0 ? [...ps, value] : [value]
-                );
               }}
             />
             <UploadInput
-              onRemove={(value) => {
-                setListFiles((ps) => ps.filter((val) => val.name !== value));
-              }}
               label="Contrato de Locação de espaço"
               name="contratoLocacao"
-              onChange={(value) => {
-                setFieldValue("contratoLocacao", value.name);
+              onChange={(value: any) => {
+                if (value.status === "removed") {
+                  setFieldValue("contratoLocacao", "");
+                  setListFiles((ps) => ps.filter((val) => val.name !== value));
+                  return;
+                }
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
                 );
+                setFieldValue("contratoLocacao", value.name);
               }}
             />
             <UploadInput
-              onRemove={(value) => {
-                setListFiles((ps) => ps.filter((val) => val.name !== value));
-              }}
-              label="Manual do Exposito ou Regras para Exposição"
+              label="Manual do Expositor ou Regras para Exposição"
               name="manualExpositor"
-              onChange={(value) => {
-                setFieldValue("manualExpositor", value.name);
+              onChange={(value: any) => {
+                if (value.status === "removed") {
+                  setFieldValue("manualExpositor", "");
+                  setListFiles((ps) => ps.filter((val) => val.name !== value));
+                  return;
+                }
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
                 );
+                setFieldValue("manualExpositor", value.name);
               }}
             />
             <Row style={{ margin: "1em", padding: "1em" }}>
