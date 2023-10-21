@@ -49,8 +49,12 @@ const Cabecalho = ({ title, size }: { title: string; size?: Sizes }) => (
   </Title>
 );
 
+interface CustomFile extends File {
+  uid: string;
+}
+
 const FormFeira = () => {
-  const [listFiles, setListFiles] = useState<Array<File>>([]);
+  const [listFiles, setListFiles] = useState<Array<CustomFile>>([]);
 
   const { termo } = useContext(FormContext);
   const defaultEndDate = dayjs().add(90, "day");
@@ -58,20 +62,32 @@ const FormFeira = () => {
     return current && current < defaultEndDate;
   };
 
-  //TODO Tratar os dados daqui para que filtre o listfiles para ter somente os arquivos q não tenham sido removidos (que nao possuam o field status)
-  // criar um estado para popular todos os dados que serão enviados limpos para a requisição
-
   const enviarForm = async (data: IFormValues) => {
-    const { plantaBaixa, comprovanteExclusividadeRegistroINPI } = data;
+    const {
+      plantaBaixa,
+      comprovanteExclusividadeRegistroINPI,
+      contratoLocacao,
+      manualExpositor,
+      periodoEvento,
+      ...rest
+    } = data;
 
-    const filteredList = listFiles.filter(
-      (file) => !file.hasOwnProperty("status")
-    );
+    const [dataInicial] = periodoEvento;
+    const [dataInicio, dataFim] = dataInicial as any;
 
-    console.log(JSON.stringify(filteredList, null, 2));
-    console.log(JSON.stringify(listFiles, null, 2));
-    console.log(JSON.stringify(plantaBaixa, null, 2));
-    console.log(JSON.stringify(comprovanteExclusividadeRegistroINPI, null, 2));
+    const bodyReq = {
+      dataInicio,
+      dataFim,
+      plantaBaixa: listFiles[0] ? listFiles[0]["uid"] : "",
+      comprovanteExclusividadeRegistroINPI: listFiles[1]
+        ? listFiles[1]["uid"]
+        : "",
+      contratoLocacao: listFiles[2] ? listFiles[2]["uid"] : "",
+      manualExpositor: listFiles[3] ? listFiles[3]["uid"] : "",
+      ...rest,
+    };
+
+    console.log(bodyReq);
   };
 
   return (
@@ -547,6 +563,9 @@ const FormFeira = () => {
             />
             <Cabecalho title="9. Anexos:" size={4} />
             <UploadInput
+              onRemove={(value) => {
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
               onChange={(value: any) => {
                 if (value.status === "removed") {
                   setFieldValue("plantaBaixa", "");
@@ -560,9 +579,14 @@ const FormFeira = () => {
               }}
               label="Planta Baixa"
               name="plantaBaixa"
+              id="plantaBaixa"
               required
             />
             <UploadInput
+              onRemove={(value) => {
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              id="comprovanteExclusividadeRegistroINPI"
               label="Comprovante de Exclusividade / Registro INPI"
               name="comprovanteExclusividadeRegistroINPI"
               required
@@ -582,6 +606,10 @@ const FormFeira = () => {
               }}
             />
             <UploadInput
+              onRemove={(value) => {
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              id="contratoLocacao"
               label="Contrato de Locação de espaço"
               name="contratoLocacao"
               onChange={(value: any) => {
@@ -597,6 +625,10 @@ const FormFeira = () => {
               }}
             />
             <UploadInput
+              onRemove={(value) => {
+                setListFiles((ps) => ps.filter((val) => val.name !== value));
+              }}
+              id="manualExpositor"
               label="Manual do Expositor ou Regras para Exposição"
               name="manualExpositor"
               onChange={(value: any) => {
