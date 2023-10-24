@@ -26,7 +26,7 @@ const ModalInfos: React.FC = () => {
 
   return (
     <>
-      <Button type={!termo ? "primary" : "default"} onClick={showModal}>
+      <Button type={!termo ? "primary" : "link"} onClick={showModal}>
         {!termo ? "Termos contratuais" : "Termos Aceitos!"}
       </Button>
       <Modal
