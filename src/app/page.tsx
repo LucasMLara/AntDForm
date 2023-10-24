@@ -7,8 +7,8 @@ import Teste from "@/components/teste";
 
 const WebForm = () => (
   <FormContextProvider>
-    <Teste />
-    {/* <FormFeira /> */}
+    {/*<Teste /> */}
+    <FormFeira /> 
   </FormContextProvider>
 );
 
