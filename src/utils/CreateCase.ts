@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import xmlJs from "xml-js";
 
 const XMLDisplay = () => {
   const [xmlData, setXmlData] = useState(null);
-  
+
   useEffect(() => {
     fetch(
       "http://essrvbpm-h02/ESAmbienteBPMS/webservices/workflowenginesoa.asmx",
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/soap+xml;charset=UTF-8;action='http://tempuri.org/createCases'",
+          "Content-Type":
+            "application/soap+xml;charset=UTF-8;action='http://tempuri.org/createCases'",
         },
         body: '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/">\
         <soap:Header/>\
