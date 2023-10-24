@@ -4,19 +4,10 @@ import ModalTermos from "../components/ModalTermos";
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/pt_BR";
 import "dayjs/locale/zh-cn";
-import {
-  Input,
-  Col,
-  Row,
-  Button,
-  DatePicker,
-  Typography,
-  Spin,
-  Tag,
-  Upload,
-} from "antd";
+import { Input, Col, Row, Button, DatePicker, Spin, Tag } from "antd";
 import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
+import Cabecalho from "./Cabecalho";
 import {
   FeirasSchema,
   MOCK_VALUES,
@@ -29,30 +20,20 @@ import { useContext, useState } from "react";
 import { FormContext } from "@/utils/validations/FormContext";
 import type { RangePickerProps } from "antd/es/date-picker";
 import UploadInput from "./UploadInput";
-
+import SearchClientInput from "./SearchClientInput";
 import TextInput from "./TextInput";
 import TextAreaInput from "./TextAreaInput";
 import Paragraph from "antd/es/typography/Paragraph";
 import { IFormValues } from "@/utils/validations/FormInterface";
 
-const { Title } = Typography;
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
-
 dayjs.extend(customParseFormat);
-
-type Sizes = 1 | 2 | 3 | 4 | 5;
-
-const Cabecalho = ({ title, size }: { title: string; size?: Sizes }) => (
-  <Title level={size} style={{ marginTop: "0.5em" }} type="secondary">
-    {title}
-  </Title>
-);
 
 interface CustomFile extends File {
   uid: string;
 }
-
+const { Search } = Input;
 const FormFeira = () => {
   const [listFiles, setListFiles] = useState<Array<CustomFile>>([]);
 
@@ -125,7 +106,6 @@ const FormFeira = () => {
               placeholder="Insira o nome do seu evento"
               name="nomeDaFeira"
               type="text"
-              antdComponent={Input}
               required
             />
             <TextInput
@@ -135,7 +115,6 @@ const FormFeira = () => {
               placeholder="Insira o local do seu evento"
               name="localDaFeira"
               type="text"
-              antdComponent={Input}
               required
             />
             <Cabecalho title="Período de Realização" size={5} />
@@ -168,7 +147,6 @@ const FormFeira = () => {
               placeholder="Qual o horário do funcionamento?"
               name="horarioFuncionamento"
               type="text"
-              antdComponent={Input}
               required
             />
             <TextInput
@@ -178,7 +156,6 @@ const FormFeira = () => {
               placeholder="Quanto vai custar o ingresso?"
               name="valorEntradaVisitantes"
               type="text"
-              antdComponent={Input}
               required
             />
             <Cabecalho title="2. PRINCIPAIS INSTITUIÇÕES ENVOLVIDAS" size={5} />
@@ -189,25 +166,23 @@ const FormFeira = () => {
                   handleChange={handleChange("empresaRealizadora")}
                   value={values.empresaRealizadora}
                   label="Nome"
-                  placeholder="Quanto vai custar o ingresso?"
                   name="empresaRealizadora"
                   type="text"
-                  antdComponent={Input}
                   required
+                  disabled
                 />
               </Col>
               <Col xs={24} md={12}>
-                <TextInput
+                <SearchClientInput
                   handleChange={handleChange("docRealizadora")}
-                  value={values.docRealizadora}
+                  onSearch={(e) => console.log(e)}
                   label="CNPJ"
-                  placeholder="Insira somente números"
-                  name="docRealizadora"
-                  showCount
-                  maxLength={14}
-                  type="text"
-                  antdComponent={Input}
                   required
+                  name="docRealizadora"
+                  value={values.docRealizadora}
+                  placeholder="Insira somente números"
+                  maxLength={14}
+                  showCount
                 />
               </Col>
             </Row>
@@ -215,11 +190,10 @@ const FormFeira = () => {
               handleChange={handleChange("enderecoRealizadora")}
               value={values.enderecoRealizadora}
               label="Endereço"
-              placeholder="Av...Rua... nº"
               name="enderecoRealizadora"
               type="text"
-              antdComponent={Input}
               required
+              disabled
             />
             <Row gutter={25}>
               <Col xs={24} md={8}>
@@ -229,8 +203,8 @@ const FormFeira = () => {
                   label="Cidade"
                   name="cidadeRealizadora"
                   type="text"
-                  antdComponent={Input}
                   required
+                  disabled
                 />
               </Col>
               <Col xs={24} md={8}>
@@ -240,8 +214,8 @@ const FormFeira = () => {
                   label="UF"
                   name="ufRealizadora"
                   type="text"
-                  antdComponent={Input}
                   required
+                  disabled
                 />
               </Col>
               <Col xs={24} md={8}>
@@ -251,11 +225,8 @@ const FormFeira = () => {
                   label="CEP"
                   name="cepRealizadora"
                   type="text"
-                  antdComponent={Input}
                   required
-                  maxLength={8}
-                  showCount
-                  placeholder="Insira somente números"
+                  disabled
                 />
               </Col>
             </Row>
@@ -267,8 +238,8 @@ const FormFeira = () => {
                   label="Representante Legal"
                   name="representanteRealizadora"
                   type="text"
-                  antdComponent={Input}
                   required
+                  disabled
                 />
               </Col>
               <Col xs={24} md={12}>
@@ -278,11 +249,10 @@ const FormFeira = () => {
                   label="CPF"
                   name="cpfRepresentanteRealizadora"
                   type="text"
-                  antdComponent={Input}
                   required
                   maxLength={11}
                   showCount
-                  placeholder="Insira somente números"
+                  disabled
                 />
               </Col>
             </Row>
@@ -294,11 +264,10 @@ const FormFeira = () => {
                   label="Telefone"
                   name="contatoRepresentanteRealizadora"
                   type="text"
-                  antdComponent={Input}
                   required
                   maxLength={11}
                   showCount
-                  placeholder="Insira somente números: Ex: 27999999999"
+                  disabled
                 />
               </Col>
               <Col xs={24} md={12}>
@@ -308,8 +277,8 @@ const FormFeira = () => {
                   label="Email"
                   name="emailRepresentanteRealizadora"
                   type="email"
-                  antdComponent={Input}
                   required
+                  disabled
                 />
               </Col>
             </Row>
@@ -322,22 +291,21 @@ const FormFeira = () => {
                   label="Nome"
                   name="empresaOrganizadora"
                   type="text"
-                  antdComponent={Input}
                   required
+                  disabled
                 />
               </Col>
               <Col xs={24} md={12}>
-                <TextInput
+                <SearchClientInput
                   handleChange={handleChange("docOrganizadora")}
-                  value={values.docOrganizadora}
+                  onSearch={(e) => console.log(e)}
                   label="CNPJ"
+                  required
                   name="docOrganizadora"
-                  type="text"
-                  antdComponent={Input}
+                  value={values.docOrganizadora}
+                  placeholder="Insira somente números"
                   maxLength={14}
                   showCount
-                  required
-                  placeholder="Insira somente números"
                 />
               </Col>
             </Row>
@@ -345,11 +313,10 @@ const FormFeira = () => {
               handleChange={handleChange("enderecoOrganizadora")}
               value={values.enderecoOrganizadora}
               label="Endereço"
-              placeholder="Av...Rua... nº"
               name="enderecoOrganizadora"
               type="text"
-              antdComponent={Input}
               required
+              disabled
             />
             <Row gutter={25}>
               <Col xs={24} md={8}>
@@ -359,8 +326,8 @@ const FormFeira = () => {
                   label="Cidade"
                   name="cidadeOrganizadora"
                   type="text"
-                  antdComponent={Input}
                   required
+                  disabled
                 />
               </Col>
               <Col xs={24} md={8}>
@@ -370,8 +337,8 @@ const FormFeira = () => {
                   label="UF"
                   name="ufOrganizadora"
                   type="text"
-                  antdComponent={Input}
                   required
+                  disabled
                 />
               </Col>
               <Col xs={24} md={8}>
@@ -381,11 +348,11 @@ const FormFeira = () => {
                   label="CEP"
                   name="cepOrganizadora"
                   type="text"
-                  antdComponent={Input}
                   required
                   maxLength={8}
                   showCount
                   placeholder="Insira somente números"
+                  disabled
                 />
               </Col>
             </Row>
@@ -397,8 +364,8 @@ const FormFeira = () => {
                   label="Representante Legal"
                   name="representanteOrganizadora"
                   type="text"
-                  antdComponent={Input}
                   required
+                  disabled
                 />
               </Col>
               <Col xs={24} md={12}>
@@ -408,11 +375,11 @@ const FormFeira = () => {
                   label="CPF"
                   name="cpfRepresentanteOrganizadora"
                   type="text"
-                  antdComponent={Input}
                   required
                   maxLength={11}
                   showCount
                   placeholder="Insira somente números"
+                  disabled
                 />
               </Col>
             </Row>
@@ -427,10 +394,9 @@ const FormFeira = () => {
                   name="contatoRepresentanteOrganizadora"
                   type="text"
                   showCount
-                  antdComponent={Input}
                   required
                   maxLength={11}
-                  placeholder="Insira somente números: Ex: 27999999999"
+                  disabled
                 />
               </Col>
               <Col xs={24} md={12}>
@@ -440,7 +406,7 @@ const FormFeira = () => {
                   label="Email"
                   name="emailRepresentanteOrganizadora"
                   type="email"
-                  antdComponent={Input}
+                  disabled
                   required
                 />
               </Col>
@@ -472,7 +438,6 @@ const FormFeira = () => {
               label="Expectativa de Público Expositor"
               name="expectativaPubExpositor"
               type="text"
-              antdComponent={Input}
               required
             />
             <TextInput
@@ -481,7 +446,6 @@ const FormFeira = () => {
               label="Expectativa de Público Visitante"
               name="expectativaPubVisitante"
               type="text"
-              antdComponent={Input}
               required
             />
             <Cabecalho title="5. Dados das Últimas 03 edições:" size={4} />
@@ -511,7 +475,6 @@ const FormFeira = () => {
               label="Valor de Locação da Área Livre (R$/m²)"
               name="valorLocacaoLivre"
               type="text"
-              antdComponent={Input}
               required
             />
             <TextInput
@@ -521,7 +484,6 @@ const FormFeira = () => {
               (R$/m²)"
               name="valorLocacaoMontada"
               type="text"
-              antdComponent={Input}
               required
             />
             <TextAreaInput
@@ -540,7 +502,6 @@ const FormFeira = () => {
               label="Taxas Adicionais"
               name="txsAdicionais"
               type="text"
-              antdComponent={Input}
               required
             />
             <TextInput
@@ -549,7 +510,6 @@ const FormFeira = () => {
               label="Outros benefícios"
               name="outrosBeneficios"
               type="text"
-              antdComponent={Input}
               required
             />
             <Cabecalho title="8. Informações Adicionais:" size={4} />
