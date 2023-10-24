@@ -16,6 +16,7 @@ interface FeiraInputProps {
   showCount?: boolean;
   handleChange(value: string): void;
   value: string;
+  disabled?: boolean;
 }
 
 const TextInput: React.FC<FeiraInputProps> = ({
@@ -28,6 +29,7 @@ const TextInput: React.FC<FeiraInputProps> = ({
   showCount,
   value,
   handleChange,
+  disabled,
 }) => {
   return (
     <div style={{ margin: ".2em 0", padding: ".5em" }}>
@@ -43,6 +45,7 @@ const TextInput: React.FC<FeiraInputProps> = ({
         </label>
       )}
       <Input
+        disabled={disabled}
         onChange={(e) => handleChange(e.target.value)}
         showCount={showCount}
         maxLength={maxLength}
