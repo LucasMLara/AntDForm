@@ -45,22 +45,6 @@ export const FeirasSchema = Yup.object().shape({
     14,
     "Insira 14 dígitos"
   ),
-  enderecoRealizadora: Yup.string().required("Campo obrigatório"),
-  enderecoOrganizadora: Yup.string().required("Campo obrigatório"),
-  cidadeRealizadora: Yup.string().required("Campo obrigatório"),
-  cidadeOrganizadora: Yup.string().required("Campo obrigatório"),
-  ufRealizadora: Yup.string().required("Campo obrigatório"),
-  ufOrganizadora: Yup.string().required("Campo obrigatório"),
-  cepRealizadora: replaceNonIntegerChars(
-    "Campo Obrigatório",
-    8,
-    "Insira 8 dígitos"
-  ),
-  cepOrganizadora: replaceNonIntegerChars(
-    "Campo Obrigatório",
-    8,
-    "Insira 8 dígitos"
-  ),
   representanteRealizadora: Yup.string().required("Campo obrigatório"),
   representanteOrganizadora: Yup.string().required("Campo obrigatório"),
   cpfRepresentanteRealizadora: replaceNonIntegerChars(
@@ -121,7 +105,9 @@ export const INITIAL_VALUES = {
   periodoEvento: [undefined, undefined],
   docOrganizadora: "",
   enderecoRealizadora: "",
+  bairroRealizadora: "",
   enderecoOrganizadora: "",
+  bairroOrganizadora: "",
   cidadeRealizadora: "",
   cidadeOrganizadora: "",
   ufRealizadora: "",
@@ -166,7 +152,9 @@ export const MOCK_VALUES = {
   docRealizadora: "",
   docOrganizadora: "",
   enderecoRealizadora: "",
+  bairroRealizadora: "",
   enderecoOrganizadora: "",
+  bairroOrganizadora: "",
   cidadeRealizadora: "",
   cidadeOrganizadora: "",
   ufRealizadora: "",

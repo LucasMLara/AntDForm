@@ -4,7 +4,11 @@ export interface IFormValues {
   horarioFuncionamento: string;
   valorEntradaVisitantes: string;
   empresaRealizadora: string;
+  idEmpresaRealizadora: string;
   empresaOrganizadora: string;
+  idEmpresaOrganizadora: string;
+  bairroOrganizadora: string;
+  bairroRealizadora: string;
   docRealizadora: string;
   periodoEvento: string[] | undefined[];
   docOrganizadora: string;

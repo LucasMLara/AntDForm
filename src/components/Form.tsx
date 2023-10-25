@@ -197,8 +197,25 @@ const FormFeira = () => {
                           realizadora.Nome._text
                         );
                         setFieldValue(
+                          "contatoRepresentanteRealizadora",
+                          realizadora.Telefone._text
+                            .replace(" ", "")
+                            .replace("-", "")
+                            .replace("(", "")
+                            .replace(")", "")
+                        );
+                        if (realizadora.Email._text)
+                          setFieldValue(
+                            "emailRepresentanteRealizadora",
+                            realizadora.Email._text
+                          );
+                        setFieldValue(
                           "enderecoRealizadora",
-                          realizadora.Rua._text + realizadora.Bairro._text
+                          realizadora.Rua._text
+                        );
+                        setFieldValue(
+                          "bairroRealizadora",
+                          realizadora.Bairro._text
                         );
                         setFieldValue(
                           "cidadeRealizadora",
@@ -225,15 +242,30 @@ const FormFeira = () => {
                 />
               </Col>
             </Row>
-            <TextInput
-              handleChange={handleChange("enderecoRealizadora")}
-              value={values.enderecoRealizadora}
-              label="Endereço"
-              name="enderecoRealizadora"
-              type="text"
-              required
-              disabled
-            />
+            <Row>
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("enderecoRealizadora")}
+                  value={values.enderecoRealizadora}
+                  label="Endereço"
+                  name="enderecoRealizadora"
+                  type="text"
+                  required
+                  disabled
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("bairroRealizadora")}
+                  value={values.bairroRealizadora}
+                  label="Bairro"
+                  name="bairroRealizadora"
+                  type="text"
+                  required
+                  disabled
+                />
+              </Col>
+            </Row>
             <Row gutter={25}>
               <Col xs={24} md={8}>
                 <TextInput
@@ -304,9 +336,7 @@ const FormFeira = () => {
                   name="contatoRepresentanteRealizadora"
                   type="text"
                   required
-                  showCount
                   onlyNumbersInput
-                  maxLength={11}
                   placeholder="27999999999"
                 />
               </Col>
@@ -343,6 +373,7 @@ const FormFeira = () => {
                       setBuscandoCliente(true);
                       const organizadora = await buscarCliente(clientDoc);
                       setBuscandoCliente(false);
+                      console.log(organizadora);
                       if (organizadora) {
                         setFieldValue(
                           "idEmpresaOrganizadora",
@@ -353,8 +384,25 @@ const FormFeira = () => {
                           organizadora.Nome._text
                         );
                         setFieldValue(
+                          "contatoRepresentanteOrganizadora",
+                          organizadora.Telefone._text
+                            .replace(" ", "")
+                            .replace("-", "")
+                            .replace("(", "")
+                            .replace(")", "")
+                        );
+                        if (organizadora.Email._text)
+                          setFieldValue(
+                            "emailRepresentanteOrganizadora",
+                            organizadora.Email._text
+                          );
+                        setFieldValue(
                           "enderecoOrganizadora",
-                          organizadora.Rua._text + organizadora.Bairro._text
+                          organizadora.Rua._text
+                        );
+                        setFieldValue(
+                          "bairroOrganizadora",
+                          organizadora.Bairro._text
                         );
                         setFieldValue(
                           "cidadeOrganizadora",
@@ -384,15 +432,30 @@ const FormFeira = () => {
                 />
               </Col>
             </Row>
-            <TextInput
-              handleChange={handleChange("enderecoOrganizadora")}
-              value={values.enderecoOrganizadora}
-              label="Endereço"
-              name="enderecoOrganizadora"
-              type="text"
-              required
-              disabled
-            />
+            <Row>
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("enderecoOrganizadora")}
+                  value={values.enderecoOrganizadora}
+                  label="Endereço"
+                  name="enderecoOrganizadora"
+                  type="text"
+                  required
+                  disabled
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <TextInput
+                  handleChange={handleChange("bairroOrganizadora")}
+                  value={values.bairroOrganizadora}
+                  label="Bairro"
+                  name="bairroOrganizadora"
+                  type="text"
+                  required
+                  disabled
+                />
+              </Col>
+            </Row>
             <Row gutter={25}>
               <Col xs={24} md={8}>
                 <TextInput
@@ -465,8 +528,6 @@ const FormFeira = () => {
                   name="contatoRepresentanteOrganizadora"
                   type="text"
                   required
-                  showCount
-                  maxLength={11}
                   onlyNumbersInput
                   placeholder="27999999999"
                 />
@@ -598,6 +659,7 @@ const FormFeira = () => {
                 setListFiles((ps) => ps.filter((val) => val.name !== value));
               }}
               onChange={(value: any) => {
+                console.log(value.stream());
                 if (value.status === "removed") {
                   setFieldValue("plantaBaixa", "");
                   setListFiles((ps) => ps.filter((val) => val.name !== value));
