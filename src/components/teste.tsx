@@ -3,11 +3,11 @@ import xmlJs from "xml-js";
 
 const XMLDisplay = () => {
   const [xmlData, setXmlData] = useState(null);
-  const [x, setX] = useState(31476294000156);
+  const [x, setX] = useState("31476294000156");
 
   useEffect(() => {
     fetch(
-      "http://essrvbpm-h02/ESAmbienteBPMS/webservices/EntityManagerSOA.asmx",
+      "http://10.9.4.162/ESAmbienteBPMS/webservices/EntityManagerSOA.asmx",
       {
         method: "POST",
         headers: {

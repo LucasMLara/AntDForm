@@ -17,6 +17,7 @@ interface FeiraInputProps {
   handleChange(value: string): void;
   value: string;
   disabled?: boolean;
+  onlyNumbersInput?: boolean;
 }
 
 const TextInput: React.FC<FeiraInputProps> = ({
@@ -30,7 +31,13 @@ const TextInput: React.FC<FeiraInputProps> = ({
   value,
   handleChange,
   disabled,
+  onlyNumbersInput,
 }) => {
+  const removeNonNumbers = (raw: string) => {
+    const onlyNumbers = raw.replace(/\D/g, "");
+    handleChange(onlyNumbers);
+  };
+
   return (
     <div style={{ margin: ".2em 0", padding: ".5em" }}>
       {label && (
@@ -46,7 +53,11 @@ const TextInput: React.FC<FeiraInputProps> = ({
       )}
       <Input
         disabled={disabled}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={
+          !onlyNumbersInput
+            ? (e) => handleChange(e.target.value)
+            : (e) => removeNonNumbers(e.target.value)
+        }
         showCount={showCount}
         maxLength={maxLength}
         id={name}

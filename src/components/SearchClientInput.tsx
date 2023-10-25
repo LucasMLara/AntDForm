@@ -15,7 +15,7 @@ interface ISearchInputProps {
   required?: boolean;
   maxLength?: number;
   showCount?: boolean;
-  handleChange(value: string): void;
+  handleChange(rawValue: string): void;
   onSearch(value: string): void;
   value: string;
   disabled?: boolean;
@@ -34,6 +34,11 @@ const SearchClientInput: React.FC<ISearchInputProps> = ({
   onSearch,
   handleChange,
 }) => {
+  const removeNonNumbers = (raw: string) => {
+    const onlyNumbers = raw.replace(/\D/g, "");
+    handleChange(onlyNumbers);
+  };
+
   return (
     <div style={{ margin: ".2em 0", padding: ".5em" }}>
       {label && (
@@ -48,7 +53,7 @@ const SearchClientInput: React.FC<ISearchInputProps> = ({
         </label>
       )}
       <Search
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={(e) => removeNonNumbers(e.target.value)}
         onSearch={(value: string) => onSearch(value)}
         showCount={showCount}
         maxLength={maxLength}

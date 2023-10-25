@@ -4,7 +4,7 @@ import ModalTermos from "../components/ModalTermos";
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/pt_BR";
 import "dayjs/locale/zh-cn";
-import { Input, Col, Row, Button, DatePicker, Spin, Tag } from "antd";
+import { Input, Col, Row, Button, DatePicker, Spin, Tag, message } from "antd";
 import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
 import Cabecalho from "./Cabecalho";
@@ -181,46 +181,41 @@ const FormFeira = () => {
                 <SearchClientInput
                   loading={bucandoCliente}
                   handleChange={handleChange("docRealizadora")}
+                  placeholder="Insira somente números"
                   onSearch={async (clientDoc) => {
-                    setBuscandoCliente(true);
-                    await buscarCliente(clientDoc);
-                    setBuscandoCliente(false);
-                    setFieldValue(
-                      "empresaRealizadora",
-                      "Nome da Empresa realizadora teste"
-                    );
-                    setFieldValue(
-                      "enderecoRealizadora",
-                      "Endereço da Empresa realizadora teste"
-                    );
-                    setFieldValue(
-                      "cidadeRealizadora",
-                      "Cidade da Empresa realizadora teste"
-                    );
-                    setFieldValue(
-                      "ufRealizadora",
-                      "UF da Empresa realizadora teste"
-                    );
-                    setFieldValue("cepRealizadora", "12345678");
-                    setFieldValue(
-                      "representanteRealizadora",
-                      "Nome da Empresa realizadora teste"
-                    );
-                    setFieldValue("cpfRepresentanteRealizadora", "12345678901");
-                    setFieldValue(
-                      "contatoRepresentanteRealizadora",
-                      "27999999999"
-                    );
-                    setFieldValue(
-                      "emailRepresentanteRealizadora",
-                      "realizadorLegal@teste.com.br"
-                    );
+                    if (clientDoc.length === 14) {
+                      setBuscandoCliente(true);
+                      const realizadora = await buscarCliente(clientDoc);
+                      setBuscandoCliente(false);
+                      if (realizadora) {
+                        setFieldValue(
+                          "empresaRealizadora",
+                          realizadora.Nome._text
+                        );
+                        setFieldValue(
+                          "enderecoRealizadora",
+                          realizadora.Rua._text + realizadora.Bairro._text
+                        );
+                        setFieldValue(
+                          "cidadeRealizadora",
+                          realizadora.Cidade._text
+                        );
+                        setFieldValue("ufRealizadora", realizadora.UF._text);
+                        setFieldValue("cepRealizadora", realizadora.CEP._text);
+                        message.success(
+                          `Empresa encontrada: ${realizadora.Nome._text} `
+                        );
+                      } else {
+                        message.error(
+                          `Empresa com documento: ${clientDoc} não encontrada.`
+                        );
+                      }
+                    }
                   }}
                   label="CNPJ"
                   required
                   name="docRealizadora"
                   value={values.docRealizadora}
-                  placeholder="Insira somente números"
                   maxLength={14}
                   showCount
                 />
@@ -279,7 +274,6 @@ const FormFeira = () => {
                   name="representanteRealizadora"
                   type="text"
                   required
-                  disabled
                 />
               </Col>
               <Col xs={24} md={12}>
@@ -287,10 +281,13 @@ const FormFeira = () => {
                   handleChange={handleChange("cpfRepresentanteRealizadora")}
                   value={values.cpfRepresentanteRealizadora}
                   label="CPF"
+                  onlyNumbersInput
+                  placeholder="Insira somente números"
                   name="cpfRepresentanteRealizadora"
                   type="text"
                   required
-                  disabled
+                  showCount
+                  maxLength={11}
                 />
               </Col>
             </Row>
@@ -303,7 +300,10 @@ const FormFeira = () => {
                   name="contatoRepresentanteRealizadora"
                   type="text"
                   required
-                  disabled
+                  showCount
+                  onlyNumbersInput
+                  maxLength={11}
+                  placeholder="27999999999"
                 />
               </Col>
               <Col xs={24} md={12}>
@@ -314,7 +314,6 @@ const FormFeira = () => {
                   name="emailRepresentanteRealizadora"
                   type="email"
                   required
-                  disabled
                 />
               </Col>
             </Row>
@@ -336,48 +335,42 @@ const FormFeira = () => {
                   loading={bucandoCliente}
                   handleChange={handleChange("docOrganizadora")}
                   onSearch={async (clientDoc) => {
-                    setBuscandoCliente(true);
-                    await buscarCliente(clientDoc);
-                    setBuscandoCliente(false);
-                    setFieldValue(
-                      "empresaOrganizadora",
-                      "Nome da Empresa Organizadora teste"
-                    );
-                    setFieldValue(
-                      "enderecoOrganizadora",
-                      "Endereço da Empresa Organizadora teste"
-                    );
-                    setFieldValue(
-                      "cidadeOrganizadora",
-                      "Cidade da Empresa Organizadora teste"
-                    );
-                    setFieldValue(
-                      "ufOrganizadora",
-                      "UF da Empresa Organizadora teste"
-                    );
-                    setFieldValue("cepOrganizadora", "12345678");
-                    setFieldValue(
-                      "representanteOrganizadora",
-                      "Nome da Empresa Organizadora teste"
-                    );
-                    setFieldValue(
-                      "cpfRepresentanteOrganizadora",
-                      "12345678901"
-                    );
-                    setFieldValue(
-                      "contatoRepresentanteOrganizadora",
-                      "27999999999"
-                    );
-                    setFieldValue(
-                      "emailRepresentanteOrganizadora",
-                      "organizadorLegal@teste.com.br"
-                    );
+                    if (clientDoc.length === 14) {
+                      setBuscandoCliente(true);
+                      const organizadora = await buscarCliente(clientDoc);
+                      setBuscandoCliente(false);
+                      if (organizadora) {
+                        setFieldValue(
+                          "empresaOrganizadora",
+                          organizadora.Nome._text
+                        );
+                        setFieldValue(
+                          "enderecoOrganizadora",
+                          organizadora.Rua._text + organizadora.Bairro._text
+                        );
+                        setFieldValue(
+                          "cidadeOrganizadora",
+                          organizadora.Cidade._text
+                        );
+                        setFieldValue("ufOrganizadora", organizadora.UF._text);
+                        setFieldValue(
+                          "cepOrganizadora",
+                          organizadora.CEP._text
+                        );
+                        message.success(
+                          `Empresa encontrada: ${organizadora.Nome._text} `
+                        );
+                      } else {
+                        message.error(
+                          `Empresa com documento: ${clientDoc} não encontrada.`
+                        );
+                      }
+                    }
                   }}
                   label="CNPJ"
                   required
                   name="docOrganizadora"
                   value={values.docOrganizadora}
-                  placeholder="Insira somente números"
                   maxLength={14}
                   showCount
                 />
@@ -423,9 +416,6 @@ const FormFeira = () => {
                   name="cepOrganizadora"
                   type="text"
                   required
-                  maxLength={8}
-                  showCount
-                  placeholder="Insira somente números"
                   disabled
                 />
               </Col>
@@ -439,7 +429,6 @@ const FormFeira = () => {
                   name="representanteOrganizadora"
                   type="text"
                   required
-                  disabled
                 />
               </Col>
               <Col xs={24} md={12}>
@@ -450,10 +439,10 @@ const FormFeira = () => {
                   name="cpfRepresentanteOrganizadora"
                   type="text"
                   required
-                  maxLength={11}
-                  showCount
+                  onlyNumbersInput
                   placeholder="Insira somente números"
-                  disabled
+                  showCount
+                  maxLength={11}
                 />
               </Col>
             </Row>
@@ -467,10 +456,11 @@ const FormFeira = () => {
                   label="Telefone"
                   name="contatoRepresentanteOrganizadora"
                   type="text"
-                  showCount
                   required
+                  showCount
                   maxLength={11}
-                  disabled
+                  onlyNumbersInput
+                  placeholder="27999999999"
                 />
               </Col>
               <Col xs={24} md={12}>
@@ -480,7 +470,6 @@ const FormFeira = () => {
                   label="Email"
                   name="emailRepresentanteOrganizadora"
                   type="email"
-                  disabled
                   required
                 />
               </Col>
