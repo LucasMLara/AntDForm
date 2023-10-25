@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../app/styles.module.css";
 import { ErrorMessage } from "formik";
 
-import { Input, Space, Typography } from "antd";
+import { Input, Typography } from "antd";
 const { Search } = Input;
 const { Paragraph } = Typography;
 
@@ -19,6 +19,7 @@ interface ISearchInputProps {
   onSearch(value: string): void;
   value: string;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 const SearchClientInput: React.FC<ISearchInputProps> = ({
@@ -29,6 +30,7 @@ const SearchClientInput: React.FC<ISearchInputProps> = ({
   maxLength,
   showCount,
   value,
+  loading,
   onSearch,
   handleChange,
 }) => {
@@ -51,6 +53,7 @@ const SearchClientInput: React.FC<ISearchInputProps> = ({
         showCount={showCount}
         maxLength={maxLength}
         id={name}
+        loading={loading}
         size="large"
         value={value}
         name={name}
