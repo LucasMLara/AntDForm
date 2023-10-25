@@ -8,6 +8,7 @@ import { Input, Col, Row, Button, DatePicker, Spin, Tag } from "antd";
 import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
 import Cabecalho from "./Cabecalho";
+import buscarCliente from "@/utils/getClient";
 import {
   FeirasSchema,
   MOCK_VALUES,
@@ -16,7 +17,7 @@ import {
 import LogoTipo from "@/components/Image";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import LogoSebrae from "../../public/SebraeLogo.svg";
-import { useContext, useState } from "react";
+import { useContext, useState, useCallback } from "react";
 import { FormContext } from "@/utils/validations/FormContext";
 import type { RangePickerProps } from "antd/es/date-picker";
 import UploadInput from "./UploadInput";
@@ -33,9 +34,10 @@ dayjs.extend(customParseFormat);
 interface CustomFile extends File {
   uid: string;
 }
-const { Search } = Input;
+
 const FormFeira = () => {
   const [listFiles, setListFiles] = useState<Array<CustomFile>>([]);
+  const [bucandoCliente, setBuscandoCliente] = useState(false);
 
   const { termo } = useContext(FormContext);
   const defaultEndDate = dayjs().add(90, "day");
@@ -43,33 +45,36 @@ const FormFeira = () => {
     return current && current < defaultEndDate;
   };
 
-  const enviarForm = async (data: IFormValues) => {
-    const {
-      plantaBaixa,
-      comprovanteExclusividadeRegistroINPI,
-      contratoLocacao,
-      manualExpositor,
-      periodoEvento,
-      ...rest
-    } = data;
+  const enviarForm = useCallback(
+    async (data: IFormValues) => {
+      const {
+        plantaBaixa,
+        comprovanteExclusividadeRegistroINPI,
+        contratoLocacao,
+        manualExpositor,
+        periodoEvento,
+        ...rest
+      } = data;
 
-    const [dataInicial] = periodoEvento;
-    const [dataInicio, dataFim] = dataInicial as any;
+      const [dataInicial] = periodoEvento;
+      const [dataInicio, dataFim] = dataInicial as any;
 
-    const bodyReq = {
-      dataInicio,
-      dataFim,
-      plantaBaixa: listFiles[0] ? listFiles[0]["uid"] : "",
-      comprovanteExclusividadeRegistroINPI: listFiles[1]
-        ? listFiles[1]["uid"]
-        : "",
-      contratoLocacao: listFiles[2] ? listFiles[2]["uid"] : "",
-      manualExpositor: listFiles[3] ? listFiles[3]["uid"] : "",
-      ...rest,
-    };
+      const bodyReq = {
+        dataInicio,
+        dataFim,
+        plantaBaixa: listFiles[0] ? listFiles[0]["uid"] : "",
+        comprovanteExclusividadeRegistroINPI: listFiles[1]
+          ? listFiles[1]["uid"]
+          : "",
+        contratoLocacao: listFiles[2] ? listFiles[2]["uid"] : "",
+        manualExpositor: listFiles[3] ? listFiles[3]["uid"] : "",
+        ...rest,
+      };
 
-    console.log(bodyReq);
-  };
+      console.log(bodyReq);
+    },
+    [listFiles]
+  );
 
   return (
     <>
@@ -174,8 +179,43 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={12}>
                 <SearchClientInput
+                  loading={bucandoCliente}
                   handleChange={handleChange("docRealizadora")}
-                  onSearch={(e) => console.log(e)}
+                  onSearch={async (clientDoc) => {
+                    setBuscandoCliente(true);
+                    await buscarCliente(clientDoc);
+                    setBuscandoCliente(false);
+                    setFieldValue(
+                      "empresaRealizadora",
+                      "Nome da Empresa realizadora teste"
+                    );
+                    setFieldValue(
+                      "enderecoRealizadora",
+                      "Endereço da Empresa realizadora teste"
+                    );
+                    setFieldValue(
+                      "cidadeRealizadora",
+                      "Cidade da Empresa realizadora teste"
+                    );
+                    setFieldValue(
+                      "ufRealizadora",
+                      "UF da Empresa realizadora teste"
+                    );
+                    setFieldValue("cepRealizadora", "12345678");
+                    setFieldValue(
+                      "representanteRealizadora",
+                      "Nome da Empresa realizadora teste"
+                    );
+                    setFieldValue("cpfRepresentanteRealizadora", "12345678901");
+                    setFieldValue(
+                      "contatoRepresentanteRealizadora",
+                      "27999999999"
+                    );
+                    setFieldValue(
+                      "emailRepresentanteRealizadora",
+                      "realizadorLegal@teste.com.br"
+                    );
+                  }}
                   label="CNPJ"
                   required
                   name="docRealizadora"
@@ -250,8 +290,6 @@ const FormFeira = () => {
                   name="cpfRepresentanteRealizadora"
                   type="text"
                   required
-                  maxLength={11}
-                  showCount
                   disabled
                 />
               </Col>
@@ -265,8 +303,6 @@ const FormFeira = () => {
                   name="contatoRepresentanteRealizadora"
                   type="text"
                   required
-                  maxLength={11}
-                  showCount
                   disabled
                 />
               </Col>
@@ -297,8 +333,46 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={12}>
                 <SearchClientInput
+                  loading={bucandoCliente}
                   handleChange={handleChange("docOrganizadora")}
-                  onSearch={(e) => console.log(e)}
+                  onSearch={async (clientDoc) => {
+                    setBuscandoCliente(true);
+                    await buscarCliente(clientDoc);
+                    setBuscandoCliente(false);
+                    setFieldValue(
+                      "empresaOrganizadora",
+                      "Nome da Empresa Organizadora teste"
+                    );
+                    setFieldValue(
+                      "enderecoOrganizadora",
+                      "Endereço da Empresa Organizadora teste"
+                    );
+                    setFieldValue(
+                      "cidadeOrganizadora",
+                      "Cidade da Empresa Organizadora teste"
+                    );
+                    setFieldValue(
+                      "ufOrganizadora",
+                      "UF da Empresa Organizadora teste"
+                    );
+                    setFieldValue("cepOrganizadora", "12345678");
+                    setFieldValue(
+                      "representanteOrganizadora",
+                      "Nome da Empresa Organizadora teste"
+                    );
+                    setFieldValue(
+                      "cpfRepresentanteOrganizadora",
+                      "12345678901"
+                    );
+                    setFieldValue(
+                      "contatoRepresentanteOrganizadora",
+                      "27999999999"
+                    );
+                    setFieldValue(
+                      "emailRepresentanteOrganizadora",
+                      "organizadorLegal@teste.com.br"
+                    );
+                  }}
                   label="CNPJ"
                   required
                   name="docOrganizadora"
