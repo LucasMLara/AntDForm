@@ -189,6 +189,10 @@ const FormFeira = () => {
                       setBuscandoCliente(false);
                       if (realizadora) {
                         setFieldValue(
+                          "idEmpresaRealizadora",
+                          realizadora["_attributes"]["key"]
+                        );
+                        setFieldValue(
                           "empresaRealizadora",
                           realizadora.Nome._text
                         );
@@ -340,6 +344,10 @@ const FormFeira = () => {
                       const organizadora = await buscarCliente(clientDoc);
                       setBuscandoCliente(false);
                       if (organizadora) {
+                        setFieldValue(
+                          "idEmpresaOrganizadora",
+                          organizadora["_attributes"]["key"]
+                        );
                         setFieldValue(
                           "empresaOrganizadora",
                           organizadora.Nome._text
