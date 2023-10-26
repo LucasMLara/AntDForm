@@ -9,6 +9,7 @@ import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
 import Cabecalho from "./Cabecalho";
 import buscarCliente from "@/utils/getClient";
+import CriarCaso from "@/utils/CreateCase";
 import {
   FeirasSchema,
   MOCK_VALUES,
@@ -26,6 +27,7 @@ import TextInput from "./TextInput";
 import TextAreaInput from "./TextAreaInput";
 import Paragraph from "antd/es/typography/Paragraph";
 import { IFormValues } from "@/utils/validations/FormInterface";
+import criarCaso from "@/utils/CreateCase";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -56,22 +58,22 @@ const FormFeira = () => {
         ...rest
       } = data;
 
-      const [dataInicial] = periodoEvento;
-      const [dataInicio, dataFim] = dataInicial as any;
-
-      const bodyReq = {
-        dataInicio,
-        dataFim,
+      const bodyReq: IFormValues = {
         plantaBaixa: listFiles[0] ? listFiles[0]["uid"] : "",
         comprovanteExclusividadeRegistroINPI: listFiles[1]
           ? listFiles[1]["uid"]
           : "",
         contratoLocacao: listFiles[2] ? listFiles[2]["uid"] : "",
         manualExpositor: listFiles[3] ? listFiles[3]["uid"] : "",
+        periodoEvento,
         ...rest,
       };
-
-      console.log(bodyReq);
+      const casoCriado = await criarCaso(bodyReq);
+      console.log(
+        casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
+          .createCasesResult.processes.process.processRadNumber
+      );
+      return casoCriado;
     },
     [listFiles]
   );
@@ -85,15 +87,7 @@ const FormFeira = () => {
       <Formik
         initialValues={MOCK_VALUES}
         validationSchema={FeirasSchema}
-        onSubmit={(
-          values: IFormValues,
-          { setSubmitting }: FormikHelpers<any>
-        ) => {
-          setTimeout(() => {
-            enviarForm(values);
-            setSubmitting(false);
-          }, 1000);
-        }}
+        onSubmit={(values: IFormValues) => enviarForm(values)}
       >
         {({
           values,
@@ -160,6 +154,7 @@ const FormFeira = () => {
               label="Valor da entrada dos visitantes"
               placeholder="Quanto vai custar o ingresso?"
               name="valorEntradaVisitantes"
+              onlyNumbersInput
               type="text"
               required
             />
@@ -227,6 +222,7 @@ const FormFeira = () => {
                           `Empresa encontrada: ${realizadora.Nome._text} `
                         );
                       } else {
+                        setBuscandoCliente(false);
                         message.error(
                           `Empresa com documento: ${clientDoc} não encontrada.`
                         );
@@ -373,7 +369,6 @@ const FormFeira = () => {
                       setBuscandoCliente(true);
                       const organizadora = await buscarCliente(clientDoc);
                       setBuscandoCliente(false);
-                      console.log(organizadora);
                       if (organizadora) {
                         setFieldValue(
                           "idEmpresaOrganizadora",
@@ -417,6 +412,7 @@ const FormFeira = () => {
                           `Empresa encontrada: ${organizadora.Nome._text} `
                         );
                       } else {
+                        setBuscandoCliente(false);
                         message.error(
                           `Empresa com documento: ${clientDoc} não encontrada.`
                         );
@@ -607,6 +603,7 @@ const FormFeira = () => {
               label="Valor de Locação da Área Livre (R$/m²)"
               name="valorLocacaoLivre"
               type="text"
+              onlyNumbersInput
               required
             />
             <TextInput
@@ -615,6 +612,7 @@ const FormFeira = () => {
               label="Valor de Locação da Área Montada (Área com estande montado)
               (R$/m²)"
               name="valorLocacaoMontada"
+              onlyNumbersInput
               type="text"
               required
             />
@@ -659,7 +657,6 @@ const FormFeira = () => {
                 setListFiles((ps) => ps.filter((val) => val.name !== value));
               }}
               onChange={(value: any) => {
-                console.log(value.stream());
                 if (value.status === "removed") {
                   setFieldValue("plantaBaixa", "");
                   setListFiles((ps) => ps.filter((val) => val.name !== value));

@@ -34,7 +34,7 @@ const TextInput: React.FC<FeiraInputProps> = ({
   onlyNumbersInput,
 }) => {
   const removeNonNumbers = (raw: string) => {
-    const onlyNumbers = raw.replace(/\D/g, "");
+    const onlyNumbers = raw.replace(/[^\d.,-]/g, "");
     handleChange(onlyNumbers);
   };
 
