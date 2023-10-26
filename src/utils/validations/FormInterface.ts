@@ -12,6 +12,8 @@ export interface IFormValues {
   docRealizadora: string;
   periodoEvento: string[] | undefined[];
   docOrganizadora: string;
+  dataInicio: string;
+  dataFim: string;
   enderecoRealizadora: string;
   enderecoOrganizadora: string;
   cidadeRealizadora: string;

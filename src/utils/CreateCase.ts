@@ -4,8 +4,6 @@ import xmlJs from "xml-js";
 import { IFormValues } from "@/utils/validations/FormInterface";
 
 async function criarCaso(formValues: IFormValues) {
-  const url =
-    "http://10.9.4.162/ESAmbienteBPMS/webservices/workflowenginesoa.asmx";
   const {
     nomeDaFeira,
     localDaFeira,
@@ -57,7 +55,8 @@ async function criarCaso(formValues: IFormValues) {
   const [dataInicial] = periodoEvento;
 
   const [dataInicio, dataFim] = dataInicial as any;
-
+  const url =
+    "http://10.9.4.162/ESAmbienteBPMS/webservices/workflowenginesoa.asmx";
   const body = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/">\
         <soap:Header/>\
         <soap:Body>\
@@ -133,7 +132,9 @@ async function criarCaso(formValues: IFormValues) {
       "Content-Type":
         "application/soap+xml;charset=UTF-8;action='http://tempuri.org/createCases'",
     },
+    body,
   };
+
   try {
     const response = await fetch(url, fetchOptions);
     if (!response.ok) {
@@ -148,3 +149,5 @@ async function criarCaso(formValues: IFormValues) {
     console.error("Error fetching XML data:", error);
   }
 }
+
+export default criarCaso;
