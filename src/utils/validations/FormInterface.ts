@@ -1,4 +1,6 @@
 export interface IFormValues {
+  idCase?: number;
+  idFAMDemanda?: number;
   nomeDaFeira: string;
   localDaFeira: string;
   horarioFuncionamento: string;
