@@ -119,7 +119,7 @@ export default function TermoSMS({ params }: { params: { id: string } }) {
         <Paragraph strong style={{ margin: "1em 0" }}>
           Termos e Condições
         </Paragraph>
-        <Paragraph>1. ESPECIFICAÇÕES</Paragraph>
+        <Paragraph strong>1. ESPECIFICAÇÕES</Paragraph>
         <Paragraph>
           1.1. O empreendimento acima identificado, devidamente selecionado pelo
           SEBRAE/ES dentro dos critérios estabelecidos (ser um empreendimento
@@ -140,7 +140,7 @@ export default function TermoSMS({ params }: { params: { id: string } }) {
           pelo SEBRAE/ES, bem como a cumprir as orientações do SEBRAE/ES e as
           condições deste Termo de Compromisso.
         </Paragraph>
-        <Paragraph>2. PAGAMENTO</Paragraph>
+        <Paragraph strong>2. PAGAMENTO</Paragraph>
         <Paragraph>
           2.1. A Título de contrapartida, correspondente a{" "}
           {mockData.percentualDeContrapartidaDoCliente} do investimento
@@ -152,7 +152,7 @@ export default function TermoSMS({ params }: { params: { id: string } }) {
           2.2. O pagamento da contrapartida consolida o compromisso do
           empreendimento na participação da feira indicada acima.
         </Paragraph>
-        <Paragraph>3. OBRIGAÇÕES DO EMPREENDIMENTO</Paragraph>
+        <Paragraph strong>3. OBRIGAÇÕES DO EMPREENDIMENTO</Paragraph>
         <Paragraph>
           3.1. O Empreendimento apoiado se compromete a inserir a logomarca do
           SEBRAE como apoiador na programação visual na estrutura do espaço ou
@@ -199,7 +199,7 @@ export default function TermoSMS({ params }: { params: { id: string } }) {
           última prioridade para futura participação em eventos subsidiados pelo
           SEBRAE.
         </Paragraph>
-        <Paragraph>4. CANCELAMENTO E DESISTÊNCIA</Paragraph>
+        <Paragraph strong>4. CANCELAMENTO E DESISTÊNCIA</Paragraph>
         <Paragraph>
           4.1. O EMPREENDIMENTO poderá solicitar a desistência de participação
           na feira com anteced~encia mínima de 30 dias, contados da data
