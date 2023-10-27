@@ -9,14 +9,14 @@ import mockData from "./mock";
 
 export default function TermoSMS({ params }: { params: { id: string } }) {
   const [enviarLiberado, setEnviarLiberado] = useState(false);
-
+  const boldText = { fontWeight: "bold" };
   return (
     <>
       <div className={styles.wrapper}>
         <LogoTipo src={LogoSebrae} alt="Logo Sebrae" width={100} height={100} />
       </div>
       <Title level={5} style={{ margin: "1em" }}>
-        Nome da feira: {mockData.nomeDaFeira}
+        <span>Nome da feira:</span> {mockData.nomeDaFeira}
       </Title>
       <div className={styles.formWrapper}>
         <Paragraph strong>
@@ -24,50 +24,56 @@ export default function TermoSMS({ params }: { params: { id: string } }) {
         </Paragraph>
         <Row justify="start">
           <Col md={12} sm={24}>
-            Razão Social: {mockData.razãoSocial}
+            <span style={boldText}>Razão Social:</span> {mockData.razãoSocial}
           </Col>
         </Row>
         <Row justify="start">
           <Col md={12} sm={24}>
-            Nome Fantasia: {mockData.nomeFantasia}
+            <span style={boldText}>Nome Fantasia:</span> {mockData.nomeFantasia}
           </Col>
           <Col md={12} sm={24}>
-            CNPJ: {mockData.CNPJ}
+            <span style={boldText}>CNPJ:</span> {mockData.CNPJ}
           </Col>
         </Row>
         <Row justify="start">
           <Col md={12} sm={24}>
-            Endereço: {mockData.enderecoEmpreendimento}
+            <span style={boldText}>Endereço: </span>
+            {mockData.enderecoEmpreendimento}
           </Col>
           <Col md={12} sm={24}>
-            Bairro: {mockData.bairroEmpreendimento}
+            <span style={boldText}>Bairro: </span>
+            {mockData.bairroEmpreendimento}
           </Col>
         </Row>
         <Row justify="start">
           <Col md={8} sm={24}>
-            Cidade: {mockData.cidadeEmpreendimento}
+            <span style={boldText}>Cidade: </span>{" "}
+            {mockData.cidadeEmpreendimento}
           </Col>
           <Col md={8} sm={24}>
-            UF: {mockData.ufEmpreendimento}
+            <span style={boldText}>UF:</span> {mockData.ufEmpreendimento}
           </Col>
           <Col md={8} sm={24}>
-            CEP: {mockData.cepEmpreendimento}
+            <span style={boldText}>CEP:</span> {mockData.cepEmpreendimento}
           </Col>
         </Row>
         <Row justify="start">
           <Col md={12} sm={24}>
-            Telefone: {mockData.telefoneEmpreendimento}
+            <span style={boldText}>Telefone:</span>{" "}
+            {mockData.telefoneEmpreendimento}
           </Col>
           <Col md={12} sm={24}>
-            E-mail: {mockData.emailEmpreendimento}
+            <span style={boldText}>E-mail:</span> {mockData.emailEmpreendimento}
           </Col>
         </Row>
         <Row justify="start">
           <Col md={12} sm={24}>
-            Nº de Empregados: {mockData.qtdEmpregados}
+            <span style={boldText}>Nº de Empregados:</span>{" "}
+            {mockData.qtdEmpregados}
           </Col>
           <Col md={12} sm={24}>
-            Data de Anertura: {mockData.dataAbertura}
+            <span style={boldText}>Data de Abertura:</span>{" "}
+            {mockData.dataAbertura}
           </Col>
         </Row>
         <Paragraph strong style={{ margin: "1em 0" }}>
@@ -75,37 +81,39 @@ export default function TermoSMS({ params }: { params: { id: string } }) {
         </Paragraph>
         <Row justify="start">
           <Col md={12} sm={24}>
-            Nome: {mockData.nome}
+            <span style={boldText}>Nome:</span> {mockData.nome}
           </Col>
           <Col md={12} sm={24}>
-            CPF: {mockData.CPF}
+            <span style={boldText}>CPF:</span> {mockData.CPF}
           </Col>
         </Row>
         <Row justify="start">
           <Col md={12} sm={24}>
-            Endereço: {mockData.enderecoResponsavel}
+            <span style={boldText}>Endereço:</span>{" "}
+            {mockData.enderecoResponsavel}
           </Col>
           <Col md={12} sm={24}>
-            Bairro: {mockData.bairroResponsavel}
+            <span style={boldText}>Bairro:</span> {mockData.bairroResponsavel}
           </Col>
         </Row>
         <Row justify="start">
           <Col md={8} sm={24}>
-            Cidade: {mockData.cidadeResponsavel}
+            <span style={boldText}>Cidade:</span> {mockData.cidadeResponsavel}
           </Col>
           <Col md={8} sm={24}>
-            UF: {mockData.ufResponsavel}
+            <span style={boldText}>UF:</span> {mockData.ufResponsavel}
           </Col>
           <Col md={8} sm={24}>
-            CEP: {mockData.cepResponsavel}
+            <span style={boldText}>CEP:</span> {mockData.cepResponsavel}
           </Col>
         </Row>
         <Row justify="start">
           <Col md={12} sm={24}>
-            Telefone: {mockData.telefoneResponsavel}
+            <span style={boldText}>Telefone:</span>{" "}
+            {mockData.telefoneResponsavel}
           </Col>
           <Col md={12} sm={24}>
-            E-mail: {mockData.emailResponsavel}
+            <span style={boldText}>E-mail:</span> {mockData.emailResponsavel}
           </Col>
         </Row>
         <Paragraph strong style={{ margin: "1em 0" }}>
