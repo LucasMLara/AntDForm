@@ -9,7 +9,6 @@ import styles from "../app/styles.module.css";
 import Header from "@/components/Header";
 import Cabecalho from "./Cabecalho";
 import buscarCliente from "@/utils/getClient";
-import CriarCaso from "@/utils/CreateCase";
 import {
   FeirasSchema,
   MOCK_VALUES,
@@ -18,7 +17,7 @@ import {
 import LogoTipo from "@/components/Image";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import LogoSebrae from "../../public/SebraeLogo.svg";
-import { useContext, useState, useCallback } from "react";
+import { useContext, useState, useCallback, useEffect } from "react";
 import { FormContext } from "@/utils/validations/FormContext";
 import type { RangePickerProps } from "antd/es/date-picker";
 import UploadInput from "./UploadInput";
@@ -28,6 +27,7 @@ import TextAreaInput from "./TextAreaInput";
 import Paragraph from "antd/es/typography/Paragraph";
 import { IFormValues } from "@/utils/validations/FormInterface";
 import criarCaso from "@/utils/CreateCase";
+import getDemanda from "@/utils/getDemanda";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -46,6 +46,24 @@ const FormFeira = () => {
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     return current && current < defaultEndDate;
   };
+
+  const pegarCasoExistente = useCallback(async () => {
+    const res = await getDemanda(251);
+    const data = await res;
+    return data;
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await pegarCasoExistente();
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [pegarCasoExistente]);
 
   const enviarForm = useCallback(
     async (data: IFormValues) => {
@@ -69,6 +87,7 @@ const FormFeira = () => {
         ...rest,
       };
       const casoCriado = await criarCaso(bodyReq);
+      console.log(casoCriado);
       console.log(
         casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
           .createCasesResult.processes.process.processRadNumber
