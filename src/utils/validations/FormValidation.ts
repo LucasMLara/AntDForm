@@ -16,17 +16,13 @@ const replaceNonIntegerChars = (
 export const FeirasSchema = Yup.object().shape({
   NomeFeiraEventoNegocio: Yup.string()
     .min(2, "Entre com um nome válido")
-    .max(50, "Nome muito comprido!")
     .required("Campo obrigatório!"),
   Localidade: Yup.string()
     .min(2, "Entre com um nome válido")
-    .max(50, "Nome muito comprido!")
     .required("Campo obrigatório!"),
   HorarioFuncionamento: Yup.string()
     .min(2, "Entre com um nome válido")
-    .max(50, "Nome muito comprido!")
     .required("Campo obrigatório!"),
-
   periodoEvento: Yup.array()
     .test("periodoEvento", "Preencha corretamente as datas", (e) => {
       const data1 = e?.[0]?.[0];
@@ -80,34 +76,33 @@ export const FeirasSchema = Yup.object().shape({
       .required("Campo obrigatório"),
   }),
   RepresentanteRealizadora: Yup.string().required("Campo obrigatório"),
-  // representanteOrganizadora: Yup.string().required("Campo obrigatório"),
+  RepresentanteOrganizadora: Yup.string().required("Campo obrigatório"),
   CpfRepresentRealizadora: replaceNonIntegerChars(
     "Campo Obrigatório",
     11,
     "Insira 11 dígitos"
   ),
-  // cpfRepresentanteOrganizadora: replaceNonIntegerChars(
-  //   "Campo Obrigatório",
-  //   11,
-  //   "Insira 11 dígitos"
-  // ),
-  // empresasApoiadoras: Yup.string().required("Campo obrigatório"),
-  // descritivoEvento: Yup.string()
-  //   .min(1500, "Requer no mínimo 1500 caracteres")
-  //   .required("Campo obrigatório"),
-  // expectativaPubExpositor: Yup.string().required("Campo obrigatório"),
-  // expectativaPubVisitante: Yup.string().required("Campo obrigatório"),
-  // dadosUltimasEdicoes: Yup.string().required("Campo obrigatório"),
-  // planoComunicacaoEvento: Yup.string().required("Campo obrigatório"),
-  // descritivoEstruturaMontagem: Yup.string().required("Campo obrigatório"),
-  // valorLocacaoLivre: Yup.string().required("Campo obrigatório"),
-  // valorLocacaoMontada: Yup.string().required("Campo obrigatório"),
-  // txsAdicionais: Yup.string().required("Campo obrigatório"),
-  // outrosBeneficios: Yup.string().required("Campo obrigatório"),
-  // infoAdicional: Yup.string().required("Campo obrigatório"),
-  // plantaBaixa: Yup.string().required("Campo obrigatório"),
-  // comprovanteExclusividadeRegistroINPI:
-  //   Yup.string().required("Campo obrigatório"),
+  CpfRepresentOrganizadora: replaceNonIntegerChars(
+    "Campo Obrigatório",
+    11,
+    "Insira 11 dígitos"
+  ),
+  EmpApoiadorasParceriaEvt: Yup.string().required("Campo obrigatório"),
+  DescritivodoEventoObjetivo: Yup.string()
+    .min(1500, "Requer no mínimo 1500 caracteres")
+    .required("Campo obrigatório"),
+  ExpectativadePublicoExposi: Yup.string().required("Campo obrigatório"),
+  ExpectativaPublVisitante: Yup.string().required("Campo obrigatório"),
+  DadosUltimas3Edicoes: Yup.string().required("Campo obrigatório"),
+  PlanoComunicacaoEvento: Yup.string().required("Campo obrigatório"),
+  EstruturadeMontagemeInsumo: Yup.string().required("Campo obrigatório"),
+  ValorLocacaoAreaLivre: Yup.string().required("Campo obrigatório"),
+  ValorLocacaoAreaMontada: Yup.string().required("Campo obrigatório"),
+  TaxasAdicionais: Yup.string().required("Campo obrigatório"),
+  OutrosbeneficiosLocacao: Yup.string().required("Campo obrigatório"),
+  InformacoesAdicionais: Yup.string().required("Campo obrigatório"),
+  PlantaBaixa: Yup.string().required("Campo obrigatório"),
+  ComprovantedeExclusividade: Yup.string().required("Campo obrigatório"),
 });
 
 export const INITIAL_VALUES: IFormValues = {

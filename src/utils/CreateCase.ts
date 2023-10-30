@@ -7,7 +7,7 @@ async function criarCaso(formValues: IFormValues) {
   const {
     NomeFeiraEventoNegocio,
     Localidade,
-    // periodoEvento,
+    periodoEvento,
     HorarioFuncionamento,
     ValorEntradaVisitantes,
     EmpresaRealizadoraFeira,
@@ -32,9 +32,10 @@ async function criarCaso(formValues: IFormValues) {
     ComprovantedeExclusividade,
     ContratosLocacaoEspaco,
     ManualExpositorRegrasExpo,
-    DataFim,
-    DataInicio,
   } = formValues;
+
+  const [dataInicial] = periodoEvento as any;
+  const [DataInicio, DataFim] = dataInicial;
 
   const url =
     "http://10.9.4.162/ESAmbienteBPMS/webservices/workflowenginesoa.asmx";

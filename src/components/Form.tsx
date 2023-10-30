@@ -55,16 +55,19 @@ const FormFeira = () => {
   }, [id]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await pegarCasoExistente();
-        console.log(data.EmpresaRealizadoraFeira);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [pegarCasoExistente]);
+    if(id) {
+
+      const fetchData = async () => {
+        try {
+          const data = await pegarCasoExistente();
+          console.log(data.EmpresaRealizadoraFeira);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    }
+  }, [pegarCasoExistente, id]);
 
   const enviarForm = useCallback(
     async (data: IFormValues) => {
@@ -87,6 +90,7 @@ const FormFeira = () => {
         periodoEvento,
         ...rest,
       };
+
       const casoCriado = await criarCaso(bodyReq);
       console.log(casoCriado);
       console.log(
@@ -107,7 +111,7 @@ const FormFeira = () => {
       <Formik
         initialValues={INITIAL_VALUES}
         validationSchema={FeirasSchema}
-        onSubmit={(values: IFormValues) => /* enviarForm(values) */ console.log(values)}
+        onSubmit={(values: IFormValues) => enviarForm(values)}
       >
         {({
           values,
@@ -179,6 +183,7 @@ const FormFeira = () => {
               required
             />
             <Cabecalho title="2. PRINCIPAIS INSTITUIÇÕES ENVOLVIDAS" size={5} />
+            {/*--------REALIZADORA--------*/}
             <Cabecalho title="Empresa Realizadora" size={5} />
             <Row gutter={25}>
               <Col xs={24} md={12}>
@@ -201,7 +206,6 @@ const FormFeira = () => {
                     if (clientDoc.length === 14) {
                       setBuscandoCliente(true);
                       const realizadora = await buscarCliente(clientDoc);
-                      console.log('realizadora', realizadora)
                       setBuscandoCliente(false);
                       if (realizadora) {
                         setFieldValue(
@@ -368,6 +372,7 @@ const FormFeira = () => {
                 />
               </Col>
             </Row>
+            {/*--------ORGANIZADORA--------*/}
             <Cabecalho title="Empresa Organizadora" size={5} />
             <Row gutter={25}>
               <Col xs={24} md={12}>
@@ -392,15 +397,15 @@ const FormFeira = () => {
                       setBuscandoCliente(false);
                       if (organizadora) {
                         setFieldValue(
-                          "idEmpresaOrganizadora",
+                          "EmpresaOrganizadoraFeira.id",
                           organizadora["_attributes"]["key"]
                         );
                         setFieldValue(
-                          "empresaOrganizadora",
+                          "EmpresaOrganizadoraFeira.Nome",
                           organizadora.Nome._text
                         );
                         setFieldValue(
-                          "contatoRepresentanteOrganizadora",
+                          "EmpresaOrganizadoraFeira.Telefone",
                           organizadora.Telefone._text
                             .replace(" ", "")
                             .replace("-", "")
@@ -409,26 +414,23 @@ const FormFeira = () => {
                         );
                         if (organizadora.Email._text)
                           setFieldValue(
-                            "emailRepresentanteOrganizadora",
+                            "EmpresaOrganizadoraFeira.Email",
                             organizadora.Email._text
                           );
                         setFieldValue(
-                          "enderecoOrganizadora",
+                          "EmpresaOrganizadoraFeira.Rua",
                           organizadora.Rua._text
                         );
                         setFieldValue(
-                          "bairroOrganizadora",
+                          "EmpresaOrganizadoraFeira.Bairro",
                           organizadora.Bairro._text
                         );
                         setFieldValue(
-                          "cidadeOrganizadora",
+                          "EmpresaOrganizadoraFeira.Cidade",
                           organizadora.Cidade._text
                         );
-                        setFieldValue("ufOrganizadora", organizadora.UF._text);
-                        setFieldValue(
-                          "cepOrganizadora",
-                          organizadora.CEP._text
-                        );
+                        setFieldValue("EmpresaOrganizadoraFeira.UF", organizadora.UF._text);
+                        setFieldValue("EmpresaOrganizadoraFeira.CEP",organizadora.CEP._text);
                         message.success(
                           `Empresa encontrada: ${organizadora.Nome._text} `
                         );
@@ -442,8 +444,8 @@ const FormFeira = () => {
                   }}
                   label="CNPJ"
                   required
-                  name="docOrganizadora"
-                  value={values.docOrganizadora}
+                  name="EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA"
+                  value={values.EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA}
                   maxLength={14}
                   showCount
                 />
@@ -452,10 +454,10 @@ const FormFeira = () => {
             <Row>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("enderecoOrganizadora")}
-                  value={values.enderecoOrganizadora}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.Rua")}
+                  value={values.EmpresaOrganizadoraFeira.Rua}
                   label="Endereço"
-                  name="enderecoOrganizadora"
+                  name="EmpresaOrganizadoraFeira.Rua"
                   type="text"
                   required
                   disabled
@@ -463,10 +465,10 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("bairroOrganizadora")}
-                  value={values.bairroOrganizadora}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.Bairro")}
+                  value={values.EmpresaOrganizadoraFeira.Bairro}
                   label="Bairro"
-                  name="bairroOrganizadora"
+                  name="EmpresaOrganizadoraFeira.Bairro"
                   type="text"
                   required
                   disabled
@@ -476,10 +478,10 @@ const FormFeira = () => {
             <Row gutter={25}>
               <Col xs={24} md={8}>
                 <TextInput
-                  handleChange={handleChange("cidadeOrganizadora")}
-                  value={values.cidadeOrganizadora}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.Cidade")}
+                  value={values.EmpresaOrganizadoraFeira.Cidade}
                   label="Cidade"
-                  name="cidadeOrganizadora"
+                  name="EmpresaOrganizadoraFeira.Cidade"
                   type="text"
                   required
                   disabled
@@ -487,10 +489,10 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={8}>
                 <TextInput
-                  handleChange={handleChange("ufOrganizadora")}
-                  value={values.ufOrganizadora}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.UF")}
+                  value={values.EmpresaOrganizadoraFeira.UF}
                   label="UF"
-                  name="ufOrganizadora"
+                  name="EmpresaOrganizadoraFeira.UF"
                   type="text"
                   required
                   disabled
@@ -498,10 +500,10 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={8}>
                 <TextInput
-                  handleChange={handleChange("cepOrganizadora")}
-                  value={values.cepOrganizadora}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.CEP")}
+                  value={values.EmpresaOrganizadoraFeira.CEP}
                   label="CEP"
-                  name="cepOrganizadora"
+                  name="EmpresaOrganizadoraFeira.CEP"
                   type="text"
                   required
                   disabled
@@ -511,20 +513,20 @@ const FormFeira = () => {
             <Row gutter={25}>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("representanteOrganizadora")}
-                  value={values.representanteOrganizadora}
+                  handleChange={handleChange("RepresentanteOrganizadora")}
+                  value={values.RepresentanteOrganizadora}
                   label="Representante Legal"
-                  name="representanteOrganizadora"
+                  name="RepresentanteOrganizadora"
                   type="text"
                   required
                 />
               </Col>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("cpfRepresentanteOrganizadora")}
-                  value={values.cpfRepresentanteOrganizadora}
+                  handleChange={handleChange("CpfRepresentOrganizadora")}
+                  value={values.CpfRepresentOrganizadora}
                   label="CPF"
-                  name="cpfRepresentanteOrganizadora"
+                  name="CpfRepresentOrganizadora"
                   type="text"
                   required
                   onlyNumbersInput
@@ -538,11 +540,11 @@ const FormFeira = () => {
               <Col xs={24} md={12}>
                 <TextInput
                   handleChange={handleChange(
-                    "contatoRepresentanteOrganizadora"
+                    "EmpresaOrganizadoraFeira.Telefone"
                   )}
-                  value={values.contatoRepresentanteOrganizadora}
+                  value={values.EmpresaOrganizadoraFeira.Telefone}
                   label="Telefone"
-                  name="contatoRepresentanteOrganizadora"
+                  name="EmpresaOrganizadoraFeira.Telefone"
                   type="text"
                   required
                   onlyNumbersInput
@@ -551,10 +553,10 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("emailRepresentanteOrganizadora")}
-                  value={values.emailRepresentanteOrganizadora}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.Email")}
+                  value={values.EmpresaOrganizadoraFeira.Email}
                   label="Email"
-                  name="emailRepresentanteOrganizadora"
+                  name="EmpresaOrganizadoraFeira.Email"
                   type="email"
                   required
                 />
@@ -562,18 +564,18 @@ const FormFeira = () => {
             </Row>
             <Cabecalho title="3. Empresas Apoiadoras:" size={4} />
             <TextAreaInput
-              handleChange={handleChange("empresasApoiadoras")}
-              value={values.empresasApoiadoras}
-              name="empresasApoiadoras"
+              handleChange={handleChange("EmpApoiadorasParceriaEvt")}
+              value={values.EmpApoiadorasParceriaEvt}
+              name="EmpApoiadorasParceriaEvt"
               type="textarea"
               antdComponent={TextArea}
               required
             />
             <Cabecalho title="4. Descritivo do Evento / Objetivo:" size={4} />
             <TextAreaInput
-              handleChange={handleChange("descritivoEvento")}
-              value={values.descritivoEvento}
-              name="descritivoEvento"
+              handleChange={handleChange("DescritivodoEventoObjetivo")}
+              value={values.DescritivodoEventoObjetivo}
+              name="DescritivodoEventoObjetivo"
               type="textarea"
               antdComponent={TextArea}
               required
@@ -582,26 +584,26 @@ const FormFeira = () => {
               showCount
             />
             <TextInput
-              handleChange={handleChange("expectativaPubExpositor")}
-              value={values.expectativaPubExpositor}
+              handleChange={handleChange("ExpectativadePublicoExposi")}
+              value={values.ExpectativadePublicoExposi}
               label="Expectativa de Público Expositor"
-              name="expectativaPubExpositor"
+              name="ExpectativadePublicoExposi"
               type="text"
               required
             />
             <TextInput
-              handleChange={handleChange("expectativaPubVisitante")}
-              value={values.expectativaPubVisitante}
+              handleChange={handleChange("ExpectativaPublVisitante")}
+              value={values.ExpectativaPublVisitante}
               label="Expectativa de Público Visitante"
-              name="expectativaPubVisitante"
+              name="ExpectativaPublVisitante"
               type="text"
               required
             />
             <Cabecalho title="5. Dados das Últimas 03 edições:" size={4} />
             <TextAreaInput
-              handleChange={handleChange("dadosUltimasEdicoes")}
-              value={values.dadosUltimasEdicoes}
-              name="dadosUltimasEdicoes"
+              handleChange={handleChange("DadosUltimas3Edicoes")}
+              value={values.DadosUltimas3Edicoes}
+              name="DadosUltimas3Edicoes"
               type="textarea"
               antdComponent={TextArea}
               required
@@ -609,9 +611,9 @@ const FormFeira = () => {
             />
             <Cabecalho title="6. Plano de Comunicação do Evento:" size={4} />
             <TextAreaInput
-              handleChange={handleChange("planoComunicacaoEvento")}
-              value={values.planoComunicacaoEvento}
-              name="planoComunicacaoEvento"
+              handleChange={handleChange("PlanoComunicacaoEvento")}
+              value={values.PlanoComunicacaoEvento}
+              name="PlanoComunicacaoEvento"
               type="textarea"
               antdComponent={TextArea}
               required
@@ -619,55 +621,55 @@ const FormFeira = () => {
             />
             <Cabecalho title="7. Objeto da Proposta e Valores:" size={4} />
             <TextInput
-              handleChange={handleChange("valorLocacaoLivre")}
-              value={values.valorLocacaoLivre}
+              handleChange={handleChange("ValorLocacaoAreaLivre")}
+              value={values.ValorLocacaoAreaLivre}
               label="Valor de Locação da Área Livre (R$/m²)"
-              name="valorLocacaoLivre"
+              name="ValorLocacaoAreaLivre"
               type="text"
               onlyNumbersInput
               required
             />
             <TextInput
-              handleChange={handleChange("valorLocacaoMontada")}
-              value={values.valorLocacaoMontada}
+              handleChange={handleChange("ValorLocacaoAreaMontada")}
+              value={values.ValorLocacaoAreaMontada}
               label="Valor de Locação da Área Montada (Área com estande montado)
               (R$/m²)"
-              name="valorLocacaoMontada"
+              name="ValorLocacaoAreaMontada"
               onlyNumbersInput
               type="text"
               required
             />
             <TextAreaInput
-              handleChange={handleChange("descritivoEstruturaMontagem")}
-              value={values.descritivoEstruturaMontagem}
+              handleChange={handleChange("EstruturadeMontagemeInsumo")}
+              value={values.EstruturadeMontagemeInsumo}
               label="Descritivo da Estrutura de montagem e insumos de locação da área
               montada"
-              name="descritivoEstruturaMontagem"
+              name="EstruturadeMontagemeInsumo"
               type="textarea"
               antdComponent={TextArea}
               required
             />
             <TextInput
-              handleChange={handleChange("txsAdicionais")}
-              value={values.txsAdicionais}
+              handleChange={handleChange("TaxasAdicionais")}
+              value={values.TaxasAdicionais}
               label="Taxas Adicionais"
-              name="txsAdicionais"
+              name="TaxasAdicionais"
               type="text"
               required
             />
             <TextInput
-              handleChange={handleChange("outrosBeneficios")}
-              value={values.outrosBeneficios}
+              handleChange={handleChange("OutrosbeneficiosLocacao")}
+              value={values.OutrosbeneficiosLocacao}
               label="Outros benefícios"
-              name="outrosBeneficios"
+              name="OutrosbeneficiosLocacao"
               type="text"
               required
             />
             <Cabecalho title="8. Informações Adicionais:" size={4} />
             <TextAreaInput
-              handleChange={handleChange("infoAdicional")}
-              value={values.infoAdicional}
-              name="infoAdicional"
+              handleChange={handleChange("InformacoesAdicionais")}
+              value={values.InformacoesAdicionais}
+              name="InformacoesAdicionais"
               type="textarea"
               antdComponent={TextArea}
               required
@@ -679,31 +681,31 @@ const FormFeira = () => {
               }}
               onChange={(value: any) => {
                 if (value.status === "removed") {
-                  setFieldValue("plantaBaixa", "");
+                  setFieldValue("PlantaBaixa", "");
                   setListFiles((ps) => ps.filter((val) => val.name !== value));
                   return;
                 }
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
                 );
-                setFieldValue("plantaBaixa", value.name);
+                setFieldValue("PlantaBaixa", value.name);
               }}
               label="Planta Baixa"
-              name="plantaBaixa"
-              id="plantaBaixa"
+              name="PlantaBaixa"
+              id="PlantaBaixa"
               required
             />
             <UploadInput
               onRemove={(value) => {
                 setListFiles((ps) => ps.filter((val) => val.name !== value));
               }}
-              id="comprovanteExclusividadeRegistroINPI"
+              id="ComprovantedeExclusividade"
               label="Comprovante de Exclusividade / Registro INPI"
-              name="comprovanteExclusividadeRegistroINPI"
+              name="ComprovantedeExclusividade"
               required
               onChange={(value: any) => {
                 if (value.status === "removed") {
-                  setFieldValue("comprovanteExclusividadeRegistroINPI", "");
+                  setFieldValue("ComprovantedeExclusividade", "");
                   setListFiles((ps) => ps.filter((val) => val.name !== value));
                   return;
                 }
@@ -711,7 +713,7 @@ const FormFeira = () => {
                   ps.length > 0 ? [...ps, value] : [value]
                 );
                 setFieldValue(
-                  "comprovanteExclusividadeRegistroINPI",
+                  "ComprovantedeExclusividade",
                   value.name
                 );
               }}
@@ -720,53 +722,46 @@ const FormFeira = () => {
               onRemove={(value) => {
                 setListFiles((ps) => ps.filter((val) => val.name !== value));
               }}
-              id="contratoLocacao"
+              id="ContratosLocacaoEspaco"
               label="Contrato de Locação de espaço"
-              name="contratoLocacao"
+              name="ContratosLocacaoEspaco"
               onChange={(value: any) => {
                 if (value.status === "removed") {
-                  setFieldValue("contratoLocacao", "");
+                  setFieldValue("ContratosLocacaoEspaco", "");
                   setListFiles((ps) => ps.filter((val) => val.name !== value));
                   return;
                 }
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
                 );
-                setFieldValue("contratoLocacao", value.name);
+                setFieldValue("ContratosLocacaoEspaco", value.name);
               }}
             />
             <UploadInput
               onRemove={(value) => {
                 setListFiles((ps) => ps.filter((val) => val.name !== value));
               }}
-              id="manualExpositor"
+              id="ManualExpositorRegrasExpo"
               label="Manual do Expositor ou Regras para Exposição"
-              name="manualExpositor"
+              name="ManualExpositorRegrasExpo"
               onChange={(value: any) => {
                 if (value.status === "removed") {
-                  setFieldValue("manualExpositor", "");
+                  setFieldValue("ManualExpositorRegrasExpo", "");
                   setListFiles((ps) => ps.filter((val) => val.name !== value));
                   return;
                 }
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
                 );
-                setFieldValue("manualExpositor", value.name);
+                setFieldValue("ManualExpositorRegrasExpo", value.name);
               }}
             />
             <Row style={{ margin: "1em", padding: "1em" }}>
               <ModalTermos />
             </Row>
             <Row style={{ justifyContent: "center" }}>
+              
               <Button
-                type="primary"
-                htmlType="submit"
-                style={{ width: "40%" }}
-              >
-                {/* {isSubmitting ? <Spin /> : "Enviar"} */}
-                TESTE
-              </Button>
-              {/* <Button
                 type="primary"
                 disabled={!termo || isSubmitting}
                 title={
@@ -776,7 +771,7 @@ const FormFeira = () => {
                 style={{ width: "40%" }}
               >
                 {isSubmitting ? <Spin /> : "Enviar"}
-              </Button> */}
+              </Button>
             </Row>
           </Form>
         )}
