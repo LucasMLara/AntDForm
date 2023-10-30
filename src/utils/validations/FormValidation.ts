@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { IFormValues } from "./FormInterface";
 
 const replaceNonIntegerChars = (
   message = "Campo obrigatório!",
@@ -13,14 +14,19 @@ const replaceNonIntegerChars = (
     .required(message);
 
 export const FeirasSchema = Yup.object().shape({
-  nomeDaFeira: Yup.string()
+  NomeFeiraEventoNegocio: Yup.string()
     .min(2, "Entre com um nome válido")
     .max(50, "Nome muito comprido!")
     .required("Campo obrigatório!"),
-  localDaFeira: Yup.string()
+  Localidade: Yup.string()
     .min(2, "Entre com um nome válido")
     .max(50, "Nome muito comprido!")
     .required("Campo obrigatório!"),
+  HorarioFuncionamento: Yup.string()
+    .min(2, "Entre com um nome válido")
+    .max(50, "Nome muito comprido!")
+    .required("Campo obrigatório!"),
+
   periodoEvento: Yup.array()
     .test("periodoEvento", "Preencha corretamente as datas", (e) => {
       const data1 = e?.[0]?.[0];
@@ -28,173 +34,124 @@ export const FeirasSchema = Yup.object().shape({
       return data1 || data2;
     })
     .required("Campo Obrigatório"),
-  horarioFuncionamento: Yup.string()
-    .min(2, "Entre com um nome válido")
-    .max(50, "Nome muito comprido!")
-    .required("Campo obrigatório!"),
-  valorEntradaVisitantes: Yup.string().required("Campo obrigatório!"),
-  docRealizadora: replaceNonIntegerChars(
-    "Campo Obrigatório",
-    14,
-    "Insira 14 dígitos"
-  ),
-  docOrganizadora: replaceNonIntegerChars(
-    "Campo Obrigatório",
-    14,
-    "Insira 14 dígitos"
-  ),
-  representanteRealizadora: Yup.string().required("Campo obrigatório"),
-  representanteOrganizadora: Yup.string().required("Campo obrigatório"),
-  cpfRepresentanteRealizadora: replaceNonIntegerChars(
-    "Campo Obrigatório",
-    11,
-    "Insira 11 dígitos"
-  ),
-  cpfRepresentanteOrganizadora: replaceNonIntegerChars(
-    "Campo Obrigatório",
-    11,
-    "Insira 11 dígitos"
-  ),
-  emailRepresentanteRealizadora: Yup.string()
-    .email("Formato de email inválido")
-    .required("Campo obrigatório!"),
-  contatoRepresentanteRealizadora: replaceNonIntegerChars(
-    "Campo Obrigatório",
-    11,
-    "Insira 11 dígitos"
-  ),
-  contatoRepresentanteOrganizadora: replaceNonIntegerChars(
-    "Campo Obrigatório",
-    11,
-    "Insira 11 dígitos"
-  ),
-  emailRepresentanteOrganizadora: Yup.string()
-    .email("Formato de email inválido")
-    .required("Campo obrigatório!"),
-  empresasApoiadoras: Yup.string().required("Campo obrigatório"),
-  descritivoEvento: Yup.string()
-    .min(1500, "Requer no mínimo 1500 caracteres")
-    .required("Campo obrigatório"),
-  expectativaPubExpositor: Yup.string().required("Campo obrigatório"),
-  expectativaPubVisitante: Yup.string().required("Campo obrigatório"),
-  dadosUltimasEdicoes: Yup.string().required("Campo obrigatório"),
-  planoComunicacaoEvento: Yup.string().required("Campo obrigatório"),
-  descritivoEstruturaMontagem: Yup.string().required("Campo obrigatório"),
-  valorLocacaoLivre: Yup.string().required("Campo obrigatório"),
-  valorLocacaoMontada: Yup.string().required("Campo obrigatório"),
-  txsAdicionais: Yup.string().required("Campo obrigatório"),
-  outrosBeneficios: Yup.string().required("Campo obrigatório"),
-  infoAdicional: Yup.string().required("Campo obrigatório"),
-  plantaBaixa: Yup.string().required("Campo obrigatório"),
-  comprovanteExclusividadeRegistroINPI:
-    Yup.string().required("Campo obrigatório"),
+  ValorEntradaVisitantes: Yup.string().required("Campo obrigatório!"),
+  EmpresaRealizadoraFeira: Yup.object().shape({
+    CGCCFO_SEMMASCARA: replaceNonIntegerChars(
+      "Campo Obrigatório",
+      14,
+      "Insira 14 dígitos"
+    ),
+    Nome: Yup.string().required("Campo obrigatório"),
+    Bairro: Yup.string().required("Campo obrigatório"),
+    CEP: Yup.string().required("Campo obrigatório"),
+    Cidade: Yup.string().required("Campo obrigatório"),
+    UF: Yup.string().required("Campo obrigatório"),
+    Email: Yup.string()
+      .email("Formato de email inválido")
+      .required("Campo obrigatório"),
+  }),
+  EmpresaOrganizadoraFeira: Yup.object().shape({
+    CGCCFO_SEMMASCARA: replaceNonIntegerChars(
+      "Campo Obrigatório",
+      14,
+      "Insira 14 dígitos"
+    ),
+    Nome: Yup.string().required("Campo obrigatório"),
+    Bairro: Yup.string().required("Campo obrigatório"),
+    CEP: Yup.string().required("Campo obrigatório"),
+    Cidade: Yup.string().required("Campo obrigatório"),
+    UF: Yup.string().required("Campo obrigatório"),
+    Email: Yup.string()
+      .email("Formato de email inválido")
+      .required("Campo obrigatório"),
+  }),
+  // representanteRealizadora: Yup.string().required("Campo obrigatório"),
+  // representanteOrganizadora: Yup.string().required("Campo obrigatório"),
+  // cpfRepresentanteRealizadora: replaceNonIntegerChars(
+  //   "Campo Obrigatório",
+  //   11,
+  //   "Insira 11 dígitos"
+  // ),
+  // cpfRepresentanteOrganizadora: replaceNonIntegerChars(
+  //   "Campo Obrigatório",
+  //   11,
+  //   "Insira 11 dígitos"
+  // ),
+  // empresasApoiadoras: Yup.string().required("Campo obrigatório"),
+  // descritivoEvento: Yup.string()
+  //   .min(1500, "Requer no mínimo 1500 caracteres")
+  //   .required("Campo obrigatório"),
+  // expectativaPubExpositor: Yup.string().required("Campo obrigatório"),
+  // expectativaPubVisitante: Yup.string().required("Campo obrigatório"),
+  // dadosUltimasEdicoes: Yup.string().required("Campo obrigatório"),
+  // planoComunicacaoEvento: Yup.string().required("Campo obrigatório"),
+  // descritivoEstruturaMontagem: Yup.string().required("Campo obrigatório"),
+  // valorLocacaoLivre: Yup.string().required("Campo obrigatório"),
+  // valorLocacaoMontada: Yup.string().required("Campo obrigatório"),
+  // txsAdicionais: Yup.string().required("Campo obrigatório"),
+  // outrosBeneficios: Yup.string().required("Campo obrigatório"),
+  // infoAdicional: Yup.string().required("Campo obrigatório"),
+  // plantaBaixa: Yup.string().required("Campo obrigatório"),
+  // comprovanteExclusividadeRegistroINPI:
+  //   Yup.string().required("Campo obrigatório"),
 });
 
-export const INITIAL_VALUES = {
-  nomeDaFeira: "",
-  localDaFeira: "",
-  horarioFuncionamento: "",
-  valorEntradaVisitantes: "250",
-  empresaRealizadora: "",
-  idEmpresaRealizadora: "",
-  empresaOrganizadora: "",
-  idEmpresaOrganizadora: "",
-  docRealizadora: "53113791000122",
+export const INITIAL_VALUES: IFormValues = {
+  NomeFeiraEventoNegocio: "",
+  Localidade: "",
+  HorarioFuncionamento: "",
+  ValorEntradaVisitantes: "",
+  EmpresaRealizadoraFeira: {
+    Nome: "",
+    Bairro: "",
+    CEP: "",
+    CGCCFO_SEMMASCARA: "",
+    Cidade: "",
+    CNPJCPF: "",
+    Email: "",
+    id: "",
+    NomeFantasia: "",
+    Numero: "",
+    Rua: "",
+    Telefone: "",
+    UF: "",
+  },
+  EmpresaOrganizadoraFeira: {
+    Nome: "",
+    Bairro: "",
+    CEP: "",
+    CGCCFO_SEMMASCARA: "",
+    Cidade: "",
+    CNPJCPF: "",
+    Email: "",
+    id: "",
+    NomeFantasia: "",
+    Numero: "",
+    Rua: "",
+    Telefone: "",
+    UF: "",
+  },
   periodoEvento: [undefined, undefined],
-  dataInicio: "",
-  dataFim: "",
-  docOrganizadora: "04138649000124",
-  enderecoRealizadora: "",
-  bairroRealizadora: "",
-  enderecoOrganizadora: "",
-  bairroOrganizadora: "",
-  cidadeRealizadora: "",
-  cidadeOrganizadora: "",
-  ufRealizadora: "",
-  ufOrganizadora: "",
-  cepRealizadora: "",
-  cepOrganizadora: "",
-  representanteRealizadora: "",
-  representanteOrganizadora: "",
-  cpfRepresentanteRealizadora: "",
-  cpfRepresentanteOrganizadora: "",
-  emailRepresentanteRealizadora: "",
-  emailRepresentanteOrganizadora: "",
-  empresasApoiadoras: "",
-  descritivoEvento: "",
-  expectativaPubExpositor: "",
-  expectativaPubVisitante: "",
-  dadosUltimasEdicoes: "",
-  planoComunicacaoEvento: "",
-  valorLocacaoLivre: "",
-  valorLocacaoMontada: "",
-  txsAdicionais: "",
-  descritivoEstruturaMontagem: "",
-  outrosBeneficios: "",
-  infoAdicional: "",
-  plantaBaixa: "",
-  comprovanteExclusividadeRegistroINPI: "",
-  contratoLocacao: "",
-  manualExpositor: "",
-  contatoRepresentanteRealizadora: "",
-  contatoRepresentanteOrganizadora: "",
-};
-export const MOCK_VALUES = {
-  nomeDaFeira: "TESTE",
-  localDaFeira: "TESTE",
-  horarioFuncionamento: "TESTE",
-  valorEntradaVisitantes: "8",
-  empresaRealizadora: "",
-  idEmpresaRealizadora: "",
-  empresaOrganizadora: "",
-  idEmpresaOrganizadora: "",
-  periodoEvento: [undefined, undefined],
-  dataInicio: "",
-  dataFim: "",
-  docRealizadora: "53113791000122",
-  docOrganizadora: "04138649000124",
-  enderecoRealizadora: "",
-  bairroRealizadora: "",
-  enderecoOrganizadora: "",
-  bairroOrganizadora: "",
-  cidadeRealizadora: "",
-  cidadeOrganizadora: "",
-  ufRealizadora: "",
-  ufOrganizadora: "",
-  cepRealizadora: "",
-  cepOrganizadora: "",
-  representanteRealizadora: "",
-  representanteOrganizadora: "",
-  cpfRepresentanteRealizadora: "",
-  cpfRepresentanteOrganizadora: "",
-  emailRepresentanteRealizadora: "",
-  emailRepresentanteOrganizadora: "",
-  empresasApoiadoras:
-    "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
-  descritivoEvento:
-    "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
-  expectativaPubExpositor:
-    "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
-  expectativaPubVisitante:
-    "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
-  dadosUltimasEdicoes:
-    "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
-  planoComunicacaoEvento:
-    "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
-  valorLocacaoLivre: "30,00",
-  valorLocacaoMontada: "123.456,58",
-  txsAdicionais:
-    "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
-  descritivoEstruturaMontagem:
-    "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
-  outrosBeneficios:
-    "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
-  infoAdicional:
-    "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
-  plantaBaixa: "",
-  comprovanteExclusividadeRegistroINPI: "",
-  contratoLocacao: "",
-  manualExpositor: "",
-  contatoRepresentanteRealizadora: "",
-  contatoRepresentanteOrganizadora: "",
+  DataInicio: "",
+  DataFim: "",
+  RepresentanteRealizadora: "",
+  RepresentanteOrganizadora: "",
+  CpfRepresentRealizadora: "",
+  CpfRepresentOrganizadora: "",
+  EmpApoiadorasParceriaEvt: "",
+  DescritivodoEventoObjetivo: "",
+  ExpectativadePublicoExposi: "",
+  ExpectativaPublVisitante: "",
+  DadosUltimas3Edicoes: "",
+  PlanoComunicacaoEvento: "",
+  ValorLocacaoAreaLivre: "",
+  ValorLocacaoAreaMontada: "",
+  TaxasAdicionais: "",
+  EstruturadeMontagemeInsumo: "",
+  OutrosbeneficiosLocacao: "",
+  InformacoesAdicionais: "",
+  PlantaBaixa: "",
+  ComprovantedeExclusividade: "",
+  ContratosLocacaoEspaco: "",
+  ManualExpositorRegrasExpo: "",
 };

@@ -18,8 +18,6 @@ export interface IFormValues {
   idCase?: number;
   idFAMDemanda?: number;
   NomeFeiraEventoNegocio: string;
-  idEmpresaRealizadora: string;
-  idEmpresaOrganizadora: string;
   EmpresaRealizadoraFeira: EmpresaFeira;
   EmpresaOrganizadoraFeira: EmpresaFeira;
   CpfRepresentOrganizadora: string;
@@ -27,7 +25,7 @@ export interface IFormValues {
   DadosUltimas3Edicoes: string;
   DataInicio: string;
   DataFim: string;
-  DataSolicitacao: string;
+  DataSolicitacao?: string;
   DescritivodoEventoObjetivo: string;
   EmpApoiadorasParceriaEvt: string;
   EstruturadeMontagemeInsumo: string;
@@ -44,7 +42,7 @@ export interface IFormValues {
   ValorEntradaVisitantes: string;
   ValorLocacaoAreaLivre: string;
   ValorLocacaoAreaMontada: string;
-  // periodoEvento?: string[] | undefined[];
+  periodoEvento?: string[] | undefined[];
   PlantaBaixa: string;
   ComprovantedeExclusividade: string;
   ContratosLocacaoEspaco: string;

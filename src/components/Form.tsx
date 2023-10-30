@@ -11,7 +11,6 @@ import Cabecalho from "./Cabecalho";
 import buscarCliente from "@/utils/getClient";
 import {
   FeirasSchema,
-  MOCK_VALUES,
   INITIAL_VALUES,
 } from "@/utils/validations/FormValidation";
 import LogoTipo from "@/components/Image";
@@ -28,6 +27,7 @@ import Paragraph from "antd/es/typography/Paragraph";
 import { IFormValues } from "@/utils/validations/FormInterface";
 import criarCaso from "@/utils/CreateCase";
 import getDemanda from "@/utils/getDemanda";
+import { useParams } from "next/navigation";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -40,6 +40,7 @@ interface CustomFile extends File {
 const FormFeira = () => {
   const [listFiles, setListFiles] = useState<Array<CustomFile>>([]);
   const [bucandoCliente, setBuscandoCliente] = useState(false);
+  const { id } = useParams()
 
   const { termo } = useContext(FormContext);
   const defaultEndDate = dayjs().add(90, "day");
@@ -48,16 +49,16 @@ const FormFeira = () => {
   };
 
   const pegarCasoExistente = useCallback(async () => {
-    const res = await getDemanda(251);
+    const res = await getDemanda(+id);
     const data = await res;
     return data;
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await pegarCasoExistente();
-        console.log(data);
+        console.log(data.EmpresaRealizadoraFeira);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -68,21 +69,21 @@ const FormFeira = () => {
   const enviarForm = useCallback(
     async (data: IFormValues) => {
       const {
-        plantaBaixa,
-        comprovanteExclusividadeRegistroINPI,
-        contratoLocacao,
-        manualExpositor,
+        PlantaBaixa,
+        ComprovantedeExclusividade,
+        ContratosLocacaoEspaco,
+        ManualExpositorRegrasExpo,
         periodoEvento,
         ...rest
       } = data;
 
       const bodyReq: IFormValues = {
-        plantaBaixa: listFiles[0] ? listFiles[0]["uid"] : "",
-        comprovanteExclusividadeRegistroINPI: listFiles[1]
+        PlantaBaixa: listFiles[0] ? listFiles[0]["uid"] : "",
+        ComprovantedeExclusividade: listFiles[1]
           ? listFiles[1]["uid"]
           : "",
-        contratoLocacao: listFiles[2] ? listFiles[2]["uid"] : "",
-        manualExpositor: listFiles[3] ? listFiles[3]["uid"] : "",
+          ContratosLocacaoEspaco: listFiles[2] ? listFiles[2]["uid"] : "",
+          ManualExpositorRegrasExpo: listFiles[3] ? listFiles[3]["uid"] : "",
         periodoEvento,
         ...rest,
       };
@@ -104,9 +105,9 @@ const FormFeira = () => {
         <LogoTipo src={LogoSebrae} alt="Logo Sebrae" width={250} height={250} />
       </div>
       <Formik
-        initialValues={MOCK_VALUES}
+        initialValues={INITIAL_VALUES}
         validationSchema={FeirasSchema}
-        onSubmit={(values: IFormValues) => enviarForm(values)}
+        onSubmit={(values: IFormValues) => /* enviarForm(values) */ console.log(values)}
       >
         {({
           values,
@@ -118,20 +119,20 @@ const FormFeira = () => {
           <Form className={styles.formWrapper} onSubmit={handleSubmit}>
             <Cabecalho title="1. DADOS GERAIS" size={4} />
             <TextInput
-              handleChange={handleChange("nomeDaFeira")}
-              value={values.nomeDaFeira}
+              handleChange={handleChange("NomeFeiraEventoNegocio")}
+              value={values.NomeFeiraEventoNegocio}
               label="Nome da Feira"
               placeholder="Insira o nome do seu evento"
-              name="nomeDaFeira"
+              name="NomeFeiraEventoNegocio"
               type="text"
               required
             />
             <TextInput
-              handleChange={handleChange("localDaFeira")}
-              value={values.localDaFeira}
+              handleChange={handleChange("Localidade")}
+              value={values.Localidade}
               label="Local"
               placeholder="Insira o local do seu evento"
-              name="localDaFeira"
+              name="Localidade"
               type="text"
               required
             />
@@ -159,20 +160,20 @@ const FormFeira = () => {
               </Col>
             </Row>
             <TextInput
-              handleChange={handleChange("horarioFuncionamento")}
-              value={values.horarioFuncionamento}
+              handleChange={handleChange("HorarioFuncionamento")}
+              value={values.HorarioFuncionamento}
               label="Horário de Funcionamento"
               placeholder="Qual o horário do funcionamento?"
-              name="horarioFuncionamento"
+              name="HorarioFuncionamento"
               type="text"
               required
             />
             <TextInput
-              handleChange={handleChange("valorEntradaVisitantes")}
-              value={values.valorEntradaVisitantes}
+              handleChange={handleChange("ValorEntradaVisitantes")}
+              value={values.ValorEntradaVisitantes}
               label="Valor da entrada dos visitantes"
               placeholder="Quanto vai custar o ingresso?"
-              name="valorEntradaVisitantes"
+              name="ValorEntradaVisitantes"
               onlyNumbersInput
               type="text"
               required
@@ -182,10 +183,10 @@ const FormFeira = () => {
             <Row gutter={25}>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("empresaRealizadora")}
-                  value={values.empresaRealizadora}
+                  handleChange={handleChange("EmpresaRealizadoraFeira.Nome")}
+                  value={values.EmpresaRealizadoraFeira.Nome}
                   label="Nome"
-                  name="empresaRealizadora"
+                  name="EmpresaRealizadoraFeira.Nome"
                   type="text"
                   required
                   disabled
@@ -194,24 +195,25 @@ const FormFeira = () => {
               <Col xs={24} md={12}>
                 <SearchClientInput
                   loading={bucandoCliente}
-                  handleChange={handleChange("docRealizadora")}
+                  handleChange={handleChange("EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA")}
                   placeholder="Insira somente números"
                   onSearch={async (clientDoc) => {
                     if (clientDoc.length === 14) {
                       setBuscandoCliente(true);
                       const realizadora = await buscarCliente(clientDoc);
+                      console.log('realizadora', realizadora)
                       setBuscandoCliente(false);
                       if (realizadora) {
                         setFieldValue(
-                          "idEmpresaRealizadora",
+                          "EmpresaRealizadoraFeira.id",
                           realizadora["_attributes"]["key"]
                         );
                         setFieldValue(
-                          "empresaRealizadora",
+                          "EmpresaRealizadoraFeira.Nome",
                           realizadora.Nome._text
                         );
                         setFieldValue(
-                          "contatoRepresentanteRealizadora",
+                          "EmpresaRealizadoraFeira.Telefone",
                           realizadora.Telefone._text
                             .replace(" ", "")
                             .replace("-", "")
@@ -220,23 +222,23 @@ const FormFeira = () => {
                         );
                         if (realizadora.Email._text)
                           setFieldValue(
-                            "emailRepresentanteRealizadora",
+                            "EmpresaRealizadoraFeira.Email",
                             realizadora.Email._text
                           );
                         setFieldValue(
-                          "enderecoRealizadora",
+                          "EmpresaRealizadoraFeira.Rua",
                           realizadora.Rua._text
                         );
                         setFieldValue(
-                          "bairroRealizadora",
+                          "EmpresaRealizadoraFeira.Bairro",
                           realizadora.Bairro._text
                         );
                         setFieldValue(
-                          "cidadeRealizadora",
+                          "EmpresaRealizadoraFeira.Cidade",
                           realizadora.Cidade._text
                         );
-                        setFieldValue("ufRealizadora", realizadora.UF._text);
-                        setFieldValue("cepRealizadora", realizadora.CEP._text);
+                        setFieldValue("EmpresaRealizadoraFeira.UF", realizadora.UF._text);
+                        setFieldValue("EmpresaRealizadoraFeira.CEP", realizadora.CEP._text);
                         message.success(
                           `Empresa encontrada: ${realizadora.Nome._text} `
                         );
@@ -250,8 +252,8 @@ const FormFeira = () => {
                   }}
                   label="CNPJ"
                   required
-                  name="docRealizadora"
-                  value={values.docRealizadora}
+                  name="EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA"
+                  value={values.EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA}
                   maxLength={14}
                   showCount
                 />
@@ -260,10 +262,10 @@ const FormFeira = () => {
             <Row>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("enderecoRealizadora")}
-                  value={values.enderecoRealizadora}
+                  handleChange={handleChange("EmpresaRealizadoraFeira.Rua")}
+                  value={values.EmpresaRealizadoraFeira.Rua}
                   label="Endereço"
-                  name="enderecoRealizadora"
+                  name="EmpresaRealizadoraFeira.Rua"
                   type="text"
                   required
                   disabled
@@ -272,7 +274,7 @@ const FormFeira = () => {
               <Col xs={24} md={12}>
                 <TextInput
                   handleChange={handleChange("bairroRealizadora")}
-                  value={values.bairroRealizadora}
+                  value={values.EmpresaRealizadoraFeira.Bairro}
                   label="Bairro"
                   name="bairroRealizadora"
                   type="text"
@@ -284,10 +286,10 @@ const FormFeira = () => {
             <Row gutter={25}>
               <Col xs={24} md={8}>
                 <TextInput
-                  handleChange={handleChange("cidadeRealizadora")}
-                  value={values.cidadeRealizadora}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.Cidade")}
+                  value={values.EmpresaRealizadoraFeira.Cidade}
                   label="Cidade"
-                  name="cidadeRealizadora"
+                  name="EmpresaOrganizadoraFeira.Cidade"
                   type="text"
                   required
                   disabled
@@ -295,10 +297,10 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={8}>
                 <TextInput
-                  handleChange={handleChange("ufRealizadora")}
-                  value={values.ufRealizadora}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.UF")}
+                  value={values.EmpresaOrganizadoraFeira.UF}
                   label="UF"
-                  name="ufRealizadora"
+                  name="EmpresaOrganizadoraFeira.UF"
                   type="text"
                   required
                   disabled
@@ -306,10 +308,10 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={8}>
                 <TextInput
-                  handleChange={handleChange("cepRealizadora")}
-                  value={values.cepRealizadora}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.CEP")}
+                  value={values.EmpresaOrganizadoraFeira.CEP}
                   label="CEP"
-                  name="cepRealizadora"
+                  name="EmpresaOrganizadoraFeira.CEP"
                   type="text"
                   required
                   disabled
@@ -319,22 +321,22 @@ const FormFeira = () => {
             <Row gutter={25}>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("representanteRealizadora")}
-                  value={values.representanteRealizadora}
+                  handleChange={handleChange("RepresentanteRealizadora")}
+                  value={values.RepresentanteRealizadora}
                   label="Representante Legal"
-                  name="representanteRealizadora"
+                  name="RepresentanteRealizadora"
                   type="text"
                   required
                 />
               </Col>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("cpfRepresentanteRealizadora")}
-                  value={values.cpfRepresentanteRealizadora}
+                  handleChange={handleChange("CpfRepresentRealizadora")}
+                  value={values.CpfRepresentRealizadora}
                   label="CPF"
                   onlyNumbersInput
                   placeholder="Insira somente números"
-                  name="cpfRepresentanteRealizadora"
+                  name="CpfRepresentRealizadora"
                   type="text"
                   required
                   showCount
@@ -345,10 +347,10 @@ const FormFeira = () => {
             <Row gutter={25}>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("contatoRepresentanteRealizadora")}
-                  value={values.contatoRepresentanteRealizadora}
+                  handleChange={handleChange("EmpresaRealizadoraFeira.Telefone")}
+                  value={values.EmpresaRealizadoraFeira.Telefone}
                   label="Telefone"
-                  name="contatoRepresentanteRealizadora"
+                  name="EmpresaRealizadoraFeira.Telefone"
                   type="text"
                   required
                   onlyNumbersInput
@@ -357,10 +359,10 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("emailRepresentanteRealizadora")}
-                  value={values.emailRepresentanteRealizadora}
+                  handleChange={handleChange("EmpresaRealizadoraFeira.Email")}
+                  value={values.EmpresaRealizadoraFeira.Email}
                   label="Email"
-                  name="emailRepresentanteRealizadora"
+                  name="EmpresaRealizadoraFeira.Email"
                   type="email"
                   required
                 />
@@ -371,7 +373,7 @@ const FormFeira = () => {
               <Col xs={24} md={12}>
                 <TextInput
                   handleChange={handleChange("empresaOrganizadora")}
-                  value={values.empresaOrganizadora}
+                  value={values.EmpresaOrganizadoraFeira.Nome}
                   label="Nome"
                   name="empresaOrganizadora"
                   type="text"
@@ -758,6 +760,14 @@ const FormFeira = () => {
             <Row style={{ justifyContent: "center" }}>
               <Button
                 type="primary"
+                htmlType="submit"
+                style={{ width: "40%" }}
+              >
+                {/* {isSubmitting ? <Spin /> : "Enviar"} */}
+                TESTE
+              </Button>
+              {/* <Button
+                type="primary"
                 disabled={!termo || isSubmitting}
                 title={
                   !termo ? "É Necessário aceitar os termos contratuais!" : ""
@@ -766,7 +776,7 @@ const FormFeira = () => {
                 style={{ width: "40%" }}
               >
                 {isSubmitting ? <Spin /> : "Enviar"}
-              </Button>
+              </Button> */}
             </Row>
           </Form>
         )}
