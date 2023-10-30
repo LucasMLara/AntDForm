@@ -273,10 +273,10 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("bairroRealizadora")}
+                  handleChange={handleChange("EmpresaRealizadoraFeira.Bairro")}
                   value={values.EmpresaRealizadoraFeira.Bairro}
                   label="Bairro"
-                  name="bairroRealizadora"
+                  name="EmpresaRealizadoraFeira.Bairro"
                   type="text"
                   required
                   disabled
@@ -286,10 +286,10 @@ const FormFeira = () => {
             <Row gutter={25}>
               <Col xs={24} md={8}>
                 <TextInput
-                  handleChange={handleChange("EmpresaOrganizadoraFeira.Cidade")}
+                  handleChange={handleChange("EmpresaRealizadoraFeira.Cidade")}
                   value={values.EmpresaRealizadoraFeira.Cidade}
                   label="Cidade"
-                  name="EmpresaOrganizadoraFeira.Cidade"
+                  name="EmpresaRealizadoraFeira.Cidade"
                   type="text"
                   required
                   disabled
@@ -297,10 +297,10 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={8}>
                 <TextInput
-                  handleChange={handleChange("EmpresaOrganizadoraFeira.UF")}
-                  value={values.EmpresaOrganizadoraFeira.UF}
+                  handleChange={handleChange("EmpresaRealizadoraFeira.UF")}
+                  value={values.EmpresaRealizadoraFeira.UF}
                   label="UF"
-                  name="EmpresaOrganizadoraFeira.UF"
+                  name="EmpresaRealizadoraFeira.UF"
                   type="text"
                   required
                   disabled
@@ -308,10 +308,10 @@ const FormFeira = () => {
               </Col>
               <Col xs={24} md={8}>
                 <TextInput
-                  handleChange={handleChange("EmpresaOrganizadoraFeira.CEP")}
-                  value={values.EmpresaOrganizadoraFeira.CEP}
+                  handleChange={handleChange("EmpresaRealizadoraFeira.CEP")}
+                  value={values.EmpresaRealizadoraFeira.CEP}
                   label="CEP"
-                  name="EmpresaOrganizadoraFeira.CEP"
+                  name="EmpresaRealizadoraFeira.CEP"
                   type="text"
                   required
                   disabled
@@ -372,10 +372,10 @@ const FormFeira = () => {
             <Row gutter={25}>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("empresaOrganizadora")}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.Nome")}
                   value={values.EmpresaOrganizadoraFeira.Nome}
                   label="Nome"
-                  name="empresaOrganizadora"
+                  name="EmpresaOrganizadoraFeira.Nome"
                   type="text"
                   required
                   disabled
@@ -384,7 +384,7 @@ const FormFeira = () => {
               <Col xs={24} md={12}>
                 <SearchClientInput
                   loading={bucandoCliente}
-                  handleChange={handleChange("docOrganizadora")}
+                  handleChange={handleChange("EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA")}
                   onSearch={async (clientDoc) => {
                     if (clientDoc.length === 14) {
                       setBuscandoCliente(true);

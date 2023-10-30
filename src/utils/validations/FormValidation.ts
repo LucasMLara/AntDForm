@@ -35,6 +35,7 @@ export const FeirasSchema = Yup.object().shape({
     })
     .required("Campo Obrigatório"),
   ValorEntradaVisitantes: Yup.string().required("Campo obrigatório!"),
+
   EmpresaRealizadoraFeira: Yup.object().shape({
     CGCCFO_SEMMASCARA: replaceNonIntegerChars(
       "Campo Obrigatório",
@@ -46,17 +47,30 @@ export const FeirasSchema = Yup.object().shape({
     CEP: Yup.string().required("Campo obrigatório"),
     Cidade: Yup.string().required("Campo obrigatório"),
     UF: Yup.string().required("Campo obrigatório"),
+    Rua: Yup.string().required("Campo obrigatório"),
+    Telefone: replaceNonIntegerChars(
+      "Campo Obrigatório",
+      11,
+      "Insira 11 dígitos"
+    ),
     Email: Yup.string()
       .email("Formato de email inválido")
       .required("Campo obrigatório"),
   }),
+
   EmpresaOrganizadoraFeira: Yup.object().shape({
+    Telefone: replaceNonIntegerChars(
+      "Campo Obrigatório",
+      11,
+      "Insira 11 dígitos"
+    ),
     CGCCFO_SEMMASCARA: replaceNonIntegerChars(
       "Campo Obrigatório",
       14,
       "Insira 14 dígitos"
     ),
     Nome: Yup.string().required("Campo obrigatório"),
+    Rua: Yup.string().required("Campo obrigatório"),
     Bairro: Yup.string().required("Campo obrigatório"),
     CEP: Yup.string().required("Campo obrigatório"),
     Cidade: Yup.string().required("Campo obrigatório"),
@@ -65,13 +79,13 @@ export const FeirasSchema = Yup.object().shape({
       .email("Formato de email inválido")
       .required("Campo obrigatório"),
   }),
-  // representanteRealizadora: Yup.string().required("Campo obrigatório"),
+  RepresentanteRealizadora: Yup.string().required("Campo obrigatório"),
   // representanteOrganizadora: Yup.string().required("Campo obrigatório"),
-  // cpfRepresentanteRealizadora: replaceNonIntegerChars(
-  //   "Campo Obrigatório",
-  //   11,
-  //   "Insira 11 dígitos"
-  // ),
+  CpfRepresentRealizadora: replaceNonIntegerChars(
+    "Campo Obrigatório",
+    11,
+    "Insira 11 dígitos"
+  ),
   // cpfRepresentanteOrganizadora: replaceNonIntegerChars(
   //   "Campo Obrigatório",
   //   11,
