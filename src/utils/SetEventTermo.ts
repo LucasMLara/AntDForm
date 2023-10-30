@@ -3,12 +3,8 @@ import { message } from "antd";
 import xmlJs from "xml-js";
 import { IFormValues } from "@/utils/validations/FormInterfaceTermo";
 
-async function revisarDemanda(formValues: IFormValues) {
-  const {
-    idCase,
-    idFAMClientesInteressados,
-    aceiteExpositor
-  } = formValues;
+async function AceitarTermo(formValues: IFormValues) {
+  const { idCase, idFAMClientesInteressados, aceiteExpositor } = formValues;
 
   const url =
     "http://10.9.4.162/ESAmbienteBPMS/webservices/workflowenginesoa.asmx";
@@ -63,4 +59,4 @@ async function revisarDemanda(formValues: IFormValues) {
   }
 }
 
-export default revisarDemanda;
+export default AceitarTermo;
