@@ -39,6 +39,7 @@ interface CustomFile extends File {
 
 const FormFeira = () => {
   const [listFiles, setListFiles] = useState<Array<CustomFile>>([]);
+  const [valoresIniciais, setValoresIniciais] = useState(INITIAL_VALUES)
   const [bucandoCliente, setBuscandoCliente] = useState(false);
   const { id } = useParams()
 
@@ -54,20 +55,51 @@ const FormFeira = () => {
     return data;
   }, [id]);
 
+  interface Values {
+    [key: string]: any;
+  }
+  
+  const processObject = useCallback((inputObject: Values): any  => {
+    return Object.entries(inputObject).map(([key, value]) => {
+      if (value._text) {
+        return { [key]: value._text };
+      }
+      if (key === 'EmpresaRealizadoraFeira' || key === 'EmpresaOrganizadoraFeira') {
+        const updatedValue: { [key: string]: string } = {};
+        Object.entries(value).forEach(([subKey, subValue]: [string, any]) => {
+          updatedValue[subKey] = subValue._text || subValue;
+        });
+        return { [key]: updatedValue };
+      }
+      return { [key]: value };
+    }).reduce((acc, curr) => {
+      return {
+        ...acc,
+        ...curr
+      };
+    }, {});
+  }, []);
+  
+
   useEffect(() => {
     if(id) {
-
       const fetchData = async () => {
         try {
           const data = await pegarCasoExistente();
-          console.log(data.EmpresaRealizadoraFeira);
+          if(data) {
+            const processedData = processObject(data);
+            setValoresIniciais(processedData);
+          }
         } catch (error) {
           console.error("Error fetching data:", error);
         }
       };
       fetchData();
     }
-  }, [pegarCasoExistente, id]);
+  }, [pegarCasoExistente, id, processObject]);
+  
+
+console.log(valoresIniciais)
 
   const enviarForm = useCallback(
     async (data: IFormValues) => {
@@ -109,7 +141,7 @@ const FormFeira = () => {
         <LogoTipo src={LogoSebrae} alt="Logo Sebrae" width={250} height={250} />
       </div>
       <Formik
-        initialValues={INITIAL_VALUES}
+        initialValues={valoresIniciais}
         validationSchema={FeirasSchema}
         onSubmit={(values: IFormValues) => enviarForm(values)}
       >
