@@ -1,5 +1,5 @@
-export interface IFormValues {
+export interface ITermo {
   idCase: number;
   idFAMClientesInteressados: number;
-  aceiteExpositor: boolean;
+  TermoAceito: boolean;
 }

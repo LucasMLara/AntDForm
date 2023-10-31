@@ -25,7 +25,7 @@ export default function TermoSMS() {
   const { id } = useParams()
 
   function convertToBRT(utcDate: string): string {
-    const brtDateTime = dayjs.utc(utcDate).tz('America/Sao_Paulo').locale('pt-br').format('DD/MM/YYYY HH:mm:ss.SSS');
+    const brtDateTime = dayjs.utc(utcDate).tz('America/Sao_Paulo').locale('pt-br').format('DD/MM/YYYY');
     return brtDateTime;
   }
   

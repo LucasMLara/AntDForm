@@ -1,3 +1,7 @@
+interface IBizagiText {
+  _text: string;
+}
+
 interface EmpresaFeira {
   Nome: string;
   Bairro: string;
@@ -15,7 +19,7 @@ interface EmpresaFeira {
 }
 
 export interface IFormValues {
-  idCase?: number;
+  radNumber?: string;
   idFAMDemanda?: number;
   NomeFeiraEventoNegocio: string;
   EmpresaRealizadoraFeira: EmpresaFeira;

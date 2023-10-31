@@ -1,10 +1,10 @@
 import { message } from "antd";
 
 import xmlJs from "xml-js";
-import { IFormValues } from "@/utils/validations/FormInterfaceTermo";
+import { ITermo } from "@/utils/validations/FormInterfaceTermo";
 
-async function AceitarTermo(formValues: IFormValues) {
-  const { idCase, idFAMClientesInteressados, aceiteExpositor } = formValues;
+async function AceitarTermo(formValues: ITermo) {
+  const { idCase, idFAMClientesInteressados, TermoAceito } = formValues;
 
   const url =
     "http://10.9.4.162/ESAmbienteBPMS/webservices/workflowenginesoa.asmx";
@@ -24,7 +24,7 @@ async function AceitarTermo(formValues: IFormValues) {
                                 </EventData>\
                                 <Entities>\
                                     <FAMClientesInteressados key="${idFAMClientesInteressados}">\
-                                        <Aceite>${aceiteExpositor}</Aceite>\                                       
+                                        <TermoAceito>${TermoAceito}</TermoAceito>\                                       
                                     </FAMClientesInteressados>\
                                 </Entities>\
                             </Events>\

@@ -5,58 +5,40 @@ import { IFormValues } from "@/utils/validations/FormInterface";
 
 async function revisarDemanda(formValues: IFormValues) {
   const {
-    idCase,
-    idFAMDemanda,
-    nomeDaFeira,
-    localDaFeira,
+    NomeFeiraEventoNegocio,
+    Localidade,
     periodoEvento,
-    horarioFuncionamento,
-    valorEntradaVisitantes,
-    idEmpresaRealizadora,
-    empresaRealizadora,
-    docRealizadora,
-    enderecoRealizadora,
-    bairroRealizadora,
-    cidadeRealizadora,
-    ufRealizadora,
-    cepRealizadora,
-    contatoRepresentanteRealizadora,
-    emailRepresentanteRealizadora,
-    representanteRealizadora,
-    cpfRepresentanteRealizadora,
-    idEmpresaOrganizadora,
-    empresaOrganizadora,
-    docOrganizadora,
-    enderecoOrganizadora,
-    bairroOrganizadora,
-    cidadeOrganizadora,
-    ufOrganizadora,
-    cepOrganizadora,
-    contatoRepresentanteOrganizadora,
-    emailRepresentanteOrganizadora,
-    representanteOrganizadora,
-    cpfRepresentanteOrganizadora,
-    empresasApoiadoras,
-    descritivoEvento,
-    expectativaPubExpositor,
-    expectativaPubVisitante,
-    dadosUltimasEdicoes,
-    planoComunicacaoEvento,
-    valorLocacaoLivre,
-    valorLocacaoMontada,
-    descritivoEstruturaMontagem,
-    txsAdicionais,
-    outrosBeneficios,
-    infoAdicional,
-    plantaBaixa,
-    comprovanteExclusividadeRegistroINPI,
-    contratoLocacao,
-    manualExpositor,
+    HorarioFuncionamento,
+    ValorEntradaVisitantes,
+    EmpresaRealizadoraFeira,
+    EmpresaOrganizadoraFeira,
+    RepresentanteRealizadora,
+    RepresentanteOrganizadora,
+    CpfRepresentRealizadora,
+    CpfRepresentOrganizadora,
+    EmpApoiadorasParceriaEvt,
+    DescritivodoEventoObjetivo,
+    ExpectativadePublicoExposi,
+    ExpectativaPublVisitante,
+    DadosUltimas3Edicoes,
+    PlanoComunicacaoEvento,
+    ValorLocacaoAreaLivre,
+    ValorLocacaoAreaMontada,
+    EstruturadeMontagemeInsumo,
+    TaxasAdicionais,
+    OutrosbeneficiosLocacao,
+    InformacoesAdicionais,
+    PlantaBaixa,
+    ComprovantedeExclusividade,
+    ContratosLocacaoEspaco,
+    ManualExpositorRegrasExpo,
+    radNumber,
+    idFAMDemanda,
   } = formValues;
 
-  const [dataInicial] = periodoEvento;
+  const [dataInicial] = periodoEvento as any;
+  const [DataInicio, DataFim] = dataInicial;
 
-  const [dataInicio, dataFim] = dataInicial as any;
   const url =
     "http://10.9.4.162/ESAmbienteBPMS/webservices/workflowenginesoa.asmx";
   const body = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/">\
@@ -70,57 +52,57 @@ async function revisarDemanda(formValues: IFormValues) {
                         <Events>\
                             <Events>\
                                 <EventData>\
-                                  <idCase>${idCase}</idCase>\
+                                  <radNumber>${radNumber}</radNumber>\
                                   <eventName>EvtRevisao</eventName>\
                                 </EventData>\
                                 <Entities>\
                                     <FAMDemanda key="${idFAMDemanda}">\
-                                        <NomeFeiraEventoNegocio>${nomeDaFeira}</NomeFeiraEventoNegocio>\
-                                        <Localidade>${localDaFeira}</Localidade>\
-                                        <DataInicio>${dataInicio}</DataInicio>\
-                                        <DataFim>${dataFim}</DataFim>\
-                                        <HorarioFuncionamento>${horarioFuncionamento}</HorarioFuncionamento>\
-                                        <ValorEntradaVisitantes>${valorEntradaVisitantes}</ValorEntradaVisitantes>\
-                                        <EmpresaRealizadoraFeira>${idEmpresaRealizadora}</EmpresaRealizadoraFeira>\
-                                        <EmpresaRealizadoraFeira.Nome>${empresaRealizadora}</EmpresaRealizadoraFeira.Nome>\
-                                        <EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>${docRealizadora}</EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>\
-                                        <EmpresaRealizadoraFeira.Rua>${enderecoRealizadora}</EmpresaRealizadoraFeira.Rua>\
-                                        <EmpresaRealizadoraFeira.Bairro>${bairroRealizadora}</EmpresaRealizadoraFeira.Bairro>\
-                                        <EmpresaRealizadoraFeira.Cidade>${cidadeRealizadora}</EmpresaRealizadoraFeira.Cidade>\
-                                        <EmpresaRealizadoraFeira.UF>${ufRealizadora}</EmpresaRealizadoraFeira.UF>\
-                                        <EmpresaRealizadoraFeira.CEP>${cepRealizadora}</EmpresaRealizadoraFeira.CEP>\
-                                        <EmpresaRealizadoraFeira.Telefone>${contatoRepresentanteRealizadora}</EmpresaRealizadoraFeira.Telefone>\
-                                        <EmpresaRealizadoraFeira.Email>${emailRepresentanteRealizadora}</EmpresaRealizadoraFeira.Email>\
-                                        <RepresentanteRealizadora>${representanteRealizadora}</RepresentanteRealizadora>\
-                                        <CpfRepresentRealizadora>${cpfRepresentanteRealizadora}</CpfRepresentRealizadora>\
-                                        <EmpresaOrganizadoraFeira>${idEmpresaOrganizadora}</EmpresaOrganizadoraFeira>\
-                                        <EmpresaOrganizadoraFeira.Nome>${empresaOrganizadora}</EmpresaOrganizadoraFeira.Nome>\
-                                        <EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>${docOrganizadora}</EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>\
-                                        <EmpresaOrganizadoraFeira.Rua>${enderecoOrganizadora}</EmpresaOrganizadoraFeira.Rua>\
-                                        <EmpresaOrganizadoraFeira.Bairro>${bairroOrganizadora}</EmpresaOrganizadoraFeira.Bairro>\
-                                        <EmpresaOrganizadoraFeira.Cidade>${cidadeOrganizadora}</EmpresaOrganizadoraFeira.Cidade>\
-                                        <EmpresaOrganizadoraFeira.UF>${ufOrganizadora}</EmpresaOrganizadoraFeira.UF>\
-                                        <EmpresaOrganizadoraFeira.CEP>${cepOrganizadora}</EmpresaOrganizadoraFeira.CEP>\
-                                        <EmpresaOrganizadoraFeira.Telefone>${contatoRepresentanteOrganizadora}</EmpresaOrganizadoraFeira.Telefone>\
-                                        <EmpresaOrganizadoraFeira.Email>${emailRepresentanteOrganizadora}</EmpresaOrganizadoraFeira.Email>\
-                                        <RepresentanteOrganizadora>${representanteOrganizadora}</RepresentanteOrganizadora>\
-                                        <CpfRepresentOrganizadora>${cpfRepresentanteOrganizadora}</CpfRepresentOrganizadora>\
-                                        <EmpApoiadorasParceriaEvt>${empresasApoiadoras}</EmpApoiadorasParceriaEvt>\
-                                        <DescritivodoEventoObjetivo>${descritivoEvento}</DescritivodoEventoObjetivo>\
-                                        <ExpectativadePublicoExposi>${expectativaPubExpositor}</ExpectativadePublicoExposi>\
-                                        <ExpectativaPublVisitante>${expectativaPubVisitante}</ExpectativaPublVisitante>\
-                                        <DadosUltimas3Edicoes>${dadosUltimasEdicoes}</DadosUltimas3Edicoes>\
-                                        <PlanoComunicacaoEvento>${planoComunicacaoEvento}</PlanoComunicacaoEvento>\
-                                        <ValorLocacaoAreaLivre>${valorLocacaoLivre}</ValorLocacaoAreaLivre>\
-                                        <ValorLocacaoAreaMontada>${valorLocacaoMontada}</ValorLocacaoAreaMontada>\
-                                        <EstruturadeMontagemeInsumo>${descritivoEstruturaMontagem}</EstruturadeMontagemeInsumo>\
-                                        <TaxasAdicionais>${txsAdicionais}</TaxasAdicionais>\
-                                        <OutrosbeneficiosLocacao>${outrosBeneficios}</OutrosbeneficiosLocacao>\
-                                        <InformacoesAdicionais>${infoAdicional}</InformacoesAdicionais>\
-                                        <PlantaBaixa>${plantaBaixa}</PlantaBaixa>\
-                                        <ComprovantedeExclusividade>${comprovanteExclusividadeRegistroINPI}</ComprovantedeExclusividade>\
-                                        <ContratosLocacaoEspaco>${contratoLocacao}</ContratosLocacaoEspaco>\
-                                        <ManualExpositorRegrasExpo>${manualExpositor}</ManualExpositorRegrasExpo>\
+                                    <NomeFeiraEventoNegocio>${NomeFeiraEventoNegocio}</NomeFeiraEventoNegocio>\
+                                    <Localidade>${Localidade}</Localidade>\
+                                    <DataInicio>${DataInicio}</DataInicio>\
+                                    <DataFim>${DataFim}</DataFim>\
+                                    <HorarioFuncionamento>${HorarioFuncionamento}</HorarioFuncionamento>\
+                                    <ValorEntradaVisitantes>${ValorEntradaVisitantes}</ValorEntradaVisitantes>\
+                                    <EmpresaRealizadoraFeira>${EmpresaRealizadoraFeira.id}</EmpresaRealizadoraFeira>\
+                                    <EmpresaRealizadoraFeira.Nome>${EmpresaRealizadoraFeira.Nome}</EmpresaRealizadoraFeira.Nome>\
+                                    <EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>${EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA}</EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>\
+                                    <EmpresaRealizadoraFeira.Rua>${EmpresaRealizadoraFeira.Rua}</EmpresaRealizadoraFeira.Rua>\
+                                    <EmpresaRealizadoraFeira.Bairro>${EmpresaRealizadoraFeira.Bairro}</EmpresaRealizadoraFeira.Bairro>\
+                                    <EmpresaRealizadoraFeira.Cidade>${EmpresaRealizadoraFeira.Cidade}</EmpresaRealizadoraFeira.Cidade>\
+                                    <EmpresaRealizadoraFeira.UF>${EmpresaRealizadoraFeira.UF}</EmpresaRealizadoraFeira.UF>\
+                                    <EmpresaRealizadoraFeira.CEP>${EmpresaRealizadoraFeira.CEP}</EmpresaRealizadoraFeira.CEP>\
+                                    <EmpresaRealizadoraFeira.Telefone>${EmpresaRealizadoraFeira.Telefone}</EmpresaRealizadoraFeira.Telefone>\
+                                    <EmpresaRealizadoraFeira.Email>${EmpresaRealizadoraFeira.Email}</EmpresaRealizadoraFeira.Email>\
+                                    <RepresentanteRealizadora>${RepresentanteRealizadora}</RepresentanteRealizadora>\
+                                    <CpfRepresentRealizadora>${CpfRepresentRealizadora}</CpfRepresentRealizadora>\
+                                    <EmpresaOrganizadoraFeira>${EmpresaOrganizadoraFeira.id}</EmpresaOrganizadoraFeira>\
+                                    <EmpresaOrganizadoraFeira.Nome>${EmpresaOrganizadoraFeira.Nome}</EmpresaOrganizadoraFeira.Nome>\
+                                    <EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>${EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA}</EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>\
+                                    <EmpresaOrganizadoraFeira.Rua>${EmpresaOrganizadoraFeira.Rua}</EmpresaOrganizadoraFeira.Rua>\
+                                    <EmpresaOrganizadoraFeira.Bairro>${EmpresaOrganizadoraFeira.Bairro}</EmpresaOrganizadoraFeira.Bairro>\
+                                    <EmpresaOrganizadoraFeira.Cidade>${EmpresaOrganizadoraFeira.Cidade}</EmpresaOrganizadoraFeira.Cidade>\
+                                    <EmpresaOrganizadoraFeira.UF>${EmpresaOrganizadoraFeira.UF}</EmpresaOrganizadoraFeira.UF>\
+                                    <EmpresaOrganizadoraFeira.CEP>${EmpresaOrganizadoraFeira.CEP}</EmpresaOrganizadoraFeira.CEP>\
+                                    <EmpresaOrganizadoraFeira.Telefone>${EmpresaOrganizadoraFeira.Telefone}</EmpresaOrganizadoraFeira.Telefone>\
+                                    <EmpresaOrganizadoraFeira.Email>${EmpresaOrganizadoraFeira.Email}</EmpresaOrganizadoraFeira.Email>\
+                                    <RepresentanteOrganizadora>${RepresentanteOrganizadora}</RepresentanteOrganizadora>\
+                                    <CpfRepresentOrganizadora>${CpfRepresentOrganizadora}</CpfRepresentOrganizadora>\
+                                    <EmpApoiadorasParceriaEvt>${EmpApoiadorasParceriaEvt}</EmpApoiadorasParceriaEvt>\
+                                    <DescritivodoEventoObjetivo>${DescritivodoEventoObjetivo}</DescritivodoEventoObjetivo>\
+                                    <ExpectativadePublicoExposi>${ExpectativadePublicoExposi}</ExpectativadePublicoExposi>\
+                                    <ExpectativaPublVisitante>${ExpectativaPublVisitante}</ExpectativaPublVisitante>\
+                                    <DadosUltimas3Edicoes>${DadosUltimas3Edicoes}</DadosUltimas3Edicoes>\
+                                    <PlanoComunicacaoEvento>${PlanoComunicacaoEvento}</PlanoComunicacaoEvento>\
+                                    <ValorLocacaoAreaLivre>${ValorLocacaoAreaLivre}</ValorLocacaoAreaLivre>\
+                                    <ValorLocacaoAreaMontada>${ValorLocacaoAreaMontada}</ValorLocacaoAreaMontada>\
+                                    <EstruturadeMontagemeInsumo>${EstruturadeMontagemeInsumo}</EstruturadeMontagemeInsumo>\
+                                    <TaxasAdicionais>${TaxasAdicionais}</TaxasAdicionais>\
+                                    <OutrosbeneficiosLocacao>${OutrosbeneficiosLocacao}</OutrosbeneficiosLocacao>\
+                                    <InformacoesAdicionais>${InformacoesAdicionais}</InformacoesAdicionais>\
+                                    <PlantaBaixa>${PlantaBaixa}</PlantaBaixa>\
+                                    <ComprovantedeExclusividade>${ComprovantedeExclusividade}</ComprovantedeExclusividade>\
+                                    <ContratosLocacaoEspaco>${ContratosLocacaoEspaco}</ContratosLocacaoEspaco>\
+                                    <ManualExpositorRegrasExpo>${ManualExpositorRegrasExpo}</ManualExpositorRegrasExpo>\
                                     </FAMDemanda>\
                                 </Entities>\
                             </Events>\
