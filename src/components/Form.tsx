@@ -88,7 +88,8 @@ const FormFeira = () => {
           const data = await pegarCasoExistente();
           if(data) {
             const processedData = processObject(data);
-            setValoresIniciais(processedData);
+            const {EmpresaRealizadoraFeira :{CGCCFO_SEMMASCARA : CGCCFO_SEMMASCARA_Realizadora}, EmpresaOrganizadoraFeira :{CGCCFO_SEMMASCARA : CGCCFO_SEMMASCARA_Organizadora}}: IFormValues = processedData;
+            setValoresIniciais({...processedData, EmpresaRealizadoraFeira :{CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Realizadora}, EmpresaOrganizadoraFeira: {CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Organizadora}} );
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -97,7 +98,6 @@ const FormFeira = () => {
       fetchData();
     }
   }, [pegarCasoExistente, id, processObject]);
-  
 
 console.log(valoresIniciais)
 
@@ -123,10 +123,13 @@ console.log(valoresIniciais)
         ...rest,
       };
       if(id) {
-        // console.log(`CHAMOU REVISAO DE CASO: ID: ${id}`)
+        console.log(`CHAMOU REVISAO DE CASO: ID: ${id}`)
         const casoRevisado = await RevisarDemanda(bodyReq);
-        // console.log("CORPO DA REQUISIÇÃO", bodyReq)
-        // console.log(casoRevisado);
+        const erroNaRevisão = casoRevisado["soap:Envelope"]["soap:Body"].setEventResponse.setEventResult.processes.process.processError
+        if(erroNaRevisão) message.error('Houve um erro na Revisão da Demanda!')
+        console.log(erroNaRevisão)
+      //   console.log("CORPO DA REQUISIÇÃO", bodyReq)
+      //   console.log(casoRevisado);
       //   console.log(
       //   casoRevisado["soap:Envelope"]["soap:Body"].createCasesResponse
       //     .createCasesResult.processes.process.processRadNumber
@@ -135,6 +138,9 @@ console.log(valoresIniciais)
 
       }
       const casoCriado = await criarCaso(bodyReq);
+      const erroNaCriacao = casoCriado["soap:Envelope"]["soap:Body"].setEventResponse.setEventResult.processes.process.processError
+        if(erroNaCriacao) message.error('Houve um erro ao criar nova Demanda!')
+      
       // console.log("CORPO DA REQUISIÇÃO", bodyReq)
       // console.log(casoCriado);
       // console.log(
@@ -164,7 +170,9 @@ console.log(valoresIniciais)
           setFieldValue,
           isSubmitting,
           handleChange,
+          errors
         }) => (
+          
           <Form className={styles.formWrapper} onSubmit={handleSubmit}>
             <Cabecalho title="1. DADOS GERAIS" size={4} />
             <TextInput
@@ -188,6 +196,7 @@ console.log(valoresIniciais)
             <Cabecalho title="Período de Realização" size={5} />
             <Row style={{ margin: ".2em 0", padding: ".5em" }}>
               <Col>
+              
                 <RangePicker
                   id="periodoEvento"
                   locale={locale}
@@ -203,6 +212,7 @@ console.log(valoresIniciais)
                 <ErrorMessage name="periodoEvento">
                   {(errMsg) => <Paragraph type="danger">{errMsg}</Paragraph>}
                 </ErrorMessage>
+                {id ? <Tag>Favor reinserir as datas</Tag> : ""}
                 <Tag style={{ margin: "0 1em" }} color="geekblue">
                   Antecedência mínima de 90 dias!
                 </Tag>
@@ -306,6 +316,7 @@ console.log(valoresIniciais)
                   maxLength={14}
                   showCount
                 />
+                {id ? <Tag>Favor buscar a empresa realizadora novamente!</Tag> : ""}
               </Col>
             </Row>
             <Row>
@@ -494,6 +505,7 @@ console.log(valoresIniciais)
                   maxLength={14}
                   showCount
                 />
+                {id ? <Tag>Favor buscar a empresa organizadora novamente!</Tag> : ""}
               </Col>
             </Row>
             <Row>
@@ -807,6 +819,7 @@ console.log(valoresIniciais)
             <Row style={{ justifyContent: "center" }}>
               
               <Button
+                onClick={() => console.log(errors)}
                 type="primary"
                 disabled={!termo || isSubmitting}
                 title={
