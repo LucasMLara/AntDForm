@@ -99,7 +99,7 @@ const FormFeira = () => {
     }
   }, [pegarCasoExistente, id, processObject]);
 
-console.log(valoresIniciais)
+// console.log(valoresIniciais)
 
   const enviarForm = useCallback(
     async (data: IFormValues) => {
@@ -123,35 +123,18 @@ console.log(valoresIniciais)
         ...rest,
       };
       if(id) {
-        console.log(`CHAMOU REVISAO DE CASO: ID: ${id}`)
         const casoRevisado = await RevisarDemanda(bodyReq);
-        const erroNaRevisão = casoRevisado["soap:Envelope"]["soap:Body"].setEventResponse.setEventResult.processes.process.processError
-        if(erroNaRevisão) message.error('Houve um erro na Revisão da Demanda!')
-        console.log(erroNaRevisão)
-      //   console.log("CORPO DA REQUISIÇÃO", bodyReq)
-      //   console.log(casoRevisado);
-      //   console.log(
-      //   casoRevisado["soap:Envelope"]["soap:Body"].createCasesResponse
-      //     .createCasesResult.processes.process.processRadNumber
-      // );
-      return casoRevisado;
-
+        return casoRevisado;
       }
       const casoCriado = await criarCaso(bodyReq);
-      const erroNaCriacao = casoCriado["soap:Envelope"]["soap:Body"].setEventResponse.setEventResult.processes.process.processError
-        if(erroNaCriacao) message.error('Houve um erro ao criar nova Demanda!')
-      
-      // console.log("CORPO DA REQUISIÇÃO", bodyReq)
-      // console.log(casoCriado);
-      // console.log(
-      //   casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
-      //     .createCasesResult.processes.process.processRadNumber
-      // );
+      console.log(
+        casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
+          .createCasesResult.processes.process.processRadNumber
+      );
       return casoCriado;
     },
     [listFiles, id]
   );
-
   return (
     <>
       <Header />
@@ -162,7 +145,10 @@ console.log(valoresIniciais)
         enableReinitialize
         initialValues={valoresIniciais}
         validationSchema={FeirasSchema}
-        onSubmit={(values: IFormValues) => enviarForm(values)}
+        onSubmit={(values: IFormValues, {resetForm}) => {
+          enviarForm(values)
+          resetForm()
+        }}
       >
         {({
           values,
@@ -212,7 +198,7 @@ console.log(valoresIniciais)
                 <ErrorMessage name="periodoEvento">
                   {(errMsg) => <Paragraph type="danger">{errMsg}</Paragraph>}
                 </ErrorMessage>
-                {id ? <Tag>Favor reinserir as datas</Tag> : ""}
+                {id ? <Tag style={{ margin: "0 1em" }}>Favor reinserir as datas</Tag> : ""}
                 <Tag style={{ margin: "0 1em" }} color="geekblue">
                   Antecedência mínima de 90 dias!
                 </Tag>
@@ -271,14 +257,16 @@ console.log(valoresIniciais)
                           "EmpresaRealizadoraFeira.Nome",
                           realizadora.Nome._text
                         );
-                        setFieldValue(
-                          "EmpresaRealizadoraFeira.Telefone",
-                          realizadora.Telefone._text
-                            .replace(" ", "")
-                            .replace("-", "")
-                            .replace("(", "")
-                            .replace(")", "")
-                        );
+                        if(realizadora.Telefone._text) {
+                          setFieldValue(
+                            "EmpresaRealizadoraFeira.Telefone",
+                            realizadora.Telefone._text
+                              .replace(" ", "")
+                              .replace("-", "")
+                              .replace("(", "")
+                              .replace(")", "")
+                          );
+                        }
                         if (realizadora.Email._text)
                           setFieldValue(
                             "EmpresaRealizadoraFeira.Email",
@@ -460,14 +448,16 @@ console.log(valoresIniciais)
                           "EmpresaOrganizadoraFeira.Nome",
                           organizadora.Nome._text
                         );
-                        setFieldValue(
-                          "EmpresaOrganizadoraFeira.Telefone",
-                          organizadora.Telefone._text
-                            .replace(" ", "")
-                            .replace("-", "")
-                            .replace("(", "")
-                            .replace(")", "")
-                        );
+                        if(organizadora.Telefone._text) {
+                          setFieldValue(
+                            "EmpresaOrganizadoraFeira.Telefone",
+                            organizadora.Telefone._text
+                              .replace(" ", "")
+                              .replace("-", "")
+                              .replace("(", "")
+                              .replace(")", "")
+                          );
+                        }
                         if (organizadora.Email._text)
                           setFieldValue(
                             "EmpresaOrganizadoraFeira.Email",
@@ -819,7 +809,12 @@ console.log(valoresIniciais)
             <Row style={{ justifyContent: "center" }}>
               
               <Button
-                onClick={() => console.log(errors)}
+                onClick={() => {
+                  if(errors && id) {
+                    Object.keys(errors).forEach((e) => message.error(`Campo: ${e} precisa ser revisado!`) )
+                    
+                  }
+                }}
                 type="primary"
                 disabled={!termo || isSubmitting}
                 title={
