@@ -1,5 +1,4 @@
-"use client";
-import { Formik, Form, ErrorMessage, FormikHelpers, Field } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import ModalTermos from "../components/ModalTermos";
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/pt_BR";
@@ -28,6 +27,7 @@ import { IFormValues } from "@/utils/validations/FormInterface";
 import criarCaso from "@/utils/CreateCase";
 import getDemanda from "@/utils/getDemanda";
 import { useParams } from "next/navigation";
+import RevisarDemanda from "@/utils/SetEventDemanda"
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -122,16 +122,28 @@ console.log(valoresIniciais)
         periodoEvento,
         ...rest,
       };
+      if(id) {
+        // console.log(`CHAMOU REVISAO DE CASO: ID: ${id}`)
+        const casoRevisado = await RevisarDemanda(bodyReq);
+        // console.log("CORPO DA REQUISIÇÃO", bodyReq)
+        // console.log(casoRevisado);
+      //   console.log(
+      //   casoRevisado["soap:Envelope"]["soap:Body"].createCasesResponse
+      //     .createCasesResult.processes.process.processRadNumber
+      // );
+      return casoRevisado;
 
+      }
       const casoCriado = await criarCaso(bodyReq);
-      console.log(casoCriado);
-      console.log(
-        casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
-          .createCasesResult.processes.process.processRadNumber
-      );
+      // console.log("CORPO DA REQUISIÇÃO", bodyReq)
+      // console.log(casoCriado);
+      // console.log(
+      //   casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
+      //     .createCasesResult.processes.process.processRadNumber
+      // );
       return casoCriado;
     },
-    [listFiles]
+    [listFiles, id]
   );
 
   return (
@@ -141,6 +153,7 @@ console.log(valoresIniciais)
         <LogoTipo src={LogoSebrae} alt="Logo Sebrae" width={250} height={250} />
       </div>
       <Formik
+        enableReinitialize
         initialValues={valoresIniciais}
         validationSchema={FeirasSchema}
         onSubmit={(values: IFormValues) => enviarForm(values)}
