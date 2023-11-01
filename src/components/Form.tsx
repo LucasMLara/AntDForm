@@ -1,5 +1,6 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import ModalTermos from "../components/ModalTermos";
+import { useRouter } from 'next/navigation'
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/pt_BR";
 import "dayjs/locale/zh-cn";
@@ -42,6 +43,7 @@ const FormFeira = () => {
   const [valoresIniciais, setValoresIniciais] = useState(INITIAL_VALUES)
   const [bucandoCliente, setBuscandoCliente] = useState(false);
   const { id } = useParams()
+  const router = useRouter()
 
   const { termo } = useContext(FormContext);
   const defaultEndDate = dayjs().add(90, "day");
@@ -97,9 +99,9 @@ const FormFeira = () => {
       };
       fetchData();
     }
+    document.querySelectorAll("ant-btn css-dev-only-do-not-override").forEach(() => addEventListener("click",  () => {}))
   }, [pegarCasoExistente, id, processObject]);
 
-// console.log(valoresIniciais)
 
   const enviarForm = useCallback(
     async (data: IFormValues) => {
@@ -122,11 +124,14 @@ const FormFeira = () => {
         periodoEvento,
         ...rest,
       };
+
       if(id) {
         const casoRevisado = await RevisarDemanda(bodyReq);
+        console.log(casoRevisado)
         return casoRevisado;
       }
       const casoCriado = await criarCaso(bodyReq);
+      message.success("Feira criada com sucesso!")
       console.log(
         casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
           .createCasesResult.processes.process.processRadNumber
@@ -146,8 +151,7 @@ const FormFeira = () => {
         initialValues={valoresIniciais}
         validationSchema={FeirasSchema}
         onSubmit={(values: IFormValues, {resetForm}) => {
-          enviarForm(values)
-          resetForm()
+          enviarForm(values).then(() => resetForm())
         }}
       >
         {({
