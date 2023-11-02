@@ -8,11 +8,13 @@ const { Paragraph, Title } = Typography;
 import mockData from "./mock";
 import { useParams } from 'next/navigation'
 import getDemanda from "@/utils/getDemanda"
+import getClienteInteressado from "@/utils/getClienteInteressado"
 import { InfosDemanda } from "../../../utils/validations/DemandaInterface";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/pt-br';
+import { InfosClienteInteressado } from "@/utils/validations/ClienteInterface";
 
 dayjs.extend(utc);
 
@@ -29,9 +31,10 @@ export default function TermoSMS() {
     return brtDateTime;
   }
   
-
   const pegarCasoExistente = useCallback(async () => {
-    const res = await getDemanda(+id);
+    const res1 = await getClienteInteressado(+id);
+    const data1 :InfosClienteInteressado = await res1;
+    const res = await getDemanda(data1.FAMManifestantesInteress.FAMDemanda);
     const data :InfosDemanda = await res;
     return data;
   }, [id]);
