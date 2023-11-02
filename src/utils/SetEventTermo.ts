@@ -3,8 +3,8 @@ import { message } from "antd";
 import xmlJs from "xml-js";
 import { ITermo } from "@/utils/validations/FormInterfaceTermo";
 
-async function AceitarTermo(formValues: ITermo) {
-  const { idCase, idFAMClientesInteressados, TermoAceito } = formValues;
+async function AceitarTermo(formValues: any) {
+  const { radNumber, idFAMClientesInteressados, TermoAceito } = formValues;
 
   const url =
     "http://10.9.4.162/ESAmbienteBPMS/webservices/workflowenginesoa.asmx";
@@ -19,7 +19,7 @@ async function AceitarTermo(formValues: ITermo) {
                         <Events>\
                             <Events>\
                                 <EventData>\
-                                  <idCase>${idCase}</idCase>\
+                                  <radNumber>${radNumber}</radNumber>\
                                   <eventName>EvtAceiteExpositor</eventName>\
                                 </EventData>\
                                 <Entities>\
@@ -52,6 +52,7 @@ async function AceitarTermo(formValues: ITermo) {
     const xmlText = await response.text();
     const jsonData = xmlJs.xml2json(xmlText, { compact: true, spaces: 4 });
     const xmlData = JSON.parse(jsonData);
+    console.log(xmlData);
     return xmlData;
   } catch (error) {
     message.error("Houve um erro ao enviar o formulário");

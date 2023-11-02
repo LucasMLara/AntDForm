@@ -1,46 +1,47 @@
-interface NomeFeiraEvento {
+interface TratarText {
   _text: string;
 }
 
 interface EmpresaFeira {
-  Nome: NomeFeiraEvento;
-  Bairro: NomeFeiraEvento;
-  NomeFantasia: NomeFeiraEvento;
-  CEP: NomeFeiraEvento;
-  CGCCFO_SEMMASCARA: NomeFeiraEvento;
-  CNPJCPF: NomeFeiraEvento;
-  Cidade: NomeFeiraEvento;
-  Email: NomeFeiraEvento;
-  Numero: NomeFeiraEvento;
-  Rua: NomeFeiraEvento;
-  Telefone: NomeFeiraEvento;
-  UF: NomeFeiraEvento;
+  Nome: TratarText;
+  Bairro: TratarText;
+  NomeFantasia: TratarText;
+  CEP: TratarText;
+  CGCCFO_SEMMASCARA: TratarText;
+  CNPJCPF: TratarText;
+  Cidade: TratarText;
+  Email: TratarText;
+  Numero: TratarText;
+  Rua: TratarText;
+  Telefone: TratarText;
+  UF: TratarText;
 }
 
 export interface InfosDemanda {
-  NomeFeiraEventoNegocio: NomeFeiraEvento;
+  Nprocesso: TratarText;
+  NomeFeiraEventoNegocio: TratarText;
   EmpresaRealizadoraFeira: EmpresaFeira;
   EmpresaOrganizadoraFeira: EmpresaFeira;
-  CpfRepresentOrganizadora: NomeFeiraEvento;
-  CpfRepresentRealizadora: NomeFeiraEvento;
-  DadosUltimas3Edicoes: NomeFeiraEvento;
-  DataInicio: NomeFeiraEvento;
-  DataFim: NomeFeiraEvento;
-  DataSolicitacao: NomeFeiraEvento;
-  DescritivodoEventoObjetivo: NomeFeiraEvento;
-  EmpApoiadorasParceriaEvt: NomeFeiraEvento;
-  EstruturadeMontagemeInsumo: NomeFeiraEvento;
-  ExpectativaPublVisitante: NomeFeiraEvento;
-  ExpectativadePublicoExposi: NomeFeiraEvento;
-  HorarioFuncionamento: NomeFeiraEvento;
-  InformacoesAdicionais: NomeFeiraEvento;
-  Localidade: NomeFeiraEvento;
-  OutrosbeneficiosLocacao: NomeFeiraEvento;
-  PlanoComunicacaoEvento: NomeFeiraEvento;
-  RepresentanteOrganizadora: NomeFeiraEvento;
-  RepresentanteRealizadora: NomeFeiraEvento;
-  TaxasAdicionais: NomeFeiraEvento;
-  ValorEntradaVisitantes: NomeFeiraEvento;
-  ValorLocacaoAreaLivre: NomeFeiraEvento;
-  ValorLocacaoAreaMontada: NomeFeiraEvento;
+  CpfRepresentOrganizadora: TratarText;
+  CpfRepresentRealizadora: TratarText;
+  DadosUltimas3Edicoes: TratarText;
+  DataInicio: TratarText;
+  DataFim: TratarText;
+  DataSolicitacao: TratarText;
+  DescritivodoEventoObjetivo: TratarText;
+  EmpApoiadorasParceriaEvt: TratarText;
+  EstruturadeMontagemeInsumo: TratarText;
+  ExpectativaPublVisitante: TratarText;
+  ExpectativadePublicoExposi: TratarText;
+  HorarioFuncionamento: TratarText;
+  InformacoesAdicionais: TratarText;
+  Localidade: TratarText;
+  OutrosbeneficiosLocacao: TratarText;
+  PlanoComunicacaoEvento: TratarText;
+  RepresentanteOrganizadora: TratarText;
+  RepresentanteRealizadora: TratarText;
+  TaxasAdicionais: TratarText;
+  ValorEntradaVisitantes: TratarText;
+  ValorLocacaoAreaLivre: TratarText;
+  ValorLocacaoAreaMontada: TratarText;
 }

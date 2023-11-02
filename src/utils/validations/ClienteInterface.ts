@@ -1,5 +1,9 @@
+interface FamDemanda {
+  _text: number;
+}
+
 interface FAMManifestantesInteress {
-  FAMDemanda: number; 
+  FAMDemanda: FamDemanda;
 }
 
 export interface InfosClienteInteressado {

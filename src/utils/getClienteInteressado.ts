@@ -14,7 +14,7 @@ async function buscarClienteInteressado(idFAMClientesInteressados: number) {
           <EntityData>\
             <EntityName>FAMClientesInteressados</EntityName>\
             <Filters><![CDATA[idFAMClientesInteressados=' +
-            idFAMClientesInteressados +
+    idFAMClientesInteressados +
     "]]></Filters>\
           </EntityData>\
         </BizAgiWSParam>\

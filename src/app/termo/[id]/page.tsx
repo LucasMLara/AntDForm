@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import 'dayjs/locale/pt-br';
+import AceitarTermo from "@/utils/SetEventTermo";
 import { InfosClienteInteressado } from "@/utils/validations/ClienteInterface";
 
 dayjs.extend(utc);
@@ -34,8 +35,9 @@ export default function TermoSMS() {
   const pegarCasoExistente = useCallback(async () => {
     const res1 = await getClienteInteressado(+id);
     const data1 :InfosClienteInteressado = await res1;
-    const res = await getDemanda(data1.FAMManifestantesInteress.FAMDemanda);
+    const res = await getDemanda(data1.FAMManifestantesInteress.FAMDemanda._text);
     const data :InfosDemanda = await res;
+
     return data;
   }, [id]);
 
@@ -50,7 +52,7 @@ export default function TermoSMS() {
     };
     fetchData();
   }, [pegarCasoExistente]);
-
+  
   return (
     <>
     {!caso ? (
@@ -283,7 +285,7 @@ export default function TermoSMS() {
             verídicas as informações prestadas.
           </Paragraph>
         </Flex>
-        <Button disabled={!enviarLiberado} type="primary">
+        <Button disabled={!enviarLiberado} type="primary" onClick={() => AceitarTermo({radNumber: caso.Nprocesso, idFAMClientesInteressados: id, TermoAceito:true })}>
           ENVIAR
         </Button>
       </div>

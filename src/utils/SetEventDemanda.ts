@@ -32,7 +32,7 @@ async function revisarDemanda(formValues: IFormValues) {
     ComprovantedeExclusividade,
     ContratosLocacaoEspaco,
     ManualExpositorRegrasExpo,
-    radNumber,
+    Nprocesso,
     idFAMDemanda,
   } = formValues;
 
@@ -52,7 +52,7 @@ async function revisarDemanda(formValues: IFormValues) {
                         <Events>\
                             <Events>\
                                 <EventData>\
-                                  <radNumber>${radNumber}</radNumber>\
+                                  <radNumber>${Nprocesso}</radNumber>\
                                   <eventName>EvtRevisao</eventName>\
                                 </EventData>\
                                 <Entities>\

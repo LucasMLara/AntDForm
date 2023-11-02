@@ -1,5 +1,9 @@
+interface TratarText {
+  _text: string;
+}
+
 export interface ITermo {
-  idCase: number;
+  radNumber: string;
   idFAMClientesInteressados: number;
   TermoAceito: boolean;
 }

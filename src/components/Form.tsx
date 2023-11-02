@@ -101,7 +101,7 @@ const FormFeira = () => {
     }
     document.querySelectorAll("ant-btn css-dev-only-do-not-override").forEach(() => addEventListener("click",  () => {}))
   }, [pegarCasoExistente, id, processObject]);
-
+console.log(valoresIniciais)
 
   const enviarForm = useCallback(
     async (data: IFormValues) => {

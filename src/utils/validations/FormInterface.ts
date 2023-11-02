@@ -19,7 +19,7 @@ interface EmpresaFeira {
 }
 
 export interface IFormValues {
-  radNumber?: string;
+  Nprocesso?: string;
   idFAMDemanda?: number;
   NomeFeiraEventoNegocio: string;
   EmpresaRealizadoraFeira: EmpresaFeira;
