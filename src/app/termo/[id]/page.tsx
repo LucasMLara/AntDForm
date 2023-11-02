@@ -24,6 +24,7 @@ dayjs.extend(timezone);
 export default function TermoSMS() {
   const [caso, setCaso] = useState<InfosDemanda>()
   const [enviarLiberado, setEnviarLiberado] = useState(false);
+  const [enviando, setEnviando] = useState(false)
   const boldText = { fontWeight: "bold" };
   const { id } = useParams()
 
@@ -53,6 +54,12 @@ export default function TermoSMS() {
     fetchData();
   }, [pegarCasoExistente]);
   
+  const enviarAceiteTermo = async () => {
+    setEnviando(true)
+    await AceitarTermo({radNumber: caso?.Nprocesso, idFAMClientesInteressados: id, TermoAceito:true }).then(() => setEnviando(false))
+    
+  }
+
   return (
     <>
     {!caso ? (
@@ -285,7 +292,7 @@ export default function TermoSMS() {
             verídicas as informações prestadas.
           </Paragraph>
         </Flex>
-        <Button disabled={!enviarLiberado} type="primary" onClick={() => AceitarTermo({radNumber: caso.Nprocesso, idFAMClientesInteressados: id, TermoAceito:true })}>
+        <Button disabled={!enviarLiberado || enviando} type="primary" onClick={() => enviarAceiteTermo() }>
           ENVIAR
         </Button>
       </div>

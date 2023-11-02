@@ -3,7 +3,7 @@ import { message } from "antd";
 import xmlJs from "xml-js";
 import { ITermo } from "@/utils/validations/FormInterfaceTermo";
 
-async function AceitarTermo(formValues: any) {
+async function AceitarTermo(formValues: ITermo) {
   const { radNumber, idFAMClientesInteressados, TermoAceito } = formValues;
 
   const url =
@@ -52,7 +52,6 @@ async function AceitarTermo(formValues: any) {
     const xmlText = await response.text();
     const jsonData = xmlJs.xml2json(xmlText, { compact: true, spaces: 4 });
     const xmlData = JSON.parse(jsonData);
-    console.log(xmlData);
     return xmlData;
   } catch (error) {
     message.error("Houve um erro ao enviar o formulário");

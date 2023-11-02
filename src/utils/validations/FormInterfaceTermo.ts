@@ -1,9 +1,5 @@
-interface TratarText {
-  _text: string;
-}
-
 export interface ITermo {
-  radNumber: string;
-  idFAMClientesInteressados: number;
-  TermoAceito: boolean;
+  radNumber: any;
+  idFAMClientesInteressados: any;
+  TermoAceito: any;
 }
