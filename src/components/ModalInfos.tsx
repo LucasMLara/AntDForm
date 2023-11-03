@@ -35,7 +35,6 @@ const App: React.FC = () => {
             <CheckOutlined />
           </Button>,
         ]}
-        title="IMPEDIMENTO DE CONTRATAÇÃO - VEDAÇÕES PREVISTAS NO ART. 42 DA RLCSS"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}

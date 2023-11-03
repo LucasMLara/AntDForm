@@ -56,7 +56,7 @@ export default function TermoSMS() {
   
   const enviarAceiteTermo = async () => {
     setEnviando(true)
-    await AceitarTermo({radNumber: caso?.Nprocesso, idFAMClientesInteressados: id, TermoAceito:true }).then(() => setEnviando(false))
+    await AceitarTermo({radNumber: caso?.Nprocesso, idFAMClientesInteressados: id, TermoAceito:true }).then((e) => {setEnviando(false)})
     
   }
 
@@ -119,7 +119,7 @@ export default function TermoSMS() {
             {caso.EmpresaRealizadoraFeira.Telefone._text}
           </Col>
           <Col md={12} sm={24}>
-            <span style={boldText}>E-mail:</span> {caso.EmpresaRealizadoraFeira.Email._text}
+            <span style={boldText}>E-mail:</span> {caso.EmpresaRealizadoraFeira.Email?._text}
           </Col>
         </Row>
         <Row justify="start">
@@ -137,10 +137,10 @@ export default function TermoSMS() {
         </Paragraph>
         <Row justify="start">
           <Col md={12} sm={24}>
-            <span style={boldText}>Nome:</span> {caso.RepresentanteOrganizadora._text}
+            <span style={boldText}>Nome:</span> {caso.RepresentanteOrganizadora?._text}
           </Col>
           <Col md={12} sm={24}>
-            <span style={boldText}>CPF:</span> {caso.CpfRepresentOrganizadora._text}
+            <span style={boldText}>CPF:</span> {caso.CpfRepresentOrganizadora?._text}
           </Col>
         </Row>
         <Row justify="start">
@@ -169,7 +169,7 @@ export default function TermoSMS() {
             {caso.EmpresaRealizadoraFeira.Telefone._text}
           </Col>
           <Col md={12} sm={24}>
-            <span style={boldText}>E-mail:</span> {caso.EmpresaRealizadoraFeira.Email._text}
+            <span style={boldText}>E-mail:</span> {caso.EmpresaRealizadoraFeira.Email?._text}
           </Col>
         </Row>
         <Paragraph strong style={{ margin: "1em 0" }}>

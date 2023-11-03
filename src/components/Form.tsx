@@ -101,7 +101,6 @@ const FormFeira = () => {
     }
     document.querySelectorAll("ant-btn css-dev-only-do-not-override").forEach(() => addEventListener("click",  () => {}))
   }, [pegarCasoExistente, id, processObject]);
-console.log(valoresIniciais)
 
   const enviarForm = useCallback(
     async (data: IFormValues) => {
@@ -151,7 +150,8 @@ console.log(valoresIniciais)
         initialValues={valoresIniciais}
         validationSchema={FeirasSchema}
         onSubmit={(values: IFormValues, {resetForm}) => {
-          enviarForm(values).then(() => resetForm())
+          enviarForm(values)
+          .then(() => resetForm())
         }}
       >
         {({
@@ -204,7 +204,7 @@ console.log(valoresIniciais)
                 </ErrorMessage>
                 {id ? <Tag style={{ margin: "0 1em" }}>Favor reinserir as datas</Tag> : ""}
                 <Tag style={{ margin: "0 1em" }} color="geekblue">
-                  Antecedência mínima de 90 dias!
+                  Antecedência mínima de 90 dias do início do evento!
                 </Tag>
               </Col>
             </Row>
@@ -613,7 +613,7 @@ console.log(valoresIniciais)
                 />
               </Col>
             </Row>
-            <Cabecalho title="3. Empresas Apoiadoras:" size={4} />
+            <Cabecalho title="3. Empresas Apoiadoras / Parceiras do Evento:" size={4} />
             <TextAreaInput
               handleChange={handleChange("EmpApoiadorasParceriaEvt")}
               value={values.EmpApoiadorasParceriaEvt}
@@ -833,6 +833,9 @@ console.log(valoresIniciais)
           </Form>
         )}
       </Formik>
+      <Paragraph style={{ textAlign: "center", margin: "1em 2em," }}>
+        o SEBRAE/ES, desde já, coloca-se à disposição para esclarecimentos complementares à interpretação, à utilização e ao preenchimento deste roteiro, através da UMC - Unidade de Marketing e Comunicação <a href="tel:+552730415524">(027) 3041 - 5524 </a>
+      </Paragraph>
     </>
   );
 };
