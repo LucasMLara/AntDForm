@@ -99,7 +99,6 @@ const FormFeira = () => {
       };
       fetchData();
     }
-    document.querySelectorAll("ant-btn css-dev-only-do-not-override").forEach(() => addEventListener("click",  () => {}))
   }, [pegarCasoExistente, id, processObject]);
 
   const enviarForm = useCallback(
@@ -151,7 +150,10 @@ const FormFeira = () => {
         validationSchema={FeirasSchema}
         onSubmit={(values: IFormValues, {resetForm}) => {
           enviarForm(values)
-          .then(() => resetForm())
+          .then(() => {
+            resetForm()
+            router.push('/done')
+          })
         }}
       >
         {({
@@ -834,7 +836,7 @@ const FormFeira = () => {
         )}
       </Formik>
       <Paragraph style={{ textAlign: "center", margin: "1em 2em," }}>
-        o SEBRAE/ES, desde já, coloca-se à disposição para esclarecimentos complementares à interpretação, à utilização e ao preenchimento deste roteiro, através da UMC - Unidade de Marketing e Comunicação <a href="tel:+552730415524">(027) 3041 - 5524 </a>
+        O SEBRAE/ES, desde já, coloca-se à disposição para esclarecimentos complementares à interpretação, à utilização e ao preenchimento deste roteiro, através da UMC - Unidade de Marketing e Comunicação <a href="tel:+552730415524">(027) 3041 - 5524 </a>
       </Paragraph>
     </>
   );
