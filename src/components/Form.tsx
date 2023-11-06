@@ -29,6 +29,7 @@ import criarCaso from "@/utils/CreateCase";
 import getDemanda from "@/utils/getDemanda";
 import { useParams } from "next/navigation";
 import RevisarDemanda from "@/utils/SetEventDemanda"
+import { debug } from "console";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -113,12 +114,10 @@ const FormFeira = () => {
       } = data;
 
       const bodyReq: IFormValues = {
-        PlantaBaixa: listFiles[0] ? listFiles[0]["uid"] : "",
-        ComprovantedeExclusividade: listFiles[1]
-          ? listFiles[1]["uid"]
-          : "",
-          ContratosLocacaoEspaco: listFiles[2] ? listFiles[2]["uid"] : "",
-          ManualExpositorRegrasExpo: listFiles[3] ? listFiles[3]["uid"] : "",
+        PlantaBaixa: listFiles[0] ?? null,
+        ComprovantedeExclusividade: listFiles[1] ?? null,
+          ContratosLocacaoEspaco: listFiles[2] ?? null,
+          ManualExpositorRegrasExpo: listFiles[3] ?? null,
         periodoEvento,
         ...rest,
       };
@@ -732,7 +731,7 @@ const FormFeira = () => {
               onRemove={(value) => {
                 setListFiles((ps) => ps.filter((val) => val.name !== value));
               }}
-              onChange={(value: any) => {
+              onChange={(value: any) => {                               
                 if (value.status === "removed") {
                   setFieldValue("PlantaBaixa", "");
                   setListFiles((ps) => ps.filter((val) => val.name !== value));

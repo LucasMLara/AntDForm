@@ -94,10 +94,18 @@ async function criarCaso(formValues: IFormValues) {
                                         <TaxasAdicionais>${TaxasAdicionais}</TaxasAdicionais>\
                                         <OutrosbeneficiosLocacao>${OutrosbeneficiosLocacao}</OutrosbeneficiosLocacao>\
                                         <InformacoesAdicionais>${InformacoesAdicionais}</InformacoesAdicionais>\
-                                        <PlantaBaixa>${PlantaBaixa}</PlantaBaixa>\
-                                        <ComprovantedeExclusividade>${ComprovantedeExclusividade}</ComprovantedeExclusividade>\
-                                        <ContratosLocacaoEspaco>${ContratosLocacaoEspaco}</ContratosLocacaoEspaco>\
-                                        <ManualExpositorRegrasExpo>${ManualExpositorRegrasExpo}</ManualExpositorRegrasExpo>\
+                                        <PlantaBaixa>\
+                                          <File fileName="${PlantaBaixa.name}">${getBase64(PlantaBaixa)}</File>\
+                                        </PlantaBaixa>\
+                                        <ComprovantedeExclusividade>\
+                                          <File fileName="${ComprovantedeExclusividade.name}">${getBase64(ComprovantedeExclusividade)}</File>\
+                                          </ComprovantedeExclusividade>\
+                                        <ContratosLocacaoEspaco>\
+                                          <File fileName="${ContratosLocacaoEspaco.name}">${getBase64(ContratosLocacaoEspaco)}</File>\
+                                        </ContratosLocacaoEspaco>\
+                                        <ManualExpositorRegrasExpo>\
+                                          <File fileName="${ManualExpositorRegrasExpo.name}">${getBase64(ManualExpositorRegrasExpo)}</File>\
+                                        </ManualExpositorRegrasExpo>\
                                     </FAMDemanda>\
                                 </Entities>\
                             </Case>\
@@ -130,6 +138,17 @@ async function criarCaso(formValues: IFormValues) {
     message.error("Houve um erro ao enviar o formulário");
     console.error("Error fetching XML data:", error);
   }
+}
+
+function getBase64(file: File) {
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    return btoa(<string>reader.result);
+  };
+  reader.onerror = function (error) {
+    console.log('Error: ', error);
+  };
 }
 
 export default criarCaso;
