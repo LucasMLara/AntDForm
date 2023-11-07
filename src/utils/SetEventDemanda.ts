@@ -64,27 +64,9 @@ async function revisarDemanda(formValues: IFormValues) {
                                     <HorarioFuncionamento>${HorarioFuncionamento}</HorarioFuncionamento>\
                                     <ValorEntradaVisitantes>${ValorEntradaVisitantes}</ValorEntradaVisitantes>\
                                     <EmpresaRealizadoraFeira>${EmpresaRealizadoraFeira.id}</EmpresaRealizadoraFeira>\
-                                    <EmpresaRealizadoraFeira.Nome>${EmpresaRealizadoraFeira.Nome}</EmpresaRealizadoraFeira.Nome>\
-                                    <EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>${EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA}</EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>\
-                                    <EmpresaRealizadoraFeira.Rua>${EmpresaRealizadoraFeira.Rua}</EmpresaRealizadoraFeira.Rua>\
-                                    <EmpresaRealizadoraFeira.Bairro>${EmpresaRealizadoraFeira.Bairro}</EmpresaRealizadoraFeira.Bairro>\
-                                    <EmpresaRealizadoraFeira.Cidade>${EmpresaRealizadoraFeira.Cidade}</EmpresaRealizadoraFeira.Cidade>\
-                                    <EmpresaRealizadoraFeira.UF>${EmpresaRealizadoraFeira.UF}</EmpresaRealizadoraFeira.UF>\
-                                    <EmpresaRealizadoraFeira.CEP>${EmpresaRealizadoraFeira.CEP}</EmpresaRealizadoraFeira.CEP>\
-                                    <EmpresaRealizadoraFeira.Telefone>${EmpresaRealizadoraFeira.Telefone}</EmpresaRealizadoraFeira.Telefone>\
-                                    <EmpresaRealizadoraFeira.Email>${EmpresaRealizadoraFeira.Email}</EmpresaRealizadoraFeira.Email>\
                                     <RepresentanteRealizadora>${RepresentanteRealizadora}</RepresentanteRealizadora>\
                                     <CpfRepresentRealizadora>${CpfRepresentRealizadora}</CpfRepresentRealizadora>\
                                     <EmpresaOrganizadoraFeira>${EmpresaOrganizadoraFeira.id}</EmpresaOrganizadoraFeira>\
-                                    <EmpresaOrganizadoraFeira.Nome>${EmpresaOrganizadoraFeira.Nome}</EmpresaOrganizadoraFeira.Nome>\
-                                    <EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>${EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA}</EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>\
-                                    <EmpresaOrganizadoraFeira.Rua>${EmpresaOrganizadoraFeira.Rua}</EmpresaOrganizadoraFeira.Rua>\
-                                    <EmpresaOrganizadoraFeira.Bairro>${EmpresaOrganizadoraFeira.Bairro}</EmpresaOrganizadoraFeira.Bairro>\
-                                    <EmpresaOrganizadoraFeira.Cidade>${EmpresaOrganizadoraFeira.Cidade}</EmpresaOrganizadoraFeira.Cidade>\
-                                    <EmpresaOrganizadoraFeira.UF>${EmpresaOrganizadoraFeira.UF}</EmpresaOrganizadoraFeira.UF>\
-                                    <EmpresaOrganizadoraFeira.CEP>${EmpresaOrganizadoraFeira.CEP}</EmpresaOrganizadoraFeira.CEP>\
-                                    <EmpresaOrganizadoraFeira.Telefone>${EmpresaOrganizadoraFeira.Telefone}</EmpresaOrganizadoraFeira.Telefone>\
-                                    <EmpresaOrganizadoraFeira.Email>${EmpresaOrganizadoraFeira.Email}</EmpresaOrganizadoraFeira.Email>\
                                     <RepresentanteOrganizadora>${RepresentanteOrganizadora}</RepresentanteOrganizadora>\
                                     <CpfRepresentOrganizadora>${CpfRepresentOrganizadora}</CpfRepresentOrganizadora>\
                                     <EmpApoiadorasParceriaEvt>${EmpApoiadorasParceriaEvt}</EmpApoiadorasParceriaEvt>\
@@ -99,10 +81,33 @@ async function revisarDemanda(formValues: IFormValues) {
                                     <TaxasAdicionais>${TaxasAdicionais}</TaxasAdicionais>\
                                     <OutrosbeneficiosLocacao>${OutrosbeneficiosLocacao}</OutrosbeneficiosLocacao>\
                                     <InformacoesAdicionais>${InformacoesAdicionais}</InformacoesAdicionais>\
-                                    <PlantaBaixa>${PlantaBaixa}</PlantaBaixa>\
-                                    <ComprovantedeExclusividade>${ComprovantedeExclusividade}</ComprovantedeExclusividade>\
-                                    <ContratosLocacaoEspaco>${ContratosLocacaoEspaco}</ContratosLocacaoEspaco>\
-                                    <ManualExpositorRegrasExpo>${ManualExpositorRegrasExpo}</ManualExpositorRegrasExpo>\
+                                    ${
+                                      PlantaBaixa != null
+                                        ? "<PlantaBaixa><File fileName=\"" + PlantaBaixa.name + "\">" + await getBase64(PlantaBaixa) +
+                                          "<\/File><\/PlantaBaixa>"
+                                        : ""
+                                    }
+                                    ${
+                                      ComprovantedeExclusividade != null
+                                        ? "<ComprovantedeExclusividade><File fileName=\"" + ComprovantedeExclusividade.name +"\">" + 
+                                        await getBase64(ComprovantedeExclusividade) +
+                                          "<\/File><\/ComprovantedeExclusividade>"
+                                        : ""
+                                    }
+                                    ${
+                                      ContratosLocacaoEspaco != null
+                                        ? "<ContratosLocacaoEspaco><File fileName=\"" + ContratosLocacaoEspaco.name + "\">" + 
+                                        await getBase64(ContratosLocacaoEspaco) +
+                                          "<\/File><\/ContratosLocacaoEspaco>"
+                                        : ""
+                                    }
+                                    ${
+                                      ManualExpositorRegrasExpo != null
+                                        ? "<ManualExpositorRegrasExpo><File fileName=\"" + ManualExpositorRegrasExpo.name + "\">" + 
+                                        await getBase64(ManualExpositorRegrasExpo) +
+                                          "<\/File><\/ManualExpositorRegrasExpo>"
+                                        : ""
+                                    }
                                     </FAMDemanda>\
                                 </Entities>\
                             </Events>\
@@ -136,5 +141,27 @@ async function revisarDemanda(formValues: IFormValues) {
     console.error("Error fetching XML data:", error);
   }
 }
+
+
+function getBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        resolve(btoa(reader.result));
+      } else {
+        reject(new Error("The file could not be read as a string."));
+      }
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsBinaryString(file);
+  });
+}
+
 
 export default revisarDemanda;

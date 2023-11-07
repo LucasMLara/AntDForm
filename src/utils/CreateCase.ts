@@ -58,68 +58,10 @@ async function criarCaso(formValues: IFormValues) {
                                         <DataFim>${DataFim}</DataFim>\
                                         <HorarioFuncionamento>${HorarioFuncionamento}</HorarioFuncionamento>\
                                         <ValorEntradaVisitantes>${ValorEntradaVisitantes}</ValorEntradaVisitantes>\
-                                        <EmpresaRealizadoraFeira>${
-                                          EmpresaRealizadoraFeira.id
-                                        }</EmpresaRealizadoraFeira>\
-                                        <EmpresaRealizadoraFeira.Nome>${
-                                          EmpresaRealizadoraFeira.Nome
-                                        }</EmpresaRealizadoraFeira.Nome>\
-                                        <EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>${
-                                          EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA
-                                        }</EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>\
-                                        <EmpresaRealizadoraFeira.Rua>${
-                                          EmpresaRealizadoraFeira.Rua
-                                        }</EmpresaRealizadoraFeira.Rua>\
-                                        <EmpresaRealizadoraFeira.Bairro>${
-                                          EmpresaRealizadoraFeira.Bairro
-                                        }</EmpresaRealizadoraFeira.Bairro>\
-                                        <EmpresaRealizadoraFeira.Cidade>${
-                                          EmpresaRealizadoraFeira.Cidade
-                                        }</EmpresaRealizadoraFeira.Cidade>\
-                                        <EmpresaRealizadoraFeira.UF>${
-                                          EmpresaRealizadoraFeira.UF
-                                        }</EmpresaRealizadoraFeira.UF>\
-                                        <EmpresaRealizadoraFeira.CEP>${
-                                          EmpresaRealizadoraFeira.CEP
-                                        }</EmpresaRealizadoraFeira.CEP>\
-                                        <EmpresaRealizadoraFeira.Telefone>${
-                                          EmpresaRealizadoraFeira.Telefone
-                                        }</EmpresaRealizadoraFeira.Telefone>\
-                                        <EmpresaRealizadoraFeira.Email>${
-                                          EmpresaRealizadoraFeira.Email
-                                        }</EmpresaRealizadoraFeira.Email>\
+                                        <EmpresaRealizadoraFeira>${EmpresaRealizadoraFeira.id}</EmpresaRealizadoraFeira>\
                                         <RepresentanteRealizadora>${RepresentanteRealizadora}</RepresentanteRealizadora>\
                                         <CpfRepresentRealizadora>${CpfRepresentRealizadora}</CpfRepresentRealizadora>\
-                                        <EmpresaOrganizadoraFeira>${
-                                          EmpresaOrganizadoraFeira.id
-                                        }</EmpresaOrganizadoraFeira>\
-                                        <EmpresaOrganizadoraFeira.Nome>${
-                                          EmpresaOrganizadoraFeira.Nome
-                                        }</EmpresaOrganizadoraFeira.Nome>\
-                                        <EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>${
-                                          EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA
-                                        }</EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>\
-                                        <EmpresaOrganizadoraFeira.Rua>${
-                                          EmpresaOrganizadoraFeira.Rua
-                                        }</EmpresaOrganizadoraFeira.Rua>\
-                                        <EmpresaOrganizadoraFeira.Bairro>${
-                                          EmpresaOrganizadoraFeira.Bairro
-                                        }</EmpresaOrganizadoraFeira.Bairro>\
-                                        <EmpresaOrganizadoraFeira.Cidade>${
-                                          EmpresaOrganizadoraFeira.Cidade
-                                        }</EmpresaOrganizadoraFeira.Cidade>\
-                                        <EmpresaOrganizadoraFeira.UF>${
-                                          EmpresaOrganizadoraFeira.UF
-                                        }</EmpresaOrganizadoraFeira.UF>\
-                                        <EmpresaOrganizadoraFeira.CEP>${
-                                          EmpresaOrganizadoraFeira.CEP
-                                        }</EmpresaOrganizadoraFeira.CEP>\
-                                        <EmpresaOrganizadoraFeira.Telefone>${
-                                          EmpresaOrganizadoraFeira.Telefone
-                                        }</EmpresaOrganizadoraFeira.Telefone>\
-                                        <EmpresaOrganizadoraFeira.Email>${
-                                          EmpresaOrganizadoraFeira.Email
-                                        }</EmpresaOrganizadoraFeira.Email>\
+                                        <EmpresaOrganizadoraFeira>${EmpresaOrganizadoraFeira.id}</EmpresaOrganizadoraFeira>\                                        
                                         <RepresentanteOrganizadora>${RepresentanteOrganizadora}</RepresentanteOrganizadora>\
                                         <CpfRepresentOrganizadora>${CpfRepresentOrganizadora}</CpfRepresentOrganizadora>\
                                         <EmpApoiadorasParceriaEvt>${EmpApoiadorasParceriaEvt}</EmpApoiadorasParceriaEvt>\
@@ -136,47 +78,30 @@ async function criarCaso(formValues: IFormValues) {
                                         <InformacoesAdicionais>${InformacoesAdicionais}</InformacoesAdicionais>\
                                         ${
                                           PlantaBaixa != null
-                                            ? "<PlantaBaixa><File fileName=" +
-                                              PlantaBaixa.name +
-                                              ">" +
-                                              getBase64(PlantaBaixa).then(
-                                                (fileCode) => fileCode
-                                              ) +
-                                              "</File></PlantaBaixa>"
-                                            : null
+                                            ? "<PlantaBaixa><File fileName=\"" + PlantaBaixa.name + "\">" + await getBase64(PlantaBaixa) +
+                                              "<\/File><\/PlantaBaixa>"
+                                            : ""
                                         }
                                         ${
                                           ComprovantedeExclusividade != null
-                                            ? "<ComprovantedeExclusividade><File fileName=" +
-                                              ComprovantedeExclusividade.name +
-                                              ">" +
-                                              getBase64(
-                                                ComprovantedeExclusividade
-                                              ).then((fileCode) => fileCode) +
-                                              "</File></ComprovantedeExclusividade>"
-                                            : null
+                                            ? "<ComprovantedeExclusividade><File fileName=\"" + ComprovantedeExclusividade.name +"\">" + 
+                                            await getBase64(ComprovantedeExclusividade) +
+                                              "<\/File><\/ComprovantedeExclusividade>"
+                                            : ""
                                         }
                                         ${
                                           ContratosLocacaoEspaco != null
-                                            ? "<ContratosLocacaoEspaco><File fileName=" +
-                                              ContratosLocacaoEspaco.name +
-                                              ">" +
-                                              getBase64(
-                                                ContratosLocacaoEspaco
-                                              ).then((fileCode) => fileCode) +
-                                              "</File></ContratosLocacaoEspaco>"
-                                            : null
+                                            ? "<ContratosLocacaoEspaco><File fileName=\"" + ContratosLocacaoEspaco.name + "\">" + 
+                                            await getBase64(ContratosLocacaoEspaco) +
+                                              "<\/File><\/ContratosLocacaoEspaco>"
+                                            : ""
                                         }
                                         ${
                                           ManualExpositorRegrasExpo != null
-                                            ? "<ManualExpositorRegrasExpo><File fileName=" +
-                                              ManualExpositorRegrasExpo.name +
-                                              ">" +
-                                              getBase64(
-                                                ManualExpositorRegrasExpo
-                                              ).then((fileCode) => fileCode) +
-                                              "</File></ManualExpositorRegrasExpo>"
-                                            : null
+                                            ? "<ManualExpositorRegrasExpo><File fileName=\"" + ManualExpositorRegrasExpo.name + "\">" + 
+                                            await getBase64(ManualExpositorRegrasExpo) +
+                                              "<\/File><\/ManualExpositorRegrasExpo>"
+                                            : ""
                                         }
                                     </FAMDemanda>\
                                 </Entities>\
@@ -187,7 +112,7 @@ async function criarCaso(formValues: IFormValues) {
             </tem:createCases>\
         </soap:Body>\
     </soap:Envelope>`;
-
+    
   const fetchOptions = {
     method: "POST",
     headers: {
@@ -210,13 +135,6 @@ async function criarCaso(formValues: IFormValues) {
     message.error("Houve um erro ao enviar o formulário");
     console.error("Error fetching XML data:", error);
   }
-
-  console.log("PlantaBaixa", PlantaBaixa);
-
-  console.log(
-    "Plantabase64",
-    getBase64(PlantaBaixa!).then((e) => console.log(e))
-  );
 }
 
 function getBase64(file: File): Promise<string> {

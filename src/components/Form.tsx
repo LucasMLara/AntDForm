@@ -29,7 +29,7 @@ import criarCaso from "@/utils/CreateCase";
 import getDemanda from "@/utils/getDemanda";
 import { useParams } from "next/navigation";
 import RevisarDemanda from "@/utils/SetEventDemanda";
-import { handleDecode } from "@/utils/crypto";
+import { handleDecode, handleEncode } from "@/utils/crypto";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -45,7 +45,7 @@ const FormFeira = () => {
   const [bucandoCliente, setBuscandoCliente] = useState(false);
   const { id } = useParams();
   const router = useRouter();
-
+  console.log(handleEncode("1151"));
   const { termo } = useContext(FormContext);
   const defaultEndDate = dayjs().add(90, "day");
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
