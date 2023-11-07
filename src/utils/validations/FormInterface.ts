@@ -47,8 +47,8 @@ export interface IFormValues {
   ValorLocacaoAreaLivre: string;
   ValorLocacaoAreaMontada: string;
   periodoEvento?: string[] | undefined[];
-  PlantaBaixa: File;
-  ComprovantedeExclusividade: File;
-  ContratosLocacaoEspaco: File;
-  ManualExpositorRegrasExpo: File;
+  PlantaBaixa: File | null;
+  ComprovantedeExclusividade: File | null;
+  ContratosLocacaoEspaco: File | null;
+  ManualExpositorRegrasExpo: File | null;
 }

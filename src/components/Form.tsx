@@ -1,6 +1,6 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import ModalTermos from "../components/ModalTermos";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/pt_BR";
 import "dayjs/locale/zh-cn";
@@ -28,7 +28,7 @@ import { IFormValues } from "@/utils/validations/FormInterface";
 import criarCaso from "@/utils/CreateCase";
 import getDemanda from "@/utils/getDemanda";
 import { useParams } from "next/navigation";
-import RevisarDemanda from "@/utils/SetEventDemanda"
+import RevisarDemanda from "@/utils/SetEventDemanda";
 import { debug } from "console";
 
 const { TextArea } = Input;
@@ -41,10 +41,10 @@ interface CustomFile extends File {
 
 const FormFeira = () => {
   const [listFiles, setListFiles] = useState<Array<CustomFile>>([]);
-  const [valoresIniciais, setValoresIniciais] = useState(INITIAL_VALUES)
+  const [valoresIniciais, setValoresIniciais] = useState(INITIAL_VALUES);
   const [bucandoCliente, setBuscandoCliente] = useState(false);
-  const { id } = useParams()
-  const router = useRouter()
+  const { id } = useParams();
+  const router = useRouter();
 
   const { termo } = useContext(FormContext);
   const defaultEndDate = dayjs().add(90, "day");
@@ -61,38 +61,57 @@ const FormFeira = () => {
   interface Values {
     [key: string]: any;
   }
-  
-  const processObject = useCallback((inputObject: Values): any  => {
-    return Object.entries(inputObject).map(([key, value]) => {
-      if (value._text) {
-        return { [key]: value._text };
-      }
-      if (key === 'EmpresaRealizadoraFeira' || key === 'EmpresaOrganizadoraFeira') {
-        const updatedValue: { [key: string]: string } = {};
-        Object.entries(value).forEach(([subKey, subValue]: [string, any]) => {
-          updatedValue[subKey] = subValue._text || subValue;
-        });
-        return { [key]: updatedValue };
-      }
-      return { [key]: value };
-    }).reduce((acc, curr) => {
-      return {
-        ...acc,
-        ...curr
-      };
-    }, {});
+
+  const processObject = useCallback((inputObject: Values): any => {
+    return Object.entries(inputObject)
+      .map(([key, value]) => {
+        if (value._text) {
+          return { [key]: value._text };
+        }
+        if (
+          key === "EmpresaRealizadoraFeira" ||
+          key === "EmpresaOrganizadoraFeira"
+        ) {
+          const updatedValue: { [key: string]: string } = {};
+          Object.entries(value).forEach(([subKey, subValue]: [string, any]) => {
+            updatedValue[subKey] = subValue._text || subValue;
+          });
+          return { [key]: updatedValue };
+        }
+        return { [key]: value };
+      })
+      .reduce((acc, curr) => {
+        return {
+          ...acc,
+          ...curr,
+        };
+      }, {});
   }, []);
-  
 
   useEffect(() => {
-    if(id) {
+    if (id) {
       const fetchData = async () => {
         try {
           const data = await pegarCasoExistente();
-          if(data) {
+          if (data) {
             const processedData = processObject(data);
-            const {EmpresaRealizadoraFeira :{CGCCFO_SEMMASCARA : CGCCFO_SEMMASCARA_Realizadora}, EmpresaOrganizadoraFeira :{CGCCFO_SEMMASCARA : CGCCFO_SEMMASCARA_Organizadora}}: IFormValues = processedData;
-            setValoresIniciais({...processedData, EmpresaRealizadoraFeira :{CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Realizadora}, EmpresaOrganizadoraFeira: {CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Organizadora}} );
+            const {
+              EmpresaRealizadoraFeira: {
+                CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Realizadora,
+              },
+              EmpresaOrganizadoraFeira: {
+                CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Organizadora,
+              },
+            }: IFormValues = processedData;
+            setValoresIniciais({
+              ...processedData,
+              EmpresaRealizadoraFeira: {
+                CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Realizadora,
+              },
+              EmpresaOrganizadoraFeira: {
+                CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Organizadora,
+              },
+            });
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -116,19 +135,19 @@ const FormFeira = () => {
       const bodyReq: IFormValues = {
         PlantaBaixa: listFiles[0] ?? null,
         ComprovantedeExclusividade: listFiles[1] ?? null,
-          ContratosLocacaoEspaco: listFiles[2] ?? null,
-          ManualExpositorRegrasExpo: listFiles[3] ?? null,
+        ContratosLocacaoEspaco: listFiles[2] ?? null,
+        ManualExpositorRegrasExpo: listFiles[3] ?? null,
         periodoEvento,
         ...rest,
       };
 
-      if(id) {
+      if (id) {
         const casoRevisado = await RevisarDemanda(bodyReq);
-        console.log(casoRevisado)
+        console.log(casoRevisado);
         return casoRevisado;
       }
       const casoCriado = await criarCaso(bodyReq);
-      message.success("Feira criada com sucesso!")
+      message.success("Feira criada com sucesso!");
       console.log(
         casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
           .createCasesResult.processes.process.processRadNumber
@@ -147,12 +166,11 @@ const FormFeira = () => {
         enableReinitialize
         initialValues={valoresIniciais}
         validationSchema={FeirasSchema}
-        onSubmit={(values: IFormValues, {resetForm}) => {
-          enviarForm(values)
-          .then(() => {
-            resetForm()
-            router.push('/done')
-          })
+        onSubmit={(values: IFormValues, { resetForm }) => {
+          enviarForm(values).then(() => {
+            resetForm();
+            router.push("/done");
+          });
         }}
       >
         {({
@@ -161,9 +179,8 @@ const FormFeira = () => {
           setFieldValue,
           isSubmitting,
           handleChange,
-          errors
+          errors,
         }) => (
-          
           <Form className={styles.formWrapper} onSubmit={handleSubmit}>
             <Cabecalho title="1. DADOS GERAIS" size={4} />
             <TextInput
@@ -187,7 +204,6 @@ const FormFeira = () => {
             <Cabecalho title="Período de Realização" size={5} />
             <Row style={{ margin: ".2em 0", padding: ".5em" }}>
               <Col>
-              
                 <RangePicker
                   id="periodoEvento"
                   locale={locale}
@@ -203,7 +219,13 @@ const FormFeira = () => {
                 <ErrorMessage name="periodoEvento">
                   {(errMsg) => <Paragraph type="danger">{errMsg}</Paragraph>}
                 </ErrorMessage>
-                {id ? <Tag style={{ margin: "0 1em" }}>Favor reinserir as datas</Tag> : ""}
+                {id ? (
+                  <Tag style={{ margin: "0 1em" }}>
+                    Favor reinserir as datas
+                  </Tag>
+                ) : (
+                  ""
+                )}
                 <Tag style={{ margin: "0 1em" }} color="geekblue">
                   Antecedência mínima de 90 dias do início do evento!
                 </Tag>
@@ -246,7 +268,9 @@ const FormFeira = () => {
               <Col xs={24} md={12}>
                 <SearchClientInput
                   loading={bucandoCliente}
-                  handleChange={handleChange("EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA")}
+                  handleChange={handleChange(
+                    "EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA"
+                  )}
                   placeholder="Insira somente números"
                   onSearch={async (clientDoc) => {
                     if (clientDoc.length === 14) {
@@ -262,7 +286,7 @@ const FormFeira = () => {
                           "EmpresaRealizadoraFeira.Nome",
                           realizadora.Nome._text
                         );
-                        if(realizadora.Telefone._text) {
+                        if (realizadora.Telefone._text) {
                           setFieldValue(
                             "EmpresaRealizadoraFeira.Telefone",
                             realizadora.Telefone._text
@@ -289,8 +313,14 @@ const FormFeira = () => {
                           "EmpresaRealizadoraFeira.Cidade",
                           realizadora.Cidade._text
                         );
-                        setFieldValue("EmpresaRealizadoraFeira.UF", realizadora.UF._text);
-                        setFieldValue("EmpresaRealizadoraFeira.CEP", realizadora.CEP._text);
+                        setFieldValue(
+                          "EmpresaRealizadoraFeira.UF",
+                          realizadora.UF._text
+                        );
+                        setFieldValue(
+                          "EmpresaRealizadoraFeira.CEP",
+                          realizadora.CEP._text
+                        );
                         message.success(
                           `Empresa encontrada: ${realizadora.Nome._text} `
                         );
@@ -309,7 +339,11 @@ const FormFeira = () => {
                   maxLength={14}
                   showCount
                 />
-                {id ? <Tag>Favor buscar a empresa realizadora novamente!</Tag> : ""}
+                {id ? (
+                  <Tag>Favor buscar a empresa realizadora novamente!</Tag>
+                ) : (
+                  ""
+                )}
               </Col>
             </Row>
             <Row>
@@ -400,7 +434,9 @@ const FormFeira = () => {
             <Row gutter={25}>
               <Col xs={24} md={12}>
                 <TextInput
-                  handleChange={handleChange("EmpresaRealizadoraFeira.Telefone")}
+                  handleChange={handleChange(
+                    "EmpresaRealizadoraFeira.Telefone"
+                  )}
                   value={values.EmpresaRealizadoraFeira.Telefone}
                   label="Telefone"
                   name="EmpresaRealizadoraFeira.Telefone"
@@ -438,7 +474,9 @@ const FormFeira = () => {
               <Col xs={24} md={12}>
                 <SearchClientInput
                   loading={bucandoCliente}
-                  handleChange={handleChange("EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA")}
+                  handleChange={handleChange(
+                    "EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA"
+                  )}
                   onSearch={async (clientDoc) => {
                     if (clientDoc.length === 14) {
                       setBuscandoCliente(true);
@@ -453,7 +491,7 @@ const FormFeira = () => {
                           "EmpresaOrganizadoraFeira.Nome",
                           organizadora.Nome._text
                         );
-                        if(organizadora.Telefone._text) {
+                        if (organizadora.Telefone._text) {
                           setFieldValue(
                             "EmpresaOrganizadoraFeira.Telefone",
                             organizadora.Telefone._text
@@ -480,8 +518,14 @@ const FormFeira = () => {
                           "EmpresaOrganizadoraFeira.Cidade",
                           organizadora.Cidade._text
                         );
-                        setFieldValue("EmpresaOrganizadoraFeira.UF", organizadora.UF._text);
-                        setFieldValue("EmpresaOrganizadoraFeira.CEP",organizadora.CEP._text);
+                        setFieldValue(
+                          "EmpresaOrganizadoraFeira.UF",
+                          organizadora.UF._text
+                        );
+                        setFieldValue(
+                          "EmpresaOrganizadoraFeira.CEP",
+                          organizadora.CEP._text
+                        );
                         message.success(
                           `Empresa encontrada: ${organizadora.Nome._text} `
                         );
@@ -500,7 +544,11 @@ const FormFeira = () => {
                   maxLength={14}
                   showCount
                 />
-                {id ? <Tag>Favor buscar a empresa organizadora novamente!</Tag> : ""}
+                {id ? (
+                  <Tag>Favor buscar a empresa organizadora novamente!</Tag>
+                ) : (
+                  ""
+                )}
               </Col>
             </Row>
             <Row>
@@ -614,7 +662,10 @@ const FormFeira = () => {
                 />
               </Col>
             </Row>
-            <Cabecalho title="3. Empresas Apoiadoras / Parceiras do Evento:" size={4} />
+            <Cabecalho
+              title="3. Empresas Apoiadoras / Parceiras do Evento:"
+              size={4}
+            />
             <TextAreaInput
               handleChange={handleChange("EmpApoiadorasParceriaEvt")}
               value={values.EmpApoiadorasParceriaEvt}
@@ -731,9 +782,9 @@ const FormFeira = () => {
               onRemove={(value) => {
                 setListFiles((ps) => ps.filter((val) => val.name !== value));
               }}
-              onChange={(value: any) => {                               
+              onChange={(value: any) => {
                 if (value.status === "removed") {
-                  setFieldValue("PlantaBaixa", "");
+                  setFieldValue("PlantaBaixa", null);
                   setListFiles((ps) => ps.filter((val) => val.name !== value));
                   return;
                 }
@@ -757,17 +808,14 @@ const FormFeira = () => {
               required
               onChange={(value: any) => {
                 if (value.status === "removed") {
-                  setFieldValue("ComprovantedeExclusividade", "");
+                  setFieldValue("ComprovantedeExclusividade", null);
                   setListFiles((ps) => ps.filter((val) => val.name !== value));
                   return;
                 }
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
                 );
-                setFieldValue(
-                  "ComprovantedeExclusividade",
-                  value.name
-                );
+                setFieldValue("ComprovantedeExclusividade", value.name);
               }}
             />
             <UploadInput
@@ -779,7 +827,7 @@ const FormFeira = () => {
               name="ContratosLocacaoEspaco"
               onChange={(value: any) => {
                 if (value.status === "removed") {
-                  setFieldValue("ContratosLocacaoEspaco", "");
+                  setFieldValue("ContratosLocacaoEspaco", null);
                   setListFiles((ps) => ps.filter((val) => val.name !== value));
                   return;
                 }
@@ -798,7 +846,7 @@ const FormFeira = () => {
               name="ManualExpositorRegrasExpo"
               onChange={(value: any) => {
                 if (value.status === "removed") {
-                  setFieldValue("ManualExpositorRegrasExpo", "");
+                  setFieldValue("ManualExpositorRegrasExpo", null);
                   setListFiles((ps) => ps.filter((val) => val.name !== value));
                   return;
                 }
@@ -812,12 +860,12 @@ const FormFeira = () => {
               <ModalTermos />
             </Row>
             <Row style={{ justifyContent: "center" }}>
-              
               <Button
                 onClick={() => {
-                  if(errors && id) {
-                    Object.keys(errors).forEach((e) => message.error(`Campo: ${e} precisa ser revisado!`) )
-                    
+                  if (errors && id) {
+                    Object.keys(errors).forEach((e) =>
+                      message.error(`Campo: ${e} precisa ser revisado!`)
+                    );
                   }
                 }}
                 type="primary"
@@ -835,7 +883,10 @@ const FormFeira = () => {
         )}
       </Formik>
       <Paragraph style={{ textAlign: "center", margin: "1em 2em," }}>
-        O SEBRAE/ES, desde já, coloca-se à disposição para esclarecimentos complementares à interpretação, à utilização e ao preenchimento deste roteiro, através da UMC - Unidade de Marketing e Comunicação <a href="tel:+552730415524">(027) 3041 - 5524 </a>
+        O SEBRAE/ES, desde já, coloca-se à disposição para esclarecimentos
+        complementares à interpretação, à utilização e ao preenchimento deste
+        roteiro, através da UMC - Unidade de Marketing e Comunicação{" "}
+        <a href="tel:+552730415524">(027) 3041 - 5524 </a>
       </Paragraph>
     </>
   );

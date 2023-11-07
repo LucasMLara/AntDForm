@@ -101,8 +101,10 @@ export const FeirasSchema = Yup.object().shape({
   TaxasAdicionais: Yup.string().required("Campo obrigatório"),
   OutrosbeneficiosLocacao: Yup.string().required("Campo obrigatório"),
   InformacoesAdicionais: Yup.string().required("Campo obrigatório"),
-  PlantaBaixa: Yup.string().required("Campo obrigatório"),
-  ComprovantedeExclusividade: Yup.string().required("Campo obrigatório"),
+  PlantaBaixa: Yup.mixed().nullable().required("Campo obrigatório"),
+  ComprovantedeExclusividade: Yup.mixed()
+    .nullable()
+    .required("Campo obrigatório"),
 });
 
 // export const INITIAL_VALUES: IFormValues = {
@@ -228,8 +230,8 @@ export const INITIAL_VALUES: IFormValues = {
     "outros beneficios outros beneficios outros beneficios outros beneficios outros beneficios ",
   InformacoesAdicionais:
     "informações adicionais informações adicionais informações adicionais informações adicionais informações adicionais informações adicionais informações adicionais informações adicionais ",
-  PlantaBaixa: "",
-  ComprovantedeExclusividade: "",
-  ContratosLocacaoEspaco: "",
-  ManualExpositorRegrasExpo: "",
+  PlantaBaixa: null,
+  ComprovantedeExclusividade: null,
+  ContratosLocacaoEspaco: null,
+  ManualExpositorRegrasExpo: null,
 };
