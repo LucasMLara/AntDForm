@@ -94,18 +94,10 @@ async function criarCaso(formValues: IFormValues) {
                                         <TaxasAdicionais>${TaxasAdicionais}</TaxasAdicionais>\
                                         <OutrosbeneficiosLocacao>${OutrosbeneficiosLocacao}</OutrosbeneficiosLocacao>\
                                         <InformacoesAdicionais>${InformacoesAdicionais}</InformacoesAdicionais>\
-                                        <PlantaBaixa>\
-                                          <File fileName="${PlantaBaixa.name}">${getBase64(PlantaBaixa)}</File>\
-                                        </PlantaBaixa>\
-                                        <ComprovantedeExclusividade>\
-                                          <File fileName="${ComprovantedeExclusividade.name}">${getBase64(ComprovantedeExclusividade)}</File>\
-                                          </ComprovantedeExclusividade>\
-                                        <ContratosLocacaoEspaco>\
-                                          <File fileName="${ContratosLocacaoEspaco.name}">${getBase64(ContratosLocacaoEspaco)}</File>\
-                                        </ContratosLocacaoEspaco>\
-                                        <ManualExpositorRegrasExpo>\
-                                          <File fileName="${ManualExpositorRegrasExpo.name}">${getBase64(ManualExpositorRegrasExpo)}</File>\
-                                        </ManualExpositorRegrasExpo>\
+                                        ${PlantaBaixa != null ? "<PlantaBaixa><File fileName=" + PlantaBaixa.name + ">" + getBase64(PlantaBaixa) + "</File></PlantaBaixa>" : ""}
+                                        ${ComprovantedeExclusividade != null ? "<ComprovantedeExclusividade><File fileName=" + ComprovantedeExclusividade.name + ">" + getBase64(ComprovantedeExclusividade) + "</File></ComprovantedeExclusividade>" : ""}
+                                        ${ContratosLocacaoEspaco != null ? "<ContratosLocacaoEspaco><File fileName=" + ContratosLocacaoEspaco.name + ">" + getBase64(ContratosLocacaoEspaco) + "</File></ContratosLocacaoEspaco>" : ""}
+                                        ${ManualExpositorRegrasExpo != null ? "<ManualExpositorRegrasExpo><File fileName=" + ManualExpositorRegrasExpo.name + ">" + getBase64(ManualExpositorRegrasExpo) + "</File></ManualExpositorRegrasExpo>" : ""}
                                     </FAMDemanda>\
                                 </Entities>\
                             </Case>\
