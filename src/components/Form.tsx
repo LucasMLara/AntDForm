@@ -29,7 +29,6 @@ import criarCaso from "@/utils/CreateCase";
 import getDemanda from "@/utils/getDemanda";
 import { useParams } from "next/navigation";
 import RevisarDemanda from "@/utils/SetEventDemanda";
-import { debug } from "console";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -98,18 +97,22 @@ const FormFeira = () => {
             const {
               EmpresaRealizadoraFeira: {
                 CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Realizadora,
+                id: id_Realizadora,
               },
               EmpresaOrganizadoraFeira: {
                 CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Organizadora,
+                id: id_Organizadora,
               },
             }: IFormValues = processedData;
             setValoresIniciais({
               ...processedData,
               EmpresaRealizadoraFeira: {
                 CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Realizadora,
+                id: id_Realizadora,
               },
               EmpresaOrganizadoraFeira: {
                 CGCCFO_SEMMASCARA: CGCCFO_SEMMASCARA_Organizadora,
+                id: id_Organizadora,
               },
             });
           }
@@ -147,15 +150,17 @@ const FormFeira = () => {
         return casoRevisado;
       }
       const casoCriado = await criarCaso(bodyReq);
-      message.success("Feira criada com sucesso!");
-      console.log(
-        casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
-          .createCasesResult.processes.process.processRadNumber
-      );
+      if (casoCriado) message.success("Feira criada com sucesso!");
+
+      // console.log(
+      //   casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
+      //     .createCasesResult.processes.process.processRadNumber
+      // );
       return casoCriado;
     },
-    [listFiles, id]
+    [id, listFiles]
   );
+
   return (
     <>
       <Header />
@@ -168,8 +173,8 @@ const FormFeira = () => {
         validationSchema={FeirasSchema}
         onSubmit={(values: IFormValues, { resetForm }) => {
           enviarForm(values).then(() => {
-            resetForm();
-            router.push("/done");
+            // resetForm();
+            // router.push("/done");
           });
         }}
       >
@@ -791,7 +796,7 @@ const FormFeira = () => {
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
                 );
-                setFieldValue("PlantaBaixa", value.name);
+                setFieldValue("PlantaBaixa", value);
               }}
               label="Planta Baixa"
               name="PlantaBaixa"
@@ -815,7 +820,7 @@ const FormFeira = () => {
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
                 );
-                setFieldValue("ComprovantedeExclusividade", value.name);
+                setFieldValue("ComprovantedeExclusividade", value);
               }}
             />
             <UploadInput
@@ -834,7 +839,7 @@ const FormFeira = () => {
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
                 );
-                setFieldValue("ContratosLocacaoEspaco", value.name);
+                setFieldValue("ContratosLocacaoEspaco", value);
               }}
             />
             <UploadInput
@@ -853,7 +858,7 @@ const FormFeira = () => {
                 setListFiles((ps) =>
                   ps.length > 0 ? [...ps, value] : [value]
                 );
-                setFieldValue("ManualExpositorRegrasExpo", value.name);
+                setFieldValue("ManualExpositorRegrasExpo", value);
               }}
             />
             <Row style={{ margin: "1em", padding: "1em" }}>
@@ -869,14 +874,24 @@ const FormFeira = () => {
                   }
                 }}
                 type="primary"
-                disabled={!termo || isSubmitting}
+                // disabled={!termo || isSubmitting}
                 title={
                   !termo ? "É Necessário aceitar os termos contratuais!" : ""
                 }
                 htmlType="submit"
                 style={{ width: "40%" }}
               >
-                {isSubmitting ? <Spin /> : "Enviar"}
+                TESTANDO
+                {/* {isSubmitting ? <Spin /> : "Enviar"} */}
+              </Button>
+            </Row>
+            <Row style={{ justifyContent: "center" }}>
+              <Button
+                onClick={() => console.log(values)}
+                type="link"
+                style={{ width: "40%" }}
+              >
+                Logar valores no console
               </Button>
             </Row>
           </Form>

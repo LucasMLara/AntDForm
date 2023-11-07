@@ -36,7 +36,6 @@ async function criarCaso(formValues: IFormValues) {
 
   const [dataInicial] = periodoEvento as any;
   const [DataInicio, DataFim] = dataInicial;
-  console.log("PlantaBaixa", PlantaBaixa);
 
   const url =
     "http://10.9.4.162/ESAmbienteBPMS/webservices/workflowenginesoa.asmx";
@@ -140,9 +139,11 @@ async function criarCaso(formValues: IFormValues) {
                                             ? "<PlantaBaixa><File fileName=" +
                                               PlantaBaixa.name +
                                               ">" +
-                                              getBase64(PlantaBaixa) +
+                                              getBase64(PlantaBaixa).then(
+                                                (fileCode) => fileCode
+                                              ) +
                                               "</File></PlantaBaixa>"
-                                            : ""
+                                            : null
                                         }
                                         ${
                                           ComprovantedeExclusividade != null
@@ -151,9 +152,9 @@ async function criarCaso(formValues: IFormValues) {
                                               ">" +
                                               getBase64(
                                                 ComprovantedeExclusividade
-                                              ) +
+                                              ).then((fileCode) => fileCode) +
                                               "</File></ComprovantedeExclusividade>"
-                                            : ""
+                                            : null
                                         }
                                         ${
                                           ContratosLocacaoEspaco != null
@@ -162,9 +163,9 @@ async function criarCaso(formValues: IFormValues) {
                                               ">" +
                                               getBase64(
                                                 ContratosLocacaoEspaco
-                                              ) +
+                                              ).then((fileCode) => fileCode) +
                                               "</File></ContratosLocacaoEspaco>"
-                                            : ""
+                                            : null
                                         }
                                         ${
                                           ManualExpositorRegrasExpo != null
@@ -173,9 +174,9 @@ async function criarCaso(formValues: IFormValues) {
                                               ">" +
                                               getBase64(
                                                 ManualExpositorRegrasExpo
-                                              ) +
+                                              ).then((fileCode) => fileCode) +
                                               "</File></ManualExpositorRegrasExpo>"
-                                            : ""
+                                            : null
                                         }
                                     </FAMDemanda>\
                                 </Entities>\
@@ -209,17 +210,33 @@ async function criarCaso(formValues: IFormValues) {
     message.error("Houve um erro ao enviar o formulário");
     console.error("Error fetching XML data:", error);
   }
+
+  console.log("PlantaBaixa", PlantaBaixa);
+
+  console.log(
+    "Plantabase64",
+    getBase64(PlantaBaixa!).then((e) => console.log(e))
+  );
 }
 
-function getBase64(file: File) {
-  var reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function () {
-    return btoa(<string>reader.result);
-  };
-  reader.onerror = function (error) {
-    console.log("Error: ", error);
-  };
+function getBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        resolve(btoa(reader.result));
+      } else {
+        reject(new Error("The file could not be read as a string."));
+      }
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsBinaryString(file);
+  });
 }
 
 export default criarCaso;
