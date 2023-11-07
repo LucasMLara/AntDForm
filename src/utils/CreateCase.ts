@@ -36,6 +36,7 @@ async function criarCaso(formValues: IFormValues) {
 
   const [dataInicial] = periodoEvento as any;
   const [DataInicio, DataFim] = dataInicial;
+  console.log("PlantaBaixa", PlantaBaixa);
 
   const url =
     "http://10.9.4.162/ESAmbienteBPMS/webservices/workflowenginesoa.asmx";
@@ -58,28 +59,68 @@ async function criarCaso(formValues: IFormValues) {
                                         <DataFim>${DataFim}</DataFim>\
                                         <HorarioFuncionamento>${HorarioFuncionamento}</HorarioFuncionamento>\
                                         <ValorEntradaVisitantes>${ValorEntradaVisitantes}</ValorEntradaVisitantes>\
-                                        <EmpresaRealizadoraFeira>${EmpresaRealizadoraFeira.id}</EmpresaRealizadoraFeira>\
-                                        <EmpresaRealizadoraFeira.Nome>${EmpresaRealizadoraFeira.Nome}</EmpresaRealizadoraFeira.Nome>\
-                                        <EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>${EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA}</EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>\
-                                        <EmpresaRealizadoraFeira.Rua>${EmpresaRealizadoraFeira.Rua}</EmpresaRealizadoraFeira.Rua>\
-                                        <EmpresaRealizadoraFeira.Bairro>${EmpresaRealizadoraFeira.Bairro}</EmpresaRealizadoraFeira.Bairro>\
-                                        <EmpresaRealizadoraFeira.Cidade>${EmpresaRealizadoraFeira.Cidade}</EmpresaRealizadoraFeira.Cidade>\
-                                        <EmpresaRealizadoraFeira.UF>${EmpresaRealizadoraFeira.UF}</EmpresaRealizadoraFeira.UF>\
-                                        <EmpresaRealizadoraFeira.CEP>${EmpresaRealizadoraFeira.CEP}</EmpresaRealizadoraFeira.CEP>\
-                                        <EmpresaRealizadoraFeira.Telefone>${EmpresaRealizadoraFeira.Telefone}</EmpresaRealizadoraFeira.Telefone>\
-                                        <EmpresaRealizadoraFeira.Email>${EmpresaRealizadoraFeira.Email}</EmpresaRealizadoraFeira.Email>\
+                                        <EmpresaRealizadoraFeira>${
+                                          EmpresaRealizadoraFeira.id
+                                        }</EmpresaRealizadoraFeira>\
+                                        <EmpresaRealizadoraFeira.Nome>${
+                                          EmpresaRealizadoraFeira.Nome
+                                        }</EmpresaRealizadoraFeira.Nome>\
+                                        <EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>${
+                                          EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA
+                                        }</EmpresaRealizadoraFeira.CGCCFO_SEMMASCARA>\
+                                        <EmpresaRealizadoraFeira.Rua>${
+                                          EmpresaRealizadoraFeira.Rua
+                                        }</EmpresaRealizadoraFeira.Rua>\
+                                        <EmpresaRealizadoraFeira.Bairro>${
+                                          EmpresaRealizadoraFeira.Bairro
+                                        }</EmpresaRealizadoraFeira.Bairro>\
+                                        <EmpresaRealizadoraFeira.Cidade>${
+                                          EmpresaRealizadoraFeira.Cidade
+                                        }</EmpresaRealizadoraFeira.Cidade>\
+                                        <EmpresaRealizadoraFeira.UF>${
+                                          EmpresaRealizadoraFeira.UF
+                                        }</EmpresaRealizadoraFeira.UF>\
+                                        <EmpresaRealizadoraFeira.CEP>${
+                                          EmpresaRealizadoraFeira.CEP
+                                        }</EmpresaRealizadoraFeira.CEP>\
+                                        <EmpresaRealizadoraFeira.Telefone>${
+                                          EmpresaRealizadoraFeira.Telefone
+                                        }</EmpresaRealizadoraFeira.Telefone>\
+                                        <EmpresaRealizadoraFeira.Email>${
+                                          EmpresaRealizadoraFeira.Email
+                                        }</EmpresaRealizadoraFeira.Email>\
                                         <RepresentanteRealizadora>${RepresentanteRealizadora}</RepresentanteRealizadora>\
                                         <CpfRepresentRealizadora>${CpfRepresentRealizadora}</CpfRepresentRealizadora>\
-                                        <EmpresaOrganizadoraFeira>${EmpresaOrganizadoraFeira.id}</EmpresaOrganizadoraFeira>\
-                                        <EmpresaOrganizadoraFeira.Nome>${EmpresaOrganizadoraFeira.Nome}</EmpresaOrganizadoraFeira.Nome>\
-                                        <EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>${EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA}</EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>\
-                                        <EmpresaOrganizadoraFeira.Rua>${EmpresaOrganizadoraFeira.Rua}</EmpresaOrganizadoraFeira.Rua>\
-                                        <EmpresaOrganizadoraFeira.Bairro>${EmpresaOrganizadoraFeira.Bairro}</EmpresaOrganizadoraFeira.Bairro>\
-                                        <EmpresaOrganizadoraFeira.Cidade>${EmpresaOrganizadoraFeira.Cidade}</EmpresaOrganizadoraFeira.Cidade>\
-                                        <EmpresaOrganizadoraFeira.UF>${EmpresaOrganizadoraFeira.UF}</EmpresaOrganizadoraFeira.UF>\
-                                        <EmpresaOrganizadoraFeira.CEP>${EmpresaOrganizadoraFeira.CEP}</EmpresaOrganizadoraFeira.CEP>\
-                                        <EmpresaOrganizadoraFeira.Telefone>${EmpresaOrganizadoraFeira.Telefone}</EmpresaOrganizadoraFeira.Telefone>\
-                                        <EmpresaOrganizadoraFeira.Email>${EmpresaOrganizadoraFeira.Email}</EmpresaOrganizadoraFeira.Email>\
+                                        <EmpresaOrganizadoraFeira>${
+                                          EmpresaOrganizadoraFeira.id
+                                        }</EmpresaOrganizadoraFeira>\
+                                        <EmpresaOrganizadoraFeira.Nome>${
+                                          EmpresaOrganizadoraFeira.Nome
+                                        }</EmpresaOrganizadoraFeira.Nome>\
+                                        <EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>${
+                                          EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA
+                                        }</EmpresaOrganizadoraFeira.CGCCFO_SEMMASCARA>\
+                                        <EmpresaOrganizadoraFeira.Rua>${
+                                          EmpresaOrganizadoraFeira.Rua
+                                        }</EmpresaOrganizadoraFeira.Rua>\
+                                        <EmpresaOrganizadoraFeira.Bairro>${
+                                          EmpresaOrganizadoraFeira.Bairro
+                                        }</EmpresaOrganizadoraFeira.Bairro>\
+                                        <EmpresaOrganizadoraFeira.Cidade>${
+                                          EmpresaOrganizadoraFeira.Cidade
+                                        }</EmpresaOrganizadoraFeira.Cidade>\
+                                        <EmpresaOrganizadoraFeira.UF>${
+                                          EmpresaOrganizadoraFeira.UF
+                                        }</EmpresaOrganizadoraFeira.UF>\
+                                        <EmpresaOrganizadoraFeira.CEP>${
+                                          EmpresaOrganizadoraFeira.CEP
+                                        }</EmpresaOrganizadoraFeira.CEP>\
+                                        <EmpresaOrganizadoraFeira.Telefone>${
+                                          EmpresaOrganizadoraFeira.Telefone
+                                        }</EmpresaOrganizadoraFeira.Telefone>\
+                                        <EmpresaOrganizadoraFeira.Email>${
+                                          EmpresaOrganizadoraFeira.Email
+                                        }</EmpresaOrganizadoraFeira.Email>\
                                         <RepresentanteOrganizadora>${RepresentanteOrganizadora}</RepresentanteOrganizadora>\
                                         <CpfRepresentOrganizadora>${CpfRepresentOrganizadora}</CpfRepresentOrganizadora>\
                                         <EmpApoiadorasParceriaEvt>${EmpApoiadorasParceriaEvt}</EmpApoiadorasParceriaEvt>\
@@ -94,10 +135,48 @@ async function criarCaso(formValues: IFormValues) {
                                         <TaxasAdicionais>${TaxasAdicionais}</TaxasAdicionais>\
                                         <OutrosbeneficiosLocacao>${OutrosbeneficiosLocacao}</OutrosbeneficiosLocacao>\
                                         <InformacoesAdicionais>${InformacoesAdicionais}</InformacoesAdicionais>\
-                                        ${PlantaBaixa != null ? "<PlantaBaixa><File fileName=" + PlantaBaixa.name + ">" + getBase64(PlantaBaixa) + "</File></PlantaBaixa>" : ""}
-                                        ${ComprovantedeExclusividade != null ? "<ComprovantedeExclusividade><File fileName=" + ComprovantedeExclusividade.name + ">" + getBase64(ComprovantedeExclusividade) + "</File></ComprovantedeExclusividade>" : ""}
-                                        ${ContratosLocacaoEspaco != null ? "<ContratosLocacaoEspaco><File fileName=" + ContratosLocacaoEspaco.name + ">" + getBase64(ContratosLocacaoEspaco) + "</File></ContratosLocacaoEspaco>" : ""}
-                                        ${ManualExpositorRegrasExpo != null ? "<ManualExpositorRegrasExpo><File fileName=" + ManualExpositorRegrasExpo.name + ">" + getBase64(ManualExpositorRegrasExpo) + "</File></ManualExpositorRegrasExpo>" : ""}
+                                        ${
+                                          PlantaBaixa != null
+                                            ? "<PlantaBaixa><File fileName=" +
+                                              PlantaBaixa.name +
+                                              ">" +
+                                              getBase64(PlantaBaixa) +
+                                              "</File></PlantaBaixa>"
+                                            : ""
+                                        }
+                                        ${
+                                          ComprovantedeExclusividade != null
+                                            ? "<ComprovantedeExclusividade><File fileName=" +
+                                              ComprovantedeExclusividade.name +
+                                              ">" +
+                                              getBase64(
+                                                ComprovantedeExclusividade
+                                              ) +
+                                              "</File></ComprovantedeExclusividade>"
+                                            : ""
+                                        }
+                                        ${
+                                          ContratosLocacaoEspaco != null
+                                            ? "<ContratosLocacaoEspaco><File fileName=" +
+                                              ContratosLocacaoEspaco.name +
+                                              ">" +
+                                              getBase64(
+                                                ContratosLocacaoEspaco
+                                              ) +
+                                              "</File></ContratosLocacaoEspaco>"
+                                            : ""
+                                        }
+                                        ${
+                                          ManualExpositorRegrasExpo != null
+                                            ? "<ManualExpositorRegrasExpo><File fileName=" +
+                                              ManualExpositorRegrasExpo.name +
+                                              ">" +
+                                              getBase64(
+                                                ManualExpositorRegrasExpo
+                                              ) +
+                                              "</File></ManualExpositorRegrasExpo>"
+                                            : ""
+                                        }
                                     </FAMDemanda>\
                                 </Entities>\
                             </Case>\
@@ -139,7 +218,7 @@ function getBase64(file: File) {
     return btoa(<string>reader.result);
   };
   reader.onerror = function (error) {
-    console.log('Error: ', error);
+    console.log("Error: ", error);
   };
 }
 
