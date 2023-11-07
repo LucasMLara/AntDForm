@@ -29,6 +29,7 @@ import criarCaso from "@/utils/CreateCase";
 import getDemanda from "@/utils/getDemanda";
 import { useParams } from "next/navigation";
 import RevisarDemanda from "@/utils/SetEventDemanda";
+import { handleDecode } from "@/utils/crypto";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
@@ -52,7 +53,7 @@ const FormFeira = () => {
   };
 
   const pegarCasoExistente = useCallback(async () => {
-    const res = await getDemanda(+id);
+    const res = await getDemanda(handleDecode(id as string));
     const data = await res;
     return data;
   }, [id]);

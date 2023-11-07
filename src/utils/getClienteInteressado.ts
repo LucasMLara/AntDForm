@@ -1,7 +1,7 @@
 import xmlJs from "xml-js";
 import { message } from "antd";
 
-async function buscarClienteInteressado(idFAMClientesInteressados: number) {
+async function buscarClienteInteressado(idFAMClientesInteressados: string) {
   const url =
     "http://10.9.4.162/ESAmbienteBPMS/webservices/EntityManagerSOA.asmx";
   const body =
