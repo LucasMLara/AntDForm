@@ -8,9 +8,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
-  createServer((req: any, res: any) => {
-    // Be sure to pass `true` as the second argument to `url.parse`.
-    // This tells it to parse the query portion of the URL.
+  createServer((req, res) => {
     const parsedUrl = parse(req.url, true);
     const { pathname, query } = parsedUrl;
 
@@ -21,7 +19,7 @@ app.prepare().then(() => {
     } else {
       handle(req, res, parsedUrl);
     }
-  }).listen(port, (err: any) => {
+  }).listen(port, (err) => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);
   });
