@@ -21,8 +21,7 @@ export default function TermoAceitoDone() {
       <div style={{ margin: "2em" }}>
         <Title level={5} style={{ textAlign: "center" }}>
           O SEBRAE/ES, desde já, coloca-se à disposição para esclarecimentos
-          complementares à interpretação, à utilização e ao preenchimento deste
-          roteiro, através da UMC - Unidade de Marketing e Comunicação{" "}
+          complementares, através da UMC - Unidade de Marketing e Comunicação{" "}
           <a href="tel:+552730415524">(027) 3041 - 5524 </a>
         </Title>
       </div>
