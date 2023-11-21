@@ -17,6 +17,7 @@ import "dayjs/locale/pt-br";
 import AceitarTermo from "@/utils/SetEventTermo";
 import { InfosClienteInteressado } from "@/utils/validations/ClienteInterface";
 import { handleDecode } from "@/utils/crypto";
+import { useRouter } from "next/navigation";
 
 dayjs.extend(utc);
 
@@ -28,6 +29,7 @@ export default function TermoSMS() {
   const [enviando, setEnviando] = useState(false);
   const boldText = { fontWeight: "bold" };
   const { id } = useParams();
+  const router = useRouter();
 
   function convertToBRT(utcDate: string): string {
     const brtDateTime = dayjs
@@ -67,8 +69,9 @@ export default function TermoSMS() {
       radNumber: caso?.Nprocesso,
       idFAMClientesInteressados: id,
       TermoAceito: true,
-    }).then((e) => {
+    }).then(() => {
       setEnviando(false);
+      router.replace("/termoenviado");
     });
   };
 

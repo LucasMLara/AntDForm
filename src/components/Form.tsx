@@ -45,7 +45,7 @@ const FormFeira = () => {
   const [bucandoCliente, setBuscandoCliente] = useState(false);
   const { id } = useParams();
   const router = useRouter();
-  const { termo } = useContext(FormContext);
+  const { termo, setTermo } = useContext(FormContext);
   const defaultEndDate = dayjs().add(90, "day");
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     return current && current < defaultEndDate;
@@ -174,7 +174,8 @@ const FormFeira = () => {
         onSubmit={(values: IFormValues, { resetForm }) => {
           enviarForm(values).then(() => {
             resetForm();
-            router.push("/done");
+            setTermo(false);
+            router.replace("/done");
           });
         }}
       >
