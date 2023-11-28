@@ -66,8 +66,8 @@ export default function TermoSMS() {
   const enviarAceiteTermo = async () => {
     setEnviando(true);
     await AceitarTermo({
-      radNumber: caso?.Nprocesso,
-      idFAMClientesInteressados: id,
+      radNumber: caso?.Nprocesso?._text,
+      idFAMClientesInteressados: handleDecode(id as string),
       TermoAceito: true,
     }).then(() => {
       setEnviando(false);
