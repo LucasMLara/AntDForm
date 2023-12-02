@@ -7,5 +7,6 @@ interface FAMManifestantesInteress {
 }
 
 export interface InfosClienteInteressado {
+  CaseId: FamDemanda;
   FAMManifestantesInteress: FAMManifestantesInteress;
 }

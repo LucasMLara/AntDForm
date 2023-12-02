@@ -25,6 +25,7 @@ dayjs.extend(timezone);
 
 export default function TermoSMS() {
   const [caso, setCaso] = useState<InfosDemanda>();
+  const [cliente, setCliente] = useState<InfosClienteInteressado>();
   const [enviarLiberado, setEnviarLiberado] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const boldText = { fontWeight: "bold" };
@@ -43,6 +44,7 @@ export default function TermoSMS() {
   const pegarCasoExistente = useCallback(async () => {
     const res1 = await getClienteInteressado(handleDecode(id as string));
     const data1: InfosClienteInteressado = await res1;
+    setCliente(data1);
     const res = await getDemanda(
       data1.FAMManifestantesInteress.FAMDemanda._text
     );
@@ -66,7 +68,7 @@ export default function TermoSMS() {
   const enviarAceiteTermo = async () => {
     setEnviando(true);
     await AceitarTermo({
-      radNumber: caso?.Nprocesso?._text,
+      idCase: cliente?.CaseId._text,
       idFAMClientesInteressados: handleDecode(id as string),
       TermoAceito: true,
     }).then(() => {

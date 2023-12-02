@@ -1,5 +1,5 @@
 export interface ITermo {
-  radNumber: any;
+  idCase: any;
   idFAMClientesInteressados: any;
   TermoAceito: any;
 }

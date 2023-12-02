@@ -4,7 +4,7 @@ import xmlJs from "xml-js";
 import { ITermo } from "@/utils/validations/FormInterfaceTermo";
 
 async function AceitarTermo(formValues: ITermo) {
-  const { radNumber, idFAMClientesInteressados, TermoAceito } = formValues;
+  const { idCase, idFAMClientesInteressados, TermoAceito } = formValues;
 
   const url =
     "http://10.9.4.162/ESAmbienteBPMS/webservices/workflowenginesoa.asmx";
@@ -19,7 +19,7 @@ async function AceitarTermo(formValues: ITermo) {
                         <Events>\
                             <Events>\
                                 <EventData>\
-                                  <radNumber>${radNumber}</radNumber>\
+                                  <idCase>${idCase}</idCase>\
                                   <eventName>EvtAceiteExpositor</eventName>\
                                 </EventData>\
                                 <Entities>\
