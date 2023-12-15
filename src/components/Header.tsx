@@ -41,7 +41,7 @@ export default function Header() {
           <a href="https://sistemas.sebraees.com.br/SRS" target="_blank">
             SISTEMA SRS/ES
           </a>{" "}
-          a sua situação. Caso contrário envie e-mail para{" "}
+          e verifique a sua situação. Caso contrário envie e-mail para{" "}
           <a href="mailto:srs@es.sebrae.com.br">srs@es.sebrae.com.br</a> e
           solicite seu cadastro no tipo de negócio: &quot;CONTRATO E OF - PJ
           [DISPENSA(exceto valor), INEXIGIBILIDADE] - acima de R$
