@@ -80,13 +80,21 @@ export default function TermoSMS() {
   return (
     <>
       {!caso ? (
-        <div className={styles.wrapper}>
-          <LogoTipo
-            src={LogoSebrae}
-            alt="Logo Sebrae"
-            width={100}
-            height={100}
-          />
+        <div>
+          <div className={styles.wrapper}>
+            <LogoTipo
+              src={LogoSebrae}
+              alt="Logo Sebrae"
+              width={150}
+              height={150}
+            />
+          </div>
+          <div className={styles.formWrapper} style={{ textAlign: "center" }}>
+            <Title level={4}>
+              Houve um erro ao recuperar os dados da requisição, por favor tente
+              novamente mais tarde!
+            </Title>
+          </div>
         </div>
       ) : (
         <>
