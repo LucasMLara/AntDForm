@@ -146,16 +146,10 @@ const FormFeira = () => {
 
       if (id) {
         const casoRevisado = await RevisarDemanda(bodyReq);
-        console.log(casoRevisado);
         return casoRevisado;
       }
       const casoCriado = await criarCaso(bodyReq);
       if (casoCriado) message.success("Feira criada com sucesso!");
-
-      // console.log(
-      //   casoCriado["soap:Envelope"]["soap:Body"].createCasesResponse
-      //     .createCasesResult.processes.process.processRadNumber
-      // );
       return casoCriado;
     },
     [id, listFiles]
