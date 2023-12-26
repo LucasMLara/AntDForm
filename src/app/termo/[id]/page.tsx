@@ -31,6 +31,7 @@ export default function TermoSMS() {
   const boldText = { fontWeight: "bold" };
   const { id } = useParams();
   const router = useRouter();
+  const decodedId = id ? decodeURIComponent(id as string) : null;
 
   function convertToBRT(utcDate: string): string {
     const brtDateTime = dayjs
@@ -42,7 +43,9 @@ export default function TermoSMS() {
   }
 
   const pegarCasoExistente = useCallback(async () => {
-    const res1 = await getClienteInteressado(handleDecode(id as string));
+    const res1 = await getClienteInteressado(handleDecode(decodedId as string));
+    console.log("📓 ~ file: page.tsx:50 ~ pegarCasoExistente ~ res1:", res1);
+
     const data1: InfosClienteInteressado = await res1;
     setCliente(data1);
     const res = await getDemanda(
@@ -51,7 +54,7 @@ export default function TermoSMS() {
     const data: InfosDemanda = await res;
 
     return data;
-  }, [id]);
+  }, [decodedId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +72,7 @@ export default function TermoSMS() {
     setEnviando(true);
     await AceitarTermo({
       idCase: cliente?.CaseId._text,
-      idFAMClientesInteressados: handleDecode(id as string),
+      idFAMClientesInteressados: decodedId as string,
       TermoAceito: true,
     }).then(() => {
       setEnviando(false);
