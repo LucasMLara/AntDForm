@@ -702,7 +702,11 @@ const FormFeira = () => {
               type="text"
               required
             />
-            <Cabecalho title="5. Dados das Últimas 03 edições:" size={4} />
+            <Cabecalho
+              title="5. Dados das Últimas 03 edições:"
+              size={4}
+              required
+            />
             <TextAreaInput
               handleChange={handleChange("DadosUltimas3Edicoes")}
               value={values.DadosUltimas3Edicoes}
@@ -712,7 +716,11 @@ const FormFeira = () => {
               required
               showCount
             />
-            <Cabecalho title="6. Plano de Comunicação do Evento:" size={4} />
+            <Cabecalho
+              title="6. Plano de Comunicação do Evento:"
+              size={4}
+              required
+            />
             <TextAreaInput
               handleChange={handleChange("PlanoComunicacaoEvento")}
               value={values.PlanoComunicacaoEvento}
@@ -768,7 +776,7 @@ const FormFeira = () => {
               type="text"
               required
             />
-            <Cabecalho title="8. Informações Adicionais:" size={4} />
+            <Cabecalho title="8. Informações Adicionais:" size={4} required />
             <TextAreaInput
               handleChange={handleChange("InformacoesAdicionais")}
               value={values.InformacoesAdicionais}
@@ -886,7 +894,7 @@ const FormFeira = () => {
         O SEBRAE/ES, desde já, coloca-se à disposição para esclarecimentos
         complementares à interpretação, à utilização e ao preenchimento deste
         roteiro, através da UMC - Unidade de Marketing e Comunicação{" "}
-        <a href="tel:+552730415524">(027) 3041 - 5524 </a>
+        <a href="tel:+552730415577">(027) 3041 - 5577 </a>
       </Paragraph>
     </>
   );
