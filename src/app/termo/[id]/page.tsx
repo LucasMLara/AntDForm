@@ -43,10 +43,10 @@ export default function TermoSMS() {
       .format("DD/MM/YYYY");
     return brtDateTime;
   }
-
+  const idParaExecutarFuncoes = handleDecode(decodedId as string);
   const pegarCasoExistente = useCallback(async () => {
     const dadosClienteInteressado = await getClienteInteressado(
-      handleDecode(decodedId as string)
+      idParaExecutarFuncoes
     );
 
     const feiraEvento: InfosClienteInteressado = await dadosClienteInteressado;
@@ -58,7 +58,7 @@ export default function TermoSMS() {
     const data: InfosDemanda = await res;
 
     return data;
-  }, [decodedId]);
+  }, [idParaExecutarFuncoes]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,7 +78,7 @@ export default function TermoSMS() {
     setEnviando(true);
     await AceitarTermo({
       idCase: cliente?.CaseId._text,
-      idFAMClientesInteressados: decodedId as string,
+      idFAMClientesInteressados: idParaExecutarFuncoes,
       TermoAceito: true,
     }).then(() => {
       setEnviando(false);
@@ -363,7 +363,7 @@ export default function TermoSMS() {
               type="primary"
               onClick={() => enviarAceiteTermo()}
             >
-              {enviando ? <Spin /> : "Enviar"}
+              {enviando ? <Spin /> : "ENVIAR"}
             </Button>
           </div>
           <Paragraph style={{ textAlign: "center", margin: "1em" }}>
