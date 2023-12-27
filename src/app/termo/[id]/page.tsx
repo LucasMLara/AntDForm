@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 import styles from "@/app/styles.module.css";
 import LogoTipo from "@/components/Image";
 import LogoSebrae from "../../../../public/SebraeLogo.svg";
-import { Typography, Checkbox, Row, Col, Flex, Button } from "antd";
+import { Typography, Checkbox, Row, Col, Flex, Button, Spin } from "antd";
 const { Paragraph, Title } = Typography;
 import mockData from "./mock";
 import { useParams } from "next/navigation";
@@ -18,6 +18,7 @@ import AceitarTermo from "@/utils/SetEventTermo";
 import { InfosClienteInteressado } from "@/utils/validations/ClienteInterface";
 import { handleDecode } from "@/utils/crypto";
 import { useRouter } from "next/navigation";
+import TermoLoading from "./loading";
 
 dayjs.extend(utc);
 
@@ -25,6 +26,7 @@ dayjs.extend(timezone);
 
 export default function TermoSMS() {
   const [caso, setCaso] = useState<InfosDemanda>();
+  const [loading, setLoading] = useState(true);
   const [cliente, setCliente] = useState<InfosClienteInteressado>();
   const [enviarLiberado, setEnviarLiberado] = useState(false);
   const [enviando, setEnviando] = useState(false);
@@ -43,14 +45,16 @@ export default function TermoSMS() {
   }
 
   const pegarCasoExistente = useCallback(async () => {
-    const res1 = await getClienteInteressado(handleDecode(decodedId as string));
-    console.log("📓 ~ file: page.tsx:50 ~ pegarCasoExistente ~ res1:", res1);
-
-    const data1: InfosClienteInteressado = await res1;
-    setCliente(data1);
-    const res = await getDemanda(
-      data1.FAMManifestantesInteress.FAMDemanda._text
+    const dadosClienteInteressado = await getClienteInteressado(
+      handleDecode(decodedId as string)
     );
+
+    const feiraEvento: InfosClienteInteressado = await dadosClienteInteressado;
+    setCliente(feiraEvento);
+    const res = await getDemanda(
+      feiraEvento.FAMManifestantesInteress.FAMDemanda._text
+    );
+
     const data: InfosDemanda = await res;
 
     return data;
@@ -61,8 +65,10 @@ export default function TermoSMS() {
       try {
         const data = await pegarCasoExistente();
         setCaso(data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false);
       }
     };
     fetchData();
@@ -79,7 +85,9 @@ export default function TermoSMS() {
       router.replace("/termoenviado");
     });
   };
-
+  if (loading) {
+    return <TermoLoading />;
+  }
   return (
     <>
       {!caso ? (
@@ -355,7 +363,7 @@ export default function TermoSMS() {
               type="primary"
               onClick={() => enviarAceiteTermo()}
             >
-              ENVIAR
+              {enviando ? <Spin /> : "Enviar"}
             </Button>
           </div>
           <Paragraph style={{ textAlign: "center", margin: "1em" }}>
