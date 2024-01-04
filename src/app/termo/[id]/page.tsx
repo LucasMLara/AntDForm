@@ -5,7 +5,6 @@ import LogoTipo from "@/components/Image";
 import LogoSebrae from "../../../../public/SebraeLogo.svg";
 import { Typography, Checkbox, Row, Col, Flex, Button, Spin } from "antd";
 const { Paragraph, Title } = Typography;
-import mockData from "./mock";
 import { useParams } from "next/navigation";
 import getDemanda from "@/utils/getDemanda";
 import getClienteInteressado from "@/utils/getClienteInteressado";
@@ -35,7 +34,8 @@ export default function TermoSMS() {
   const router = useRouter();
   const decodedId = id ? decodeURIComponent(id as string) : null;
 
-  function convertToBRT(utcDate: string): string {
+  function convertToBRT(utcDate: string | undefined | number): string {
+    if (!utcDate) return "";
     const brtDateTime = dayjs
       .utc(utcDate)
       .tz("America/Sao_Paulo")
@@ -59,6 +59,11 @@ export default function TermoSMS() {
 
     return data;
   }, [idParaExecutarFuncoes]);
+
+  const valorContraPartidaCliente = cliente?.ContrapartidaCliente?._text;
+  const porcentagemContraPartida = cliente?.ValorContrapartida?._text;
+  const dataLimiteInscricao =
+    cliente?.FAMManifestantesInteress.DataLimiteInscricao?._text;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,7 +95,7 @@ export default function TermoSMS() {
   }
   return (
     <>
-      {!caso ? (
+      {!caso || !cliente ? (
         <div>
           <div className={styles.wrapper}>
             <LogoTipo
@@ -253,10 +258,10 @@ export default function TermoSMS() {
             <Paragraph strong>2. PAGAMENTO</Paragraph>
             <Paragraph>
               2.1. A Título de contrapartida, correspondente a{" "}
-              {mockData.percentualDeContrapartidaDoCliente} do investimento
-              necessário para participação na feira, o empreendimento apoiado
-              arcará com a quantia de {mockData.valorContrapartidaCliente}, que
-              será paga ao SEBRAE/ES até o dia {mockData.dataLimiteInscricao}.
+              {porcentagemContraPartida}% do investimento necessário para
+              participação na feira, o empreendimento apoiado arcará com a
+              quantia de R${valorContraPartidaCliente}, que será paga ao
+              SEBRAE/ES até o dia {convertToBRT(dataLimiteInscricao)}.
             </Paragraph>
             <Paragraph>
               2.2. O pagamento da contrapartida consolida o compromisso do

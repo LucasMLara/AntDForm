@@ -1,12 +1,15 @@
-interface FamDemanda {
+interface IFormatacao {
   _text: number;
 }
 
 interface FAMManifestantesInteress {
-  FAMDemanda: FamDemanda;
+  FAMDemanda: IFormatacao;
+  DataLimiteInscricao?: IFormatacao;
 }
 
 export interface InfosClienteInteressado {
-  CaseId: FamDemanda;
+  CaseId: IFormatacao;
   FAMManifestantesInteress: FAMManifestantesInteress;
+  ValorContrapartida?: IFormatacao;
+  ContrapartidaCliente?: IFormatacao;
 }

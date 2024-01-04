@@ -1,7 +1,3 @@
-interface IBizagiText {
-  _text: string;
-}
-
 interface EmpresaFeira {
   Nome: string;
   Bairro: string;
